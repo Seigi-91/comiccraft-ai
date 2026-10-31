@@ -1,0 +1,30 @@
+{
+  "video": {
+    "codec": "h264",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration": 45,
+    "bytes": 70150635
+  },
+  "audio": {
+    "duration": 45,
+    "sampleRate": 48000,
+    "channels": 2,
+    "warnings": [],
+    "loudness": {
+      "lufsIntegrated": -17,
+      "lufsShortTermMax": -13.6,
+      "samplePeakDb": -2.6,
+      "truePeakDb": -2.6,
+      "clipping": {
+        "count": 0,
+        "firstAt": null
+      }
+    },
+    "silence": []
+  },
+  "decoded_frame_review": "passed",
+  "six_panel_snapshot_review": "passed",
+  "hyperframes_check": "passed: runtime 0, layout 0, contrast 15/15"
+}

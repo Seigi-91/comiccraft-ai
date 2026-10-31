@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file: .env
+    environment:
+      POSTGRES_URL: sqlite+aiosqlite:////app/data/comic_agent.db
+      COMIC_FONT_PATH: /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+    volumes:
+      - ./data:/app/data

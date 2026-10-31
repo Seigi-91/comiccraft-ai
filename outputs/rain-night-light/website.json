@@ -1,0 +1,21 @@
+{
+  "project_id": "a75ddfc1-9af0-4b35-a14b-a2bd99eac241",
+  "chapter_id": "56b7fed7-c920-4141-9553-f2badcda8368",
+  "task_id": "9660d997-551a-4788-ac00-a5f04d1cb955",
+  "url": "http://127.0.0.1:8000/projects/a75ddfc1-9af0-4b35-a14b-a2bd99eac241",
+  "image_urls": {
+    "0": "/media/74ebde9e1d944761a6c257c3718be257.png",
+    "1": "/media/41c82198db9b4829b77a982ff0ea2f11.png",
+    "2": "/media/50953ac9b6c44d0b83182664bff1b82f.png",
+    "3": "/media/ce99267585ef4c6ba2677afd80936276.png",
+    "4": "/media/c748b00292524b67b8eacdac88900bb1.png",
+    "5": "/media/a946bf46de674d3fbfde0864963ebbb9.png"
+  },
+  "final_comic": {
+    "final_image_url": "/media/comic-ff2da96aebc34113b2558f6e74d16f50.png",
+    "width": 1000,
+    "height": 6544,
+    "layout_type": "条漫",
+    "total_panels": 6
+  }
+}

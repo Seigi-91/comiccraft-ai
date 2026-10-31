@@ -1,0 +1,132 @@
+{
+  "version": 2,
+  "discovery": "Four license-preserved upstream skills plus two project-authored replacements",
+  "installed_on": "2026-10-30",
+  "execution": "Reviewed Markdown method sections only; upstream scripts are never executed",
+  "skills": [
+    {
+      "role": "story_planner",
+      "name": "plot-structure",
+      "skillsmp_url": "https://skillsmp.com/creators/danjdewhurst/story-skills/skills-plot-structure",
+      "repository": "danjdewhurst/story-skills",
+      "source_path": "skills/plot-structure",
+      "commit": "e44c97ce8eee4db3bbc82db05c4f7982e470e2bd",
+      "github_url": "https://github.com/danjdewhurst/story-skills/tree/e44c97ce8eee4db3bbc82db05c4f7982e470e2bd/skills/plot-structure",
+      "installed_path": "skills/vendor/plot-structure/SKILL.md",
+      "runtime_path": "skills/story-planner/UPSTREAM.md",
+      "sha256": "0b206c9f1c27063884bd57d43beb8626880249c3280f5f4a84b4b21f8da18df9",
+      "runtime_sha256": "b13505f039d52bfdbf96b74529ce6ed2cf9a58a00b9df2c545f0cd7e525ef14d",
+      "loaded_sections": [
+        {
+          "path": "SKILL.md",
+          "sha256": "0b206c9f1c27063884bd57d43beb8626880249c3280f5f4a84b4b21f8da18df9"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "0b206c9f1c27063884bd57d43beb8626880249c3280f5f4a84b4b21f8da18df9"
+        }
+      ],
+      "adaptation": "把小说结构方法用于六至十二格短篇：只保留建立、触发、选择、结果、回扣。当前系统以 JSON 传递，不创建小说 CLI 工程。"
+    },
+    {
+      "role": "storyboard_artist",
+      "name": "video-storyboard",
+      "skillsmp_url": "https://skillsmp.com/creators/agentara/skills/skills-aigc-video-storyboard",
+      "repository": "agentara/skills",
+      "source_path": "skills/aigc/video-storyboard",
+      "commit": "950e1bfb11e1df67b46df19804ed85ada9012c33",
+      "github_url": "https://github.com/agentara/skills/tree/950e1bfb11e1df67b46df19804ed85ada9012c33/skills/aigc/video-storyboard",
+      "installed_path": "skills/vendor/video-storyboard/SKILL.md",
+      "runtime_path": "skills/storyboard-artist/UPSTREAM.md",
+      "sha256": "8677b67defe936545217c5a7004566b9da26b873ae8084d82897463f7f9e2dd8",
+      "runtime_sha256": "ccd90afdd21a673e4dc237cafe05ba16fb84aa3a5c0b0eca701fb870e049d6f8",
+      "loaded_sections": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8677b67defe936545217c5a7004566b9da26b873ae8084d82897463f7f9e2dd8"
+        }
+      ],
+      "adaptation": "采用镜头变化与人物、服装、道具、地理连续性规范。当前输出漫画分镜 JSON，不输出视频秒数、网格时间标签或视频文件。"
+    },
+    {
+      "role": "dialogue_master",
+      "name": "comic-dialogue",
+      "source_kind": "project-authored",
+      "license": "MIT",
+      "installed_path": "skills/local/comic-dialogue/SKILL.md",
+      "runtime_path": "skills/dialogue-master/UPSTREAM.md",
+      "sha256": "efcacb2c70318a2611c5432427c9606746c8d5b2423639908d9da8c87ca9ea01",
+      "runtime_sha256": "c3e83eac42d86e5e925dd380be38d4d0d099396da246698b2f99823bbe956363",
+      "loaded_sections": [
+        {
+          "path": "SKILL.md",
+          "sha256": "efcacb2c70318a2611c5432427c9606746c8d5b2423639908d9da8c87ca9ea01"
+        }
+      ]
+    },
+    {
+      "role": "panel_designer",
+      "name": "imagegen",
+      "skillsmp_url": "https://skillsmp.com/creators/openai/skills/skills-system-imagegen",
+      "repository": "openai/skills",
+      "source_path": "skills/.system/imagegen",
+      "commit": "49f948faa9258a0c61caceaf225e179651397431",
+      "github_url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431/skills/.system/imagegen",
+      "installed_path": "skills/vendor/imagegen/SKILL.md",
+      "runtime_path": "skills/panel-designer/UPSTREAM.md",
+      "sha256": "826d05b806d51fa81cd650f1c0854b0a1f7fbccd1b152c588ded1797a2e7218f",
+      "runtime_sha256": "bb55eabcb781fcc75e8975cdea9f782849a0dc3303a163a044ff8209698b9974",
+      "loaded_sections": [
+        {
+          "path": "references/prompting.md",
+          "sha256": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2"
+        },
+        {
+          "path": "references/prompting.md",
+          "sha256": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2"
+        },
+        {
+          "path": "references/prompting.md",
+          "sha256": "e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2"
+        }
+      ],
+      "adaptation": "通过当前应用的生图适配器交接提示词及真实参考图片，不能声称应用后台拥有 Codex 内置 image_gen 工具。每格复用角色表，并附前一格作为动作与场景连续性参考。"
+    },
+    {
+      "role": "style_reviewer",
+      "name": "comic-visual-review",
+      "source_kind": "project-authored",
+      "license": "MIT",
+      "installed_path": "skills/local/comic-visual-review/SKILL.md",
+      "runtime_path": "skills/style-reviewer/UPSTREAM.md",
+      "sha256": "ee4b737052523431268c2541d781b8c146d54e59c2d470fe0cf032b1413188cb",
+      "runtime_sha256": "a8e4e09e9bbc287ea92cbe4ba348084e5d190342ee8911b784b8ef711ebdd523",
+      "loaded_sections": [
+        {
+          "path": "SKILL.md",
+          "sha256": "ee4b737052523431268c2541d781b8c146d54e59c2d470fe0cf032b1413188cb"
+        }
+      ]
+    },
+    {
+      "role": "layout_artist",
+      "name": "baoyu-comic",
+      "skillsmp_url": "https://skillsmp.com/creators/jimliu/baoyu-skills/skills-baoyu-comic",
+      "repository": "JimLiu/baoyu-skills",
+      "source_path": "skills/baoyu-comic",
+      "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+      "github_url": "https://github.com/JimLiu/baoyu-skills/tree/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-comic",
+      "installed_path": "skills/vendor/baoyu-comic/SKILL.md",
+      "runtime_path": "skills/layout-artist/UPSTREAM.md",
+      "sha256": "98d5de8650a3401c1ee97b3f78ebacef72f3f570ef7fe7290b192ac7d24330bc",
+      "runtime_sha256": "b124024b67ee950f0ad9f1fbc806b2d3b605f6e43696aa6155669f48006f314b",
+      "loaded_sections": [
+        {
+          "path": "references/layouts/webtoon.md",
+          "sha256": "2de64e32988aaa14779806007dfdbe382f0b423e0a0cea041d1a1c816ed382e0"
+        }
+      ],
+      "adaptation": "使用条漫上至下阅读、镜头大小变化和留白节奏。排版仍由本机确定性渲染器完成，中文文字置于图外字幕区，不改画面内文字，不触发上游完整知识漫画向导。"
+    }
+  ]
+}

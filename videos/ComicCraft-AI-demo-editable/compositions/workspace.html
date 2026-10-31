@@ -1,0 +1,11 @@
+<template><style>@font-face{font-family:ComicCraft;src:url('assets/fonts/comiccraft.woff2') format('woff2');font-weight:100 900;font-display:block}*{box-sizing:border-box;margin:0;padding:0}#root{position:absolute;inset:0;overflow:hidden;font-family:ComicCraft,sans-serif;color:#172032}#root{background:#edf0f6}.workspace-title{position:absolute;left:128px;top:56px;font-size:68px;line-height:1.25;font-weight:400}.workspace-camera{position:absolute;left:128px;top:180px;width:1664px;height:832px;overflow:hidden;border:1px solid #b7bfcd;border-radius:16px;background:#0a0a0f}.workspace-state{position:absolute;inset:0;overflow:hidden}.workspace-state img{width:1664px;height:1040px;object-fit:fill;display:block}.workspace-footer{position:absolute;left:140px;top:1026px;font-size:28px;color:#50596b}</style><div data-hf-id="hf-r2yr" id="root" data-composition-id="workspace" data-width="1920" data-height="1080" data-duration="10"><h2 data-hf-id="hf-wc8r" class="workspace-title">故事，有清晰的制作过程</h2><div data-hf-id="hf-fzrn" id="workspace-camera" class="workspace-camera" data-layout-allow-overflow>
+<div data-hf-id="hf-lr7w" id="workspace-preview" class="clip workspace-state" data-start="0" data-duration="2" data-track-index="1"><img data-hf-id="hf-jkto" src="assets/screens/scroll-000.png" alt="实际漫画创作页面" /></div>
+<div data-hf-id="hf-ato1" id="workspace-outline" class="clip workspace-state" data-start="2" data-duration="2.5" data-track-index="1"><img data-hf-id="hf-qcnq" src="assets/screens/outline.png" alt="实际剧情大纲页" /></div>
+<div data-hf-id="hf-pc6r" id="workspace-storyboard" class="clip workspace-state" data-start="4.5" data-duration="2.5" data-track-index="1"><img data-hf-id="hf-25za" src="assets/screens/storyboard.png" alt="实际分镜脚本页" /></div>
+<div data-hf-id="hf-kb4y" id="workspace-dialogue" class="clip workspace-state" data-start="7" data-duration="3" data-track-index="1"><img data-hf-id="hf-r3wy" src="assets/screens/dialogue.png" alt="实际台词页" /></div>
+</div><p data-hf-id="hf-y6xk" class="workspace-footer">剧情大纲 → 分镜脚本 → 台词</p></div><script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo('#workspace-camera',{scale:.97,y:28},{scale:1,y:0,duration:.5,ease:'power3.out'},0);
+tl.fromTo('#workspace-camera',{scale:1},{scale:1.025,duration:2,ease:'power1.inOut',immediateRender:false},8);
+window.__timelines['workspace']=tl;
+</script></template>

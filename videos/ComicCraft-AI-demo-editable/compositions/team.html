@@ -1,0 +1,10 @@
+<template><style>@font-face{font-family:ComicCraft;src:url('assets/fonts/comiccraft.woff2') format('woff2');font-weight:100 900;font-display:block}*{box-sizing:border-box;margin:0;padding:0}#root{position:absolute;inset:0;overflow:hidden;font-family:ComicCraft,sans-serif;color:#172032}#root{background:#edf0f6}.team-title{position:absolute;left:128px;top:54px;font-size:72px;line-height:1.25;font-weight:400}.team-camera{position:absolute;left:128px;top:176px;width:1664px;height:836px;overflow:hidden;border:1px solid #b7bfcd;border-radius:16px;background:#0a0a0f}.team-state{position:absolute;inset:0;overflow:hidden}.team-state img{width:1664px;height:1040px;object-fit:fill;display:block}.team-footer{position:absolute;left:140px;top:1026px;font-size:28px;color:#50596b}</style><div data-hf-id="hf-uk7w" id="root" data-composition-id="team" data-width="1920" data-height="1080" data-duration="8"><h2 data-hf-id="hf-nhjk" class="team-title">六个分工，各有专业技能</h2><div data-hf-id="hf-sclb" id="team-camera" class="team-camera" data-layout-allow-overflow>
+<div data-hf-id="hf-5b2b" id="team-story" class="clip team-state" data-start="0" data-duration="2.6" data-track-index="1"><img data-hf-id="hf-tmjo" src="assets/screens/agents-story.png" alt="剧情策划师及实际SkillsMP来源" /></div>
+<div data-hf-id="hf-hlo5" id="team-image" class="clip team-state" data-start="2.6" data-duration="2.6" data-track-index="1"><img data-hf-id="hf-nyj8" src="assets/screens/agents-image.png" alt="画面设计师及实际imagegen技能" /></div>
+<div data-hf-id="hf-n9sz" id="team-review" class="clip team-state" data-start="5.2" data-duration="2.8" data-track-index="1"><img data-hf-id="hf-170v" src="assets/screens/agents-review.png" alt="风格审核官及实际visual-reviewer技能" /></div>
+</div><p data-hf-id="hf-ym0b" class="team-footer">SkillsMP 来源 · 固定版本 · 运行提示词</p></div><script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo('#team-camera',{x:90,opacity:0},{x:0,opacity:1,duration:.45,ease:'power3.out'},0);
+tl.fromTo('#team-camera',{scale:1},{scale:1.02,duration:2.4,ease:'none',immediateRender:false},5.5);
+window.__timelines['team']=tl;
+</script></template>

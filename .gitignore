@@ -1,0 +1,40 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+frontend/node_modules/
+frontend/dist/
+data/
+*.db
+*.db-shm
+*.db-wal
+*.log
+
+# Local credentials and machine state
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+progress.txt
+
+# Reproducible caches and downloaded tools
+**/node_modules/
+**/__pycache__/
+**/.hyperframes/
+**/.media/
+videos/**/tools/
+**/.cache/
+
+# Deliverable archives and video exports are published as Release assets
+*.zip
+*.mp4
+videos/comiccraft-demo/

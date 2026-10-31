@@ -1,0 +1,33 @@
+// Use an isolated SQLite copy on port 8013. Browser plugin is not available.
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/Lenovo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{
+ const base=process.env.BUBBLE_TEST_URL || 'http://127.0.0.1:8013';
+ const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const pid='a75ddfc1-9af0-4b35-a14b-a2bd99eac241';
+ const chapters=await(await page.request.get(base+'/api/projects/'+pid+'/chapters')).json();const cid=chapters[0].id;
+ const before=await(await page.request.get(base+'/api/editing/'+cid+'/bubble-layout')).json();
+ await page.goto(base+'/projects/'+pid);await page.getByRole('button',{name:'拖动与编辑气泡',exact:true}).click();
+ await page.getByRole('combobox',{name:'气泡类型 1',exact:true}).selectOption('speech');
+ const tip=page.getByRole('button',{name:'拖动尾巴端点 1',exact:true});await tip.scrollIntoViewIfNeeded();let tb=await tip.boundingBox();await page.mouse.move(tb.x+12,tb.y+12);await page.mouse.down();await page.mouse.move(tb.x+155,tb.y+100,{steps:8});await page.mouse.up();
+ await page.getByRole('button',{name:'＋ 新增气泡',exact:true}).click();
+ const added=before.dialogues.bubbles.length+1;await page.getByRole('combobox',{name:'气泡类型 '+added,exact:true}).selectOption('thought');
+ await page.getByRole('button',{name:'删除气泡 '+added,exact:true}).click();
+ await page.getByRole('button',{name:'＋ 新增气泡',exact:true}).click();
+ await page.getByRole('combobox',{name:'气泡类型 '+added,exact:true}).selectOption('narration');
+ await page.getByRole('textbox',{name:'气泡文字 '+added,exact:true}).fill('新增旁白');
+ const header=page.getByRole('button',{name:'拖动气泡 1',exact:true});await header.scrollIntoViewIfNeeded();
+ let box=await header.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+70,box.y+box.height/2+45,{steps:8});await page.mouse.up();
+ const handle=page.getByRole('button',{name:'调整气泡大小 1',exact:true});box=await handle.boundingBox();await page.mouse.move(box.x+10,box.y+10);await page.mouse.down();await page.mouse.move(box.x+65,box.y+50,{steps:8});await page.mouse.up();
+ await page.getByRole('textbox',{name:'气泡文字 1',exact:true}).fill('雨夜，一盏灯。');
+ const savedResponse=page.waitForResponse(r=>r.url().endsWith('/bubble-layout')&&r.request().method()==='PUT');await page.getByRole('button',{name:'保存气泡并更新成稿',exact:true}).click();const saved=await savedResponse;if(saved.status()!==200)throw Error(await saved.text());const final=await saved.json();
+ const task=await(await page.request.get(base+'/api/studio/chapters/'+cid+'/task')).json();const changed=task.result.state.dialogues.bubbles[0];
+ if(changed.text!=='雨夜，一盏灯。'||changed.position.x===before.dialogues.bubbles[0].position.x||changed.size.width<=before.dialogues.bubbles[0].size.width)throw Error('Text, move or resize not persisted');
+ if(!changed.tail || changed.tail.x===before.dialogues.bubbles[0].tail.x || changed.bubble_type!=='speech'|| task.result.state.dialogues.bubbles.at(-1).text!=='新增旁白'||task.result.state.dialogues.bubbles.at(-1).bubble_type!=='narration')throw Error('Tail/type/add/delete failed');
+ if(task.result.final_comic.final_image_url!==final.final_image_url)throw Error('Final output not updated');
+ if((await page.request.get(base+final.final_image_url)).status()!==200)throw Error('Download failed');
+ await page.reload();await page.getByRole('button',{name:'拖动与编辑气泡',exact:true}).click();await page.getByRole('textbox',{name:'气泡文字 1',exact:true}).waitFor();if(await page.getByRole('textbox',{name:'气泡文字 1',exact:true}).inputValue()!=='雨夜，一盏灯。')throw Error('Reload failed');
+ await page.locator('[aria-label="画面气泡编辑器"]').screenshot({path:'data/bubble-editor-desktop.png'});
+ await page.setViewportSize({width:390,height:844});await page.locator('[aria-label="画面气泡编辑器"]').screenshot({path:'data/bubble-editor-mobile.png'});if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))throw Error('Mobile overflow');
+ if(errors.length)throw Error(errors.join(','));console.log(JSON.stringify({ok:true,checks:['tail direction/length drag','add bubble','delete bubble','type switch','drag','resize','text edit','save','reload','download','mobile overflow','no JS errors'],final:final.final_image_url}));await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,14 @@
+{
+  "screens": "Original local website captured with Edge; capture-edge/SUCCESS.json",
+  "art": "Original generated rain-night-light comic; no new art generated for this demo",
+  "music": {
+    "title": "Dream Culture",
+    "artist": "Kevin MacLeod",
+    "source": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1300046",
+    "license": "CC BY 4.0",
+    "changes": "45-second excerpt starting at12s, normalized and faded"
+  },
+  "sfx": "HyperFrames bundled click-soft; .media/manifest.jsonl",
+  "font": "Noto Sans CJK SC, SIL Open Font License, subset for this video",
+  "runtime": "GSAP3.14.2 local copy; HyperFrames0.8.221"
+}

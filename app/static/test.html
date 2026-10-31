@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI漫画生成系统测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab.active {
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            color: #fff;
+        }
+        .tab:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .panel {
+            display: none;
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .panel.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ddd;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            margin-left: 10px;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        .card p {
+            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .tag {
+            padding: 4px 10px;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .tag.confirmed {
+            background: rgba(0, 255, 100, 0.2);
+            color: #00ff64;
+        }
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .panel-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .panel-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #222;
+        }
+        .panel-item .info {
+            padding: 15px;
+        }
+        .panel-item .info h4 {
+            margin-bottom: 5px;
+            color: #00d4ff;
+        }
+        .panel-item .info p {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-pending { background: rgba(255,200,0,0.2); color: #ffc800; }
+        .status-running { background: rgba(0,212,255,0.2); color: #00d4ff; }
+        .status-completed { background: rgba(0,255,100,0.2); color: #00ff64; }
+        .status-failed { background: rgba(255,0,100,0.2); color: #ff0064; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 AI漫画生成系统</h1>
+            <p>测试角色视觉档案、构图控制、冲突仲裁等核心功能</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('project')">1. 创建项目</button>
+            <button class="tab" onclick="showTab('characters')">2. 角色管理</button>
+            <button class="tab" onclick="showTab('chapter')">3. 创建章节</button>
+            <button class="tab" onclick="showTab('generate')">4. 生成漫画</button>
+            <button class="tab" onclick="showTab('results')">5. 查看结果</button>
+        </div>
+
+        <div id="project" class="panel active">
+            <h2>创建漫画项目</h2>
+            <div class="form-group">
+                <label>项目名称</label>
+                <input type="text" id="projectName" placeholder="输入项目名称...">
+            </div>
+            <div class="form-group">
+                <label>项目描述</label>
+                <textarea id="projectDesc" placeholder="输入项目描述..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>灵感描述</label>
+                <textarea id="projectInspiration" placeholder="描述你的漫画灵感，例如：一个关于AI与人类共存的未来故事..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="createProject()">创建项目</button>
+            <div class="output" id="projectOutput"></div>
+        </div>
+
+        <div id="characters" class="panel">
+            <h2>角色视觉档案管理</h2>
+            <div class="form-group">
+                <label>项目ID</label>
+                <input type="text" id="charProjectId" placeholder="输入项目ID...">
+            </div>
+            <div class="form-group">
+                <label>角色名称</label>
+                <input type="text" id="charName" placeholder="输入角色名称...">
+            </div>
+            <div class="form-group">
+                <label>外貌描述</label>
+                <textarea id="charAppearance" placeholder="描述角色外貌特征，如：银色短发，蓝色眼睛，机械义肢..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>参考图像URL</label>
+                <input type="text" id="charRefImage" placeholder="输入角色参考图像URL...">
+            </div>
+            <button class="btn btn-primary" onclick="createCharacter()">创建角色</button>
+            <button class="btn btn-secondary" onclick="setCharacterReference()">设置参考图像</button>
+            <button class="btn btn-secondary" onclick="confirmCharacter()">确认角色</button>
+            <button class="btn btn-secondary" onclick="listCharacters()">列出角色</button>
+            <div class="output" id="charOutput"></div>
+            <div class="cards" id="charCards"></div>
+        </div>
+
+        <div id="chapter" class="panel">
+            <h2>创建章节</h2>
+            <div class="form-group">
+                <label>项目ID</label>
+                <input type="text" id="chapterProjectId" placeholder="输入项目ID...">
+            </div>
+            <div class="form-group">
+                <label>章节标题</label>
+                <input type="text" id="chapterTitle" placeholder="输入章节标题...">
+            </div>
+            <button class="btn btn-primary" onclick="createChapter()">创建章节</button>
+            <button class="btn btn-secondary" onclick="listChapters()">列出章节</button>
+            <div class="output" id="chapterOutput"></div>
+            <div class="cards" id="chapterCards"></div>
+        </div>
+
+        <div id="generate" class="panel">
+            <h2>生成漫画章节</h2>
+            <div class="form-group">
+                <label>项目ID</label>
+                <input type="text" id="genProjectId" placeholder="输入项目ID...">
+            </div>
+            <div class="form-group">
+                <label>章节ID</label>
+                <input type="text" id="genChapterId" placeholder="输入章节ID...">
+            </div>
+            <button class="btn btn-primary" onclick="generateComic()" id="genBtn">开始生成</button>
+            <button class="btn btn-secondary" onclick="pollTask()" id="pollBtn" disabled>轮询状态</button>
+            <div class="output" id="genOutput"></div>
+            <div id="taskStatus"></div>
+        </div>
+
+        <div id="results" class="panel">
+            <h2>漫画生成结果</h2>
+            <div class="form-group">
+                <label>任务ID</label>
+                <input type="text" id="resultTaskId" placeholder="输入任务ID...">
+            </div>
+            <button class="btn btn-primary" onclick="getTaskResult()">获取结果</button>
+            <div class="output" id="resultOutput"></div>
+            <div class="panel-grid" id="resultPanels"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentProjectId = '';
+        let currentChapterId = '';
+        let currentTaskId = '';
+        let currentCharacterId = '';
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        async function apiCall(url, method, body = null) {
+            const options = {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+            };
+            if (body) options.body = JSON.stringify(body);
+            try {
+                const response = await fetch(`http://localhost:8000${url}`, options);
+                return await response.json();
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+
+        async function createProject() {
+            const name = document.getElementById('projectName').value;
+            const desc = document.getElementById('projectDesc').value;
+            const inspiration = document.getElementById('projectInspiration').value;
+
+            const result = await apiCall('/api/projects', 'POST', {
+                name, description: desc, inspiration
+            });
+
+            document.getElementById('projectOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.id) {
+                currentProjectId = result.id;
+                document.getElementById('charProjectId').value = result.id;
+                document.getElementById('chapterProjectId').value = result.id;
+                document.getElementById('genProjectId').value = result.id;
+                alert(`项目创建成功！ID: ${result.id}`);
+            }
+        }
+
+        async function createCharacter() {
+            const projectId = document.getElementById('charProjectId').value || currentProjectId;
+            const name = document.getElementById('charName').value;
+            const appearance = document.getElementById('charAppearance').value;
+
+            const result = await apiCall(`/api/projects/${projectId}/characters?name=${encodeURIComponent(name)}&appearance_description=${encodeURIComponent(appearance)}`, 'POST');
+
+            document.getElementById('charOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.character_id) {
+                currentCharacterId = result.character_id;
+                alert(`角色创建成功！ID: ${result.character_id}`);
+            }
+        }
+
+        async function setCharacterReference() {
+            const projectId = document.getElementById('charProjectId').value || currentProjectId;
+            const charId = currentCharacterId;
+            const refImage = document.getElementById('charRefImage').value;
+
+            const result = await apiCall(`/api/projects/${projectId}/characters/${charId}/reference?reference_image_url=${encodeURIComponent(refImage)}`, 'POST');
+
+            document.getElementById('charOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.character_id) {
+                alert('参考图像设置成功！');
+            }
+        }
+
+        async function confirmCharacter() {
+            const projectId = document.getElementById('charProjectId').value || currentProjectId;
+            const charId = currentCharacterId;
+
+            const result = await apiCall(`/api/projects/${projectId}/characters/${charId}/confirm`, 'POST');
+
+            document.getElementById('charOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.is_confirmed) {
+                alert('角色档案已确认！');
+            }
+        }
+
+        async function listCharacters() {
+            const projectId = document.getElementById('charProjectId').value || currentProjectId;
+            const result = await apiCall(`/api/projects/${projectId}/characters`, 'GET');
+
+            document.getElementById('charOutput').textContent = JSON.stringify(result, null, 2);
+
+            const cardsDiv = document.getElementById('charCards');
+            cardsDiv.innerHTML = '';
+
+            if (Array.isArray(result)) {
+                result.forEach(char => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${char.name}</h3>
+                        <p>${char.appearance_description || '无外貌描述'}</p>
+                        <div class="tags">
+                            <span class="tag ${char.is_confirmed ? 'confirmed' : ''}">${char.is_confirmed ? '已确认' : '待确认'}</span>
+                            ${char.reference_image_url ? '<span class="tag">有参考图</span>' : ''}
+                        </div>
+                        <p style="font-size:0.8rem;color:#888;">ID: ${char.id}</p>
+                    `;
+                    card.onclick = () => {
+                        currentCharacterId = char.id;
+                        document.getElementById('charName').value = char.name;
+                        document.getElementById('charAppearance').value = char.appearance_description || '';
+                        document.getElementById('charRefImage').value = char.reference_image_url || '';
+                    };
+                    cardsDiv.appendChild(card);
+                });
+            }
+        }
+
+        async function createChapter() {
+            const projectId = document.getElementById('chapterProjectId').value || currentProjectId;
+            const title = document.getElementById('chapterTitle').value;
+
+            const result = await apiCall(`/api/projects/${projectId}/chapters?title=${encodeURIComponent(title)}`, 'POST');
+
+            document.getElementById('chapterOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.id) {
+                currentChapterId = result.id;
+                document.getElementById('genChapterId').value = result.id;
+                alert(`章节创建成功！ID: ${result.id}`);
+            }
+        }
+
+        async function listChapters() {
+            const projectId = document.getElementById('chapterProjectId').value || currentProjectId;
+            const result = await apiCall(`/api/projects/${projectId}/chapters`, 'GET');
+
+            document.getElementById('chapterOutput').textContent = JSON.stringify(result, null, 2);
+
+            const cardsDiv = document.getElementById('chapterCards');
+            cardsDiv.innerHTML = '';
+
+            if (Array.isArray(result)) {
+                result.forEach(chapter => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${chapter.title}</h3>
+                        <p>阶段: ${chapter.phase}</p>
+                        <div class="tags">
+                            <span class="tag">${chapter.phase}</span>
+                        </div>
+                        <p style="font-size:0.8rem;color:#888;">ID: ${chapter.id}</p>
+                    `;
+                    card.onclick = () => {
+                        currentChapterId = chapter.id;
+                        document.getElementById('chapterTitle').value = chapter.title;
+                        document.getElementById('genChapterId').value = chapter.id;
+                    };
+                    cardsDiv.appendChild(card);
+                });
+            }
+        }
+
+        async function generateComic() {
+            const projectId = document.getElementById('genProjectId').value || currentProjectId;
+            const chapterId = document.getElementById('genChapterId').value || currentChapterId;
+
+            const result = await apiCall('/api/tasks/generate-chapter', 'POST', {
+                project_id: projectId,
+                chapter_id: chapterId
+            });
+
+            document.getElementById('genOutput').textContent = JSON.stringify(result, null, 2);
+            if (result.id) {
+                currentTaskId = result.id;
+                document.getElementById('resultTaskId').value = result.id;
+                document.getElementById('genBtn').disabled = true;
+                document.getElementById('pollBtn').disabled = false;
+                alert(`任务创建成功！ID: ${result.id}`);
+                pollTask();
+            }
+        }
+
+        async function pollTask() {
+            const taskId = currentTaskId;
+            if (!taskId) return;
+
+            const result = await apiCall(`/api/tasks/${taskId}`, 'GET');
+            document.getElementById('genOutput').textContent = JSON.stringify(result, null, 2);
+
+            const statusDiv = document.getElementById('taskStatus');
+            const statusClass = `status-${result.status.toLowerCase()}`;
+            statusDiv.innerHTML = `
+                <div class="status-badge ${statusClass}">${result.status}</div>
+                <p>${result.status === 'RUNNING' ? '正在生成中...' : result.status === 'COMPLETED' ? '生成完成！' : result.status === 'FAILED' ? '生成失败: ' + result.error_message : '等待中...'}</p>
+            `;
+
+            if (result.status === 'RUNNING') {
+                setTimeout(pollTask, 3000);
+            } else if (result.status === 'COMPLETED') {
+                document.getElementById('genBtn').disabled = false;
+            } else if (result.status === 'FAILED') {
+                document.getElementById('genBtn').disabled = false;
+            }
+        }
+
+        async function getTaskResult() {
+            const taskId = document.getElementById('resultTaskId').value || currentTaskId;
+            if (!taskId) return;
+
+            const result = await apiCall(`/api/tasks/${taskId}`, 'GET');
+            document.getElementById('resultOutput').textContent = JSON.stringify(result, null, 2);
+
+            const panelsDiv = document.getElementById('resultPanels');
+            panelsDiv.innerHTML = '';
+
+            if (result.result && result.result.storyboard && result.result.storyboard.panels) {
+                result.result.storyboard.panels.forEach((panel, index) => {
+                    const panelItem = document.createElement('div');
+                    panelItem.className = 'panel-item';
+                    panelItem.innerHTML = `
+                        <div style="background: #333; height: 200px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 48px; margin-bottom: 10px;">🎬</div>
+                                <div>分镜 ${panel.index}</div>
+                                <div style="color: #aaa; font-size: 12px;">${panel.shot_type || '未知镜头'}</div>
+                                <div style="color: #00d4ff; font-size: 12px;">位置: ${panel.position || 'center'}</div>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <h4>分镜 ${panel.index}</h4>
+                            <p><strong>动作:</strong> ${panel.action || '无'}</p>
+                            <p><strong>视角:</strong> ${panel.perspective || '平视'}</p>
+                            <p><strong>背景:</strong> ${panel.background || '无'}</p>
+                            <p><strong>光线:</strong> ${panel.lighting || '无'}</p>
+                            <div class="tags">
+                                ${panel.character_positions && panel.character_positions.length > 0 ? panel.character_positions.map(cp => `<span class="tag">${cp.character}: ${cp.position}</span>`).join('') : ''}
+                            </div>
+                        </div>
+                    `;
+                    panelsDiv.appendChild(panelItem);
+                });
+            }
+
+            if (result.result && result.result.dialogues && result.result.dialogues.bubbles) {
+                const dialoguesSection = document.createElement('div');
+                dialoguesSection.style.marginTop = '30px';
+                dialoguesSection.innerHTML = '<h3 style="color: #7b2ff7; margin-bottom: 15px;">💬 对话台词</h3>';
+
+                const dialoguesDiv = document.createElement('div');
+                dialoguesDiv.className = 'cards';
+
+                result.result.dialogues.bubbles.forEach((bubble, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h4>对话框 ${index + 1} (分镜 ${bubble.panel_index})</h4>
+                        <p style="color: #fff; font-size: 1.1rem; margin: 10px 0;">"${bubble.text}"</p>
+                        <p><strong>角色:</strong> ${bubble.character || '旁白'}</p>
+                        <p><strong>类型:</strong> ${bubble.bubble_type || 'normal'}</p>
+                        <div class="tags">
+                            <span class="tag">位置: x=${bubble.position?.x}, y=${bubble.position?.y}</span>
+                        </div>
+                    `;
+                    dialoguesDiv.appendChild(card);
+                });
+
+                dialoguesSection.appendChild(dialoguesDiv);
+                panelsDiv.parentElement.appendChild(dialoguesSection);
+            }
+
+            if (result.result && result.result.outline) {
+                const outlineSection = document.createElement('div');
+                outlineSection.style.marginTop = '30px';
+                outlineSection.innerHTML = '<h3 style="color: #00d4ff; margin-bottom: 15px;">📖 故事大纲</h3>';
+
+                const outlineDiv = document.createElement('div');
+                outlineDiv.style.background = 'rgba(255,255,255,0.05)';
+                outlineDiv.style.padding = '20px';
+                outlineDiv.style.borderRadius = '8px';
+
+                outlineDiv.innerHTML = `
+                    <h4 style="color: #fff; margin-bottom: 10px;">标题: ${result.result.outline.title || '无'}</h4>
+                    <p style="color: #aaa; margin-bottom: 15px;">世界观: ${result.result.outline.world_view || '无'}</p>
+                `;
+
+                if (result.result.outline.outline && Array.isArray(result.result.outline.outline)) {
+                    const scenesList = document.createElement('ul');
+                    scenesList.style.listStyle = 'none';
+                    scenesList.style.padding = '0';
+                    result.result.outline.outline.forEach((scene, idx) => {
+                        const li = document.createElement('li');
+                        li.style.background = 'rgba(0,212,255,0.1)';
+                        li.style.padding = '10px';
+                        li.style.marginBottom = '5px';
+                        li.style.borderRadius = '4px';
+                        li.innerHTML = `
+                            <strong style="color: #00d4ff;">场景 ${idx + 1}:</strong> ${scene.scene || scene.description || '无'}<br>
+                            <span style="color: #aaa; font-size: 0.9rem;">地点: ${scene.location || '无'} | 情绪: ${scene.emotion || '无'}</span>
+                        `;
+                        scenesList.appendChild(li);
+                    });
+                    outlineDiv.appendChild(scenesList);
+                }
+
+                if (result.result.outline.characters && Array.isArray(result.result.outline.characters)) {
+                    const charsList = document.createElement('div');
+                    charsList.style.marginTop = '15px';
+                    charsList.innerHTML = '<h5 style="color: #7b2ff7; margin-bottom: 10px;">角色列表:</h5>';
+
+                    const charsGrid = document.createElement('div');
+                    charsGrid.className = 'cards';
+
+                    result.result.outline.characters.forEach(char => {
+                        const charCard = document.createElement('div');
+                        charCard.className = 'card';
+                        charCard.innerHTML = `
+                            <h4 style="color: #7b2ff7;">${char.name || '未知角色'}</h4>
+                            <p>${char.description || '无描述'}</p>
+                            <p style="color: #aaa; font-size: 0.9rem;">外貌: ${char.appearance || '无'}</p>
+                            <p style="color: #aaa; font-size: 0.9rem;">性格: ${char.personality || '无'}</p>
+                            <p style="color: #aaa; font-size: 0.9rem;">角色: ${char.role || '无'}</p>
+                        `;
+                        charsGrid.appendChild(charCard);
+                    });
+                    charsList.appendChild(charsGrid);
+                    outlineDiv.appendChild(charsList);
+                }
+
+                outlineSection.appendChild(outlineDiv);
+                panelsDiv.parentElement.appendChild(outlineSection);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "title": "雨夜留灯",
+  "review_method": "Current Codex conversation: visually inspected the actual generated images against the shared character sheet and opening scene. Submitted through the site's normal collaborative-review handoff, not an unattended ChatGPT desktop API call.",
+  "identity_reference": "characters/characters.png",
+  "selected_retry": "Panel 5 original request exceeded a reasonable wait; selected the separately saved retry. The original pending generation was cancelled.",
+  "panels": [
+    {
+      "index": 0,
+      "file": "01-lamp-letter.png",
+      "inspected": true,
+      "passed": true,
+      "score": 91,
+      "notes": "人物脸型、短发、红雨衣、黑挎包符合角色表；建立左窗、深绿门、门右长椅和靛蓝雨夜。台灯在开场已亮，后续采用留灯而非重新点灯的叙事。",
+      "issues": []
+    },
+    {
+      "index": 1,
+      "file": "02-bench-kitten.png",
+      "inspected": true,
+      "passed": true,
+      "score": 91,
+      "notes": "同一长椅下的橘白幼猫；白口鼻、胸毛、爪部与参考表相符；人物下半身衣着、挎包一致，低机位是正常镜头切换。",
+      "issues": []
+    },
+    {
+      "index": 2,
+      "file": "03-helping-hands.png",
+      "inspected": true,
+      "passed": true,
+      "score": 87,
+      "notes": "小雨蹲下抱猫，脸型和衣着一致；猫的橘白标记延续。托举姿态略有插画化，但未见额外肢体。",
+      "issues": [
+        {
+          "type": "动作自然度",
+          "severity": "low",
+          "description": "抱猫托举姿态略有插画化，人物与猫身份保持一致。",
+          "suggestion": "若后续精修，可让一只手更清楚托住后躯。"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "file": "04-green-door.png",
+      "inspected": true,
+      "passed": true,
+      "score": 91,
+      "notes": "人物抱猫推开同一深绿门，左窗右门及门右长椅延续；黑包随转身移至后侧，属于自然姿态变化。",
+      "issues": []
+    },
+    {
+      "index": 4,
+      "file": "05-lighting-lamp.png",
+      "inspected": true,
+      "passed": true,
+      "score": 93,
+      "notes": "室内近景保持相同短发、红衣、黑包和橘白猫。双手将猫安置在铺浅色布的纸盒，窗边台灯、信封与窗外夜雨明确延续。",
+      "issues": []
+    },
+    {
+      "index": 5,
+      "file": "06-light-for-home.png",
+      "inspected": true,
+      "passed": true,
+      "score": 94,
+      "notes": "外景回扣开场的窗、门、长椅、绿漆和雨夜。人物同衣着，橘白猫从坐姿转为熟睡；灯持续亮着，完成情绪闭环。",
+      "issues": []
+    }
+  ]
+}

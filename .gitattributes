@@ -1,0 +1,8 @@
+# Pinned upstream bytes and runtime adaptations are SHA-256 verified.
+# Preserve their exact bytes on every platform instead of applying core.autocrlf.
+skills/vendor/** -text -whitespace
+skills/**/UPSTREAM.md -text whitespace=cr-at-eol
+
+skills/local/** -text
+
+videos/**/assets/lib/*.js -whitespace
