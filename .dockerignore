@@ -9,3 +9,11 @@ data
 frontend/dist
 *.db
 *.log
+
+.pytest_cache
+.mypy_cache
+*.egg-info
+videos
+outputs
+docs
+.github
