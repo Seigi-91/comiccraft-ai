@@ -13,6 +13,7 @@ from app.tools import codex_connector as connector
 
 def fake_process(monkeypatch,tmp_path,*,image=False,unavailable=False,code=0):
     calls=[]
+    monkeypatch.setattr(settings,'CODEX_TRANSPORT','exec')
     monkeypatch.setattr(connector,'DATA',tmp_path)
     monkeypatch.setattr(connector,'command',lambda:['/official/codex'])
     monkeypatch.setattr(connector,'_small_run',lambda args,timeout=15:SimpleNamespace(returncode=0,stdout='Logged in using ChatGPT',stderr=''))

@@ -23,8 +23,8 @@ probe_lock=asyncio.Lock()
 def connection(kind):
     provider = settings.AI_PROVIDER if kind in {'text','vision'} else settings.IMAGE_EDIT_PROVIDER if kind=='mask' else settings.image_provider
     if provider == 'codex_cli':
-        from app.tools.codex_connector import identity
-        return provider,identity(),settings.CODEX_MODEL or 'CLI default',None
+        from app.tools.codex_connector import verification_identity
+        return provider,verification_identity(),settings.CODEX_MODEL or 'CLI default',None
     if kind in {'text','vision'}:
         return settings.AI_PROVIDER,settings.LOCAL_GPT_BASE_URL,settings.DEFAULT_VISION_MODEL if kind=='vision' else settings.DEFAULT_TEXT_MODEL,settings.LOCAL_GPT_API_KEY
     if kind=='mask':return settings.IMAGE_EDIT_PROVIDER,settings.IMAGE_EDIT_BASE_URL,settings.IMAGE_EDIT_MODEL,settings.IMAGE_EDIT_API_KEY

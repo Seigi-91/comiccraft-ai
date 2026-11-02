@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     MAX_MODEL_REQUESTS_PER_TASK: int = Field(default=96, ge=1, le=1000)
     GPT_TIMEOUT: float = 180.0
     CODEX_CLI_PATH: str | None = None
+    CODEX_TRANSPORT: Literal["app_server", "exec"] = "app_server"
     CODEX_MODEL: str = ""
     CODEX_TIMEOUT: int = Field(default=600, ge=30, le=1800)
     IMAGE_EDIT_PROVIDER: Literal["chatgpt_desktop", "openai", "codex_cli"] = "chatgpt_desktop"

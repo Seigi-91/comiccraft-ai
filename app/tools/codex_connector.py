@@ -75,9 +75,21 @@ def status():
 def identity():
     try:
         cmd=command()
-        return json.dumps([(p,Path(p).stat().st_mtime_ns) for p in cmd])
+        return json.dumps([settings.CODEX_TRANSPORT,[(p,Path(p).stat().st_mtime_ns) for p in cmd]])
     except (ValueError,OSError):
         return "not_installed"
+
+
+def verification_identity():
+    if settings.CODEX_TRANSPORT == "app_server":
+        from app.tools.codex_rpc import client
+        return json.dumps([identity(),client.account_signature])
+    return identity()
+
+
+def valid_model():
+    if settings.CODEX_MODEL and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,199}", settings.CODEX_MODEL):
+        raise ValueError("Codex 模型名须为模型标识，不能包含命令参数或空格")
 
 
 def _invoke(prompt, image_paths, image_output=False):
@@ -89,7 +101,7 @@ def _invoke(prompt, image_paths, image_output=False):
         run_dir.mkdir(parents=True)
         output = run_dir / "response.txt"
         args = command()+["exec","--ignore-user-config","--ignore-rules","--ephemeral","--skip-git-repo-check","--sandbox","workspace-write" if image_output else "read-only",
-                          "--disable","shell_tool","--disable","multi_agent","--disable","apps","--disable","plugins",
+                          "--disable","shell_tool","--disable","view_image","--disable","multi_agent","--disable","apps","--disable","plugins",
                           "--enable" if image_output else "--disable","image_generation","-c",'web_search="disabled"',"-C",str(run_dir),"--json","-o",str(output)]
         if settings.CODEX_MODEL and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,199}", settings.CODEX_MODEL):
             raise ValueError("Codex 模型名须为模型标识，不能包含命令参数或空格")
@@ -147,6 +159,10 @@ async def execute(prompt, images=None, image_output=False):
     from app.tools.media import local_image_path
     from app.services.model_budget import report_usage
     paths=[local_image_path(url).resolve() for url in images or []]
-    result,usage=await asyncio.to_thread(_invoke,prompt,paths,image_output)
+    if settings.CODEX_TRANSPORT == "app_server":
+        from app.tools.codex_rpc import client
+        result,usage=await asyncio.to_thread(client.invoke,prompt,paths,image_output)
+    else:
+        result,usage=await asyncio.to_thread(_invoke,prompt,paths,image_output)
     report_usage(usage)
     return result

@@ -104,6 +104,10 @@ export default function ProjectDetail() {
       setTask(res.data)
     } catch(e) {setError(message(e))} finally {setBusy(false)}
   }
+  async function continueAutomatically(){
+    if(!task)return;setBusy(true);setError('')
+    try{setTask((await axios.post('/api/tasks/'+task.id+'/continue-automatic')).data)}catch(e){setError(message(e))}finally{setBusy(false)}
+  }
   async function resume() {
     if(!task) return
     setBusy(true);setError('')
@@ -170,10 +174,12 @@ export default function ProjectDetail() {
             const current=state?.next_node===key || (i===0&&!state&&task)
             return <li key={key} className={done?'done':current?'current':''}><span>{done?<Check size={13}/>:i+1}</span><small>{label}</small></li>
           })}</ol>
+          {running&&state?.panels?.length?<p className="text-sm text-primary-300 mt-3">已保存 {state.panels.length} 格进度；恢复时会核对输入与参考图，只复用仍匹配的已完成结果。</p>:null}
           {task?.error_message && <p role="alert" className="error-box mt-4 whitespace-pre-wrap">{task.error_message}</p>}
         </section>
         {pending && <section className="studio-card border-primary-500/50">
           <div className="flex flex-wrap justify-between gap-3 mb-4"><div><p className="eyebrow">CHATGPT HANDOFF</p><h2 className="text-lg font-semibold">{pending.stage.startsWith('bubble_placement:')?'在 ChatGPT 识别人脸与气泡位置':pending.kind==='image'?'在 ChatGPT 生成这一格图片':pending.kind==='vision'?'在 ChatGPT 审核图片':'在 ChatGPT 完成当前创作任务'}</h2></div><span className="badge">需要回填结果</span></div>
+          <div className="border border-dark-600 rounded p-3 mb-4"><p className="text-sm text-gray-400">已在设置中验证并启用当前阶段的Codex或API？可直接改为自动执行，不必再粘贴回填；该操作会消耗所选模型额度。</p><button className="secondary-button mt-2" disabled={busy} onClick={continueAutomatically}>改用自动连接继续</button></div>
           <p className="text-sm text-gray-400 mb-4">复制下方完整任务到本机 ChatGPT；有参考图时一并附上。完成后回填，流程会自动继续。此模式不直接控制桌面应用。</p>
           <div className="flex flex-wrap gap-3 mb-3"><button className="secondary-button" onClick={async()=>{try{await navigator.clipboard.writeText(pending.prompt);setCopied(true)}catch{setError('剪贴板不可用，请在任务框内手动复制')}}}><Copy size={15}/>{copied?'已复制':'复制完整任务'}</button><a className="secondary-button" href="chatgpt://" >打开本机 ChatGPT</a><a className="text-sm text-gray-400 self-center underline" href="https://chatgpt.com/" target="_blank" rel="noreferrer">网页版</a></div>
           <details><summary className="cursor-pointer text-sm text-gray-300">查看完整提示词与 skill</summary><pre className="prompt-box mt-3">{pending.prompt}</pre></details>

@@ -64,3 +64,10 @@ flowchart LR
 ## Codex自动适配
 
 文字/视觉`LLMClient`、图片`ImageGeneratorClient`与精修服务可独立选择`codex_cli`。连接器在隔离目录用参数数组和stdin执行官方CLI，禁用Shell/插件/应用/网页/子代理；仅明确启用的内置生图可生成候选文件。API密钥不转发，CLI自己管理ChatGPT登录。失败不走其他提供方。真实能力与计数边界见 [连接说明](CODEX_CONNECTION.md)。
+
+
+## v2.5：原生自动连接与逐格进度
+
+默认`CODEX_TRANSPORT=app_server`使用官方stdio服务，复用进程并为各请求创建独立临时thread；读取结构化文字与`imageGeneration`附件。连接向导使用官方管理的首次登录及按当前账号指纹匹配的真实能力验证。旧人工待办可显式supersede并走自动适配器，不写入伪造结果。
+
+`phase_progress.panel_progress`通过ContextVar注入逐格持久回调，避免将函数写进JSON状态。分镜保存请求签名；仅输入/引用/连接匹配且图片可读时恢复复用。审核的evidence_signature覆盖提示词、参考图内容及提供方条件，改变则失效。顺序参考依赖仍按顺序生成。

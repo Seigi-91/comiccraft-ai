@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from sqlalchemy import select
 from app.db.session import get_db, AsyncSessionLocal
 from app.models.orm import Chapter, Task, TaskStatus
@@ -95,3 +95,37 @@ async def submit_human_fix(
         raise HTTPException(404, "没有可修订的任务")
     background_tasks.add_task(run_generation, task.project_id, task.chapter_id, task_id)
     return task
+
+
+@router.post("/{task_id}/continue-automatic",response_model=TaskResponse)
+async def continue_automatic(task_id:str,background_tasks:BackgroundTasks,request:Request,db=Depends(get_db)):
+    from app.api.local_access import require_local_settings
+    require_local_settings(request)
+    from app.core.config import settings
+    from app.tools.desktop_bridge import read_job,save_job
+    from sqlalchemy import update
+    task=await db.get(Task,task_id)
+    if not task or task.status!=TaskStatus.NEEDS_HUMAN or not (task.result or {}).get('pending_job_id'):
+        raise HTTPException(409,'当前任务没有可转换的人工待办')
+    from app.models.orm import TaskLease
+    from app.services.task_leases import now
+    lease=await db.get(TaskLease,task_id)
+    if task_id in active_tasks or (lease and lease.expires_at>now()):raise HTTPException(409,'任务正在执行')
+    try:job=read_job(task.result['pending_job_id'])
+    except FileNotFoundError:raise HTTPException(409,'待办记录不存在')
+    provider=settings.image_provider if job['kind']=='image' else settings.AI_PROVIDER
+    if provider=='chatgpt_desktop':raise HTTPException(409,'请先在设置中启用当前阶段的自动模型连接')
+    if task.type not in {'generate_chapter','edited_chapter','restored_chapter','experiment'}:raise HTTPException(409,'此任务类型暂不支持自动转换')
+    result={'state':(task.result or {}).get('state',{}),'superseded_job_id':job['id']}
+    changed=await db.execute(update(Task).where(Task.id==task_id,Task.status==TaskStatus.NEEDS_HUMAN).values(status=TaskStatus.PENDING,error_message=None,result=result))
+    if changed.rowcount!=1:raise HTTPException(409,'任务状态已变化，请刷新')
+    await db.commit()
+    job['status']='superseded'
+    try:save_job(job)
+    except OSError:pass  # Task no longer references it; never fabricate a model reply.
+    if task.type=='experiment':
+        from app.services.production_queue import run_experiment
+        background_tasks.add_task(run_experiment,task_id)
+    else:background_tasks.add_task(run_generation,task.project_id,task.chapter_id,task_id)
+    await db.refresh(task)
+    return TaskResponse.model_validate(task)

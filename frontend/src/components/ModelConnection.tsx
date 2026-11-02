@@ -13,6 +13,7 @@ export default function ModelConnection() {
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const apply = (c: Config) => { setConfig(c); setProvider(c.image_provider); setBase(c.image_base_url); setModel(c.image_api_model) }
+  useEffect(() => {const refresh=()=>axios.get('/api/studio/config').then(r=>apply(r.data)).catch(()=>{});window.addEventListener('comiccraft-config-saved',refresh);return()=>window.removeEventListener('comiccraft-config-saved',refresh)},[])
   useEffect(() => { axios.get('/api/studio/config').then(r => apply(r.data)).catch(() => setMessage('无法读取模型配置')) }, [])
   async function save(e: React.FormEvent) {
     e.preventDefault(); setBusy(true); setMessage('')

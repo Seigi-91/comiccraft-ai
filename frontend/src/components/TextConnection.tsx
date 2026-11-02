@@ -14,6 +14,7 @@ export default function TextConnection({ onSaved }: { onSaved?: () => void }) {
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const apply = (c: TextConfig) => { setConfig(c); setCodexModel(c.codex_model); setProvider(c.provider); setBase(c.text_base_url); setModel(c.text_model); setVision(c.vision_model) }
+  useEffect(() => {const refresh=()=>axios.get('/api/studio/config').then(r=>apply(r.data)).catch(()=>{});window.addEventListener('comiccraft-config-saved',refresh);return()=>window.removeEventListener('comiccraft-config-saved',refresh)},[])
   useEffect(() => { axios.get('/api/studio/config').then(r => apply(r.data)).catch(() => setMessage('无法读取文字模型配置')) }, [])
   async function save(e: React.FormEvent) {
     e.preventDefault(); setBusy(true); setMessage('')

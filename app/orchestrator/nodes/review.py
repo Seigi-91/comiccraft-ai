@@ -3,7 +3,8 @@ from app.agents.style_reviewer import StyleReviewerAgent
 
 async def review_panels_node(state):
     result = await StyleReviewerAgent().review_panels(
-        state["panels"], state.get("style_ref_urls", []), state.get("characters", [])
+        state["panels"], state.get("style_ref_urls", []), state.get("characters", []),
+        previous_reviews=(state.get("review_history") or [{}])[-1].get("panel_reviews",[])
     )
     reviews = {r["panel_index"]: r for r in result["panel_reviews"]}
     panels = [

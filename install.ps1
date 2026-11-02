@@ -1,4 +1,4 @@
-param([switch]$InstallPrerequisites, [string]$InstallDirectory = (Join-Path $env:LOCALAPPDATA 'ComicCraft-AI'), [switch]$NoStart)
+param([switch]$SetupCodex, [switch]$InstallPrerequisites, [string]$InstallDirectory = (Join-Path $env:LOCALAPPDATA 'ComicCraft-AI'), [switch]$NoStart)
 $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 function Refresh-TaskPath {
@@ -33,8 +33,8 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceDirectory 'start.ps1'))) {
     New-Item -ItemType Directory -Path $downloadDirectory | Out-Null
     $archivePath = Join-Path $downloadDirectory 'source.zip'
     # A tagged source archive is reproducible and never includes the author's database or credentials.
-    $sourceUrl = 'https://github.com/Seigi-91/comiccraft-ai/archive/refs/tags/v2.4.0.zip'
-    Write-Host 'Downloading ComicCraft AI v2.4.0 from GitHub...'
+    $sourceUrl = 'https://github.com/Seigi-91/comiccraft-ai/archive/refs/tags/v2.5.0.zip'
+    Write-Host 'Downloading ComicCraft AI v2.5.0 from GitHub...'
     $curlCommand = Get-Command curl.exe -ErrorAction SilentlyContinue
     if ($curlCommand) {
         & ($curlCommand.Source) --fail --location --retry 2 --connect-timeout 20 --max-time 600 --silent --show-error --output $archivePath $sourceUrl
@@ -43,7 +43,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceDirectory 'start.ps1'))) {
         Invoke-WebRequest -UseBasicParsing -Uri $sourceUrl -OutFile $archivePath -TimeoutSec 300
     }
     Expand-Archive -LiteralPath $archivePath -DestinationPath $downloadDirectory
-    $extractedDirectory = Join-Path $downloadDirectory 'comiccraft-ai-2.4.0'
+    $extractedDirectory = Join-Path $downloadDirectory 'comiccraft-ai-2.5.0'
     if (-not (Test-Path -LiteralPath (Join-Path $extractedDirectory 'start.ps1'))) { throw 'Downloaded archive is incomplete.' }
     # Only copy a fresh installation. Never replace an existing .env, database or user work.
     if (Test-Path -LiteralPath $sourceDirectory) { throw 'An incomplete source directory already exists. Choose another InstallDirectory; existing files were preserved.' }
@@ -52,4 +52,11 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceDirectory 'start.ps1'))) {
 if ($NoStart) { Write-Host "Source installed at $sourceDirectory. Run start.ps1 there to install dependencies and launch."; exit 0 }
 Ensure-Package 'python' 'Python.Python.3.12'
 Ensure-Package 'node' 'OpenJS.NodeJS.LTS'
-& (Join-Path $sourceDirectory 'start.ps1')
+if ($SetupCodex -and -not (Get-Command (Join-Path $sourceDirectory 'start.ps1')).Parameters.ContainsKey('SetupCodex')) {
+    throw 'This existing installation is older. Back up your work and use a new InstallDirectory for the automatic connector release.'
+}
+if ($SetupCodex) {
+    & (Join-Path $sourceDirectory 'start.ps1') -SetupCodex
+} else {
+    & (Join-Path $sourceDirectory 'start.ps1')
+}

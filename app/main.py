@@ -46,10 +46,14 @@ async def lifespan(app):
             call.status="interrupted"
             call.error="进程中断，服务可能已计费；重试前核对服务账单"
         await session.commit()
-    yield
+    try:
+        yield
+    finally:
+        from app.tools.codex_rpc import client
+        client.close()
 
 
-app = FastAPI(title="ComicCraft AI", version="2.4.0", lifespan=lifespan)
+app = FastAPI(title="ComicCraft AI", version="2.5.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

@@ -1,4 +1,4 @@
-param([ValidateRange(1024,65535)][int]$Port = 8000, [switch]$NoBrowser)
+param([ValidateRange(1024,65535)][int]$Port = 8000, [switch]$NoBrowser, [switch]$SetupCodex)
 $ErrorActionPreference = 'Stop'
 $OutputEncoding = New-Object System.Text.UTF8Encoding($false)
 [Console]::OutputEncoding = $OutputEncoding
@@ -42,11 +42,17 @@ for ($candidate = $Port; $candidate -le [Math]::Min(65535, $Port + 20); $candida
 }
 if (-not $available) { throw 'No free local port found. Choose another -Port.' }
 $env:APP_PORT = [string]$Port
+if ($SetupCodex) {
+    & (Join-Path $PSScriptRoot 'scripts\install_codex.ps1')
+    if ($LASTEXITCODE -ne 0) { throw 'Codex setup did not complete. Existing work was preserved.' }
+}
 & $pythonPath -m app.services.diagnostics
 Write-Host "ComicCraft AI: http://127.0.0.1:$Port"
 Write-Host 'Keep this window open. Ctrl+C stops the website.'
 if (-not $NoBrowser) {
     $helper = Join-Path $PSScriptRoot 'scripts\open_browser.ps1'
-    Start-Process -FilePath powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $helper + '"'), '-Port', [string]$Port)
+    $browserArguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $helper + '"'), '-Port', [string]$Port)
+    if ($SetupCodex) { $browserArguments += @('-OpenPath', 'studio') }
+    Start-Process -FilePath powershell.exe -WindowStyle Hidden -ArgumentList $browserArguments
 }
 & $pythonPath -m uvicorn app.main:app --host 127.0.0.1 --port $Port

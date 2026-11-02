@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-02",
+  "kind": "maintainer_live_functional_validation_not_quality_benchmark",
+  "cli_version": "0.166.0",
+  "transport": "official_app_server_stdio",
+  "auth": "own_ChatGPT_managed_login",
+  "model_requested": "CLI default",
+  "checks": [
+    {
+      "kind": "text",
+      "status": "passed"
+    },
+    {
+      "kind": "vision",
+      "status": "passed"
+    },
+    {
+      "kind": "image",
+      "status": "passed"
+    }
+  ],
+  "workflow": {
+    "source": "short original cat story, two panels",
+    "panels_generated": 2,
+    "status": "needs_human",
+    "final_comic_completed": false,
+    "observation": "Both panels generated automatically. Visual review triggered selective redraw. One later generation timed out; one explicit resume retained the passed panel and reached the bounded human-revision gate. No fake JSON reply or placeholder art used."
+  },
+  "unit_test_isolation": "Provider defaults are fixed in pytest; real native invocation and non-mocked provider HTTP are blocked. An earlier suite inherited the local image mode and was terminated; its outputs are not counted as planned live validation.",
+  "limits": "No independent art-quality gain, clean-machine first OAuth success rate, global timing speedup or cost reduction measured. New users must complete their own sign-in and capability tests."
+}

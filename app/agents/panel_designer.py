@@ -1,4 +1,6 @@
 import json
+import hashlib
+from copy import deepcopy
 from app.agents.base import TextAgent
 from app.agents.skills import instructions
 from app.tools.image_gen import ImageGeneratorClient
@@ -35,7 +37,7 @@ class PanelDesignerAgent(TextAgent):
                 "characters": characters or [],
                 "style_refs": style_ref_urls or [],
                 "review": reviews.get(index),
-                "previous_image": previous.get(index, {}).get("image_url"),
+                "previous_image": previous.get(index, {}).get("image_url") if reviews.get(index) else None,
                 "continuity": {
                     "previous_shot": results[-1].get("shot") if results else None,
                     "previous_image": results[-1]["image_url"] if results else None,
@@ -51,6 +53,15 @@ class PanelDesignerAgent(TextAgent):
             if results:
                 references.extend([results[0]["image_url"], results[-1]["image_url"]])
             references = list(dict.fromkeys(references))[:5]
+            from app.api.routes.compatibility import fingerprint
+            from app.services.production_records import asset_hash
+            signature=hashlib.sha256(json.dumps({"prompt":prompt,"references":[[u,asset_hash(u)] for u in references],"provider":fingerprint('image')},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+            candidate=previous.get(index,{})
+            if not reviews.get(index) and candidate.get("status")=="generated" and candidate.get("request_signature")==signature and asset_hash(candidate.get("image_url")):
+                results.append({**candidate,"reused_on_resume":True})
+                from app.services.phase_progress import panel_progress
+                if panel_progress.get():await panel_progress.get()(deepcopy(results))
+                continue
             token = stage_context.set(f"panel_designer:{index}")
             try:
                 image_url = await self.image_gen.generate_image(prompt, reference_images=references, generation_context=data)
@@ -59,6 +70,8 @@ class PanelDesignerAgent(TextAgent):
             results.append(
                 {
                     "index": index,
+                    "request_signature": signature,
+                    "reused_on_resume": False,
                     "image_url": image_url,
                     "prompt": prompt,
                     "status": "generated",
@@ -66,6 +79,8 @@ class PanelDesignerAgent(TextAgent):
                     "shot": panel,
                 }
             )
+            from app.services.phase_progress import panel_progress
+            if panel_progress.get():await panel_progress.get()(deepcopy(results))
         return results
 
     async def execute(self, **kwargs):

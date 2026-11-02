@@ -10,6 +10,10 @@ if [ ! -f .env ]; then cp .env.example .env; fi
 .venv/bin/python -m pip install -e .
 if [ ! -d frontend/node_modules ]; then npm --prefix frontend ci; fi
 npm --prefix frontend run build
+if [ "${1:-}" = "--setup-codex" ]; then
+  bash scripts/install_codex.sh
+  echo 'After startup open http://127.0.0.1:8000/studio to verify and enable automatic connections.'
+fi
 .venv/bin/python -m app.services.diagnostics
 echo 'Open http://127.0.0.1:8000 ? Ctrl+C stops the server.'
 exec .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000

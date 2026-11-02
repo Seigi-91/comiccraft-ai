@@ -20,6 +20,11 @@ class GenerateService:
     async def _run_chapter_generation(self, project_id, chapter_id, task_id):
         from app.agents.knowledge import knowledge_trace,knowledge_corpus,corpus
         corpus_token=None
+        from app.services.phase_progress import panel_progress
+        async def checkpoint_panels(panels):
+            state["panels"]=panels
+            await self.task_repo.update(task_id,{"result":{"state":state}})
+        progress_token=panel_progress.set(checkpoint_panels)
         evidence=[]
         evidence_token=knowledge_trace.set(evidence)
         token = task_context.set(task_id)
@@ -147,6 +152,7 @@ class GenerateService:
                 },
             )
         finally:
+            panel_progress.reset(progress_token)
             if corpus_token is not None:knowledge_corpus.reset(corpus_token)
             knowledge_trace.reset(evidence_token)
             task_context.reset(token)

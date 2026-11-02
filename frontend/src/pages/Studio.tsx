@@ -20,9 +20,11 @@ export default function Studio() {
   const [error, setError] = useState('')
   const current = agents.find(a => a.id === selected)
   useEffect(() => {
+    const refreshConfig=()=>axios.get('/api/studio/config').then(r=>setConfig(r.data)).catch(()=>{});window.addEventListener('comiccraft-config-saved',refreshConfig)
     Promise.all([axios.get('/api/studio/agents'), axios.get('/api/studio/config')])
       .then(([a, c]) => { setAgents(a.data); setSelected(a.data[0]?.id); setConfig(c.data) })
       .catch(() => setError('无法连接创作服务，请检查后端是否启动。'))
+    return()=>window.removeEventListener('comiccraft-config-saved',refreshConfig)
   }, [])
   return <div className="space-y-6">
     <div><p className="eyebrow">YOUR CREATIVE TEAM</p><h1 className="text-3xl font-bold">创作团队与设置</h1>
