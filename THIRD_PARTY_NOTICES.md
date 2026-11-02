@@ -20,4 +20,6 @@ AI 漫画样例描述虚构人物。样例不构成对第三方商标、肖像�
 
 ## 专业知识卡的参考链接
 
-`knowledge/cards.json` 的正文为项目原创应用笔记，按 MIT 提供；来源表列出 Yale Film Analysis、Adobe Storyboarding、Pixar in a Box、Nate Piekos / Blambot 与 W3C 的延伸阅读链接。没有下载或再分发其教材、插图、影片或字体；外部资料保留原权利。链接不代表这些机构参与、授权或认可本项目。访问与内容边界见 `knowledge/README.md`。
+`knowledge/cards.json` 的应用笔记、案例与检索实现为本项目原创，按 MIT 提供；引用不改变外部资料原有权利。来源包括 Yale Film Analysis、Adobe、Open University/OpenLearn、Blambot、TO Comix Press、CELSYS、W3C，以及固定提交的工程先例。没有再分发其完整教材、文学摘录、插图、影片或字体。受限 Pixar 页面与 Blambot 图片索引仅作为补充链接，不支撑知识卡论断。部分公开正文可通过网页阅读器读取，但直接请求可能受限；访问情况不等于永久可用性。
+
+同类项目仅用于代码/文档结构调研，未复制其代码或素材，未宣称已运行其完整系统；固定提交和采纳边界见 [调研记录](docs/UPSTREAM_RESEARCH_2026-11-02.md)。逐来源访问、章节定位和适用边界见 [知识资料台账](knowledge/RESEARCH.md)。链接不代表任何机构参与、授权或认可本项目。

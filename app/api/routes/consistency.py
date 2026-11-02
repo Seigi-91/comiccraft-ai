@@ -14,11 +14,16 @@ DIMENSIONS=['identity','outfit','hands','props','space','lettering']
 class PanelScore(BaseModel):
     index:int=Field(ge=0)
     scores:dict[str,int|None]
+    observations:dict[str,str]=Field(default_factory=dict)
 
     @model_validator(mode='after')
     def valid(self):
         if set(self.scores)!=set(DIMENSIONS) or any(v is not None and v not in {0,1,2} for v in self.scores.values()):
             raise ValueError('六个维度须完整，分数只能为0/1/2或未知')
+        for key,value in self.scores.items():
+            observation=self.observations.get(key,'').strip()
+            if value is not None and (len(observation)<6 or observation.lower() in {'通过','正常','没有问题','pass','all good','looks good'}):
+                raise ValueError('每个已评分维度须填写至少6字的具体可见证据；未知项请留空')
         return self
 
 
@@ -32,7 +37,8 @@ def summarize(scores):
     values=[v for p in scores for v in p['scores'].values() if v is not None]
     total=len(scores)*len(DIMENSIONS)
     percent=round(sum(values)/len(values)/2*100,1) if values else None
-    return {'coverage':round(len(values)/total*100,1) if total else 0,'percent':percent,'passed':len(values)==total and bool(values) and 0 not in values and percent>=80,'method':'human_rubric','currency_cost':None}
+    evidence_complete=all(v is None or len(p.get('observations',{}).get(k,'').strip())>=6 for p in scores for k,v in p['scores'].items())
+    return {'evidence_complete':evidence_complete,'coverage':round(len(values)/total*100,1) if total else 0,'percent':percent,'passed':evidence_complete and len(values)==total and bool(values) and 0 not in values and percent>=80,'method':'human_rubric','currency_cost':None}
 
 
 async def current(db,chapter_id):
@@ -42,6 +48,8 @@ async def current(db,chapter_id):
     chapter,tasks=await context(db,chapter_id)
     state=(tasks[0].result or {}).get('state',{}) if tasks else {}
     hashes['_lettering']=hashlib.sha256(json.dumps({'dialogues':state.get('dialogues') or chapter.dialogues,'effects':state.get('effects',{})},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+    final=(state.get('final_comic') or {}).get('final_image_url')
+    hashes['_final_image']=asset_hash(final) if final else 'not_composed'
     return rows,hashes
 
 

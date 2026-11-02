@@ -14,7 +14,7 @@ def test_knowledge_role_routing_and_sources():
         assert cards[0]['content'] in instructions(role)
     results=retrieve('storyboard_artist','两个人对话正反打，180度轴线和视线方向')
     assert any(c['id']=='board-axis' and c['selection']=='lexical_match' for c in results)
-    assert len(results)==3
+    assert 1 <= len(results) <= 3
     assert all(c['role']=='storyboard_artist' for c in results)
     assert '[board-axis sha256:' in instructions('storyboard_artist','对话正反打，轴线')
 
@@ -63,6 +63,8 @@ def test_pending_task_contains_retrieved_knowledge_evidence():
         c.post('/api/tasks/generate-chapter',json={'project_id':pid,'chapter_id':cid})
         task,job=pending(c,cid)
         assert '[story-causality sha256:' in job['prompt']
+        assert task['result']['state']['knowledge_snapshot_task_id']==task['id']
+        assert task['result']['state']['knowledge_snapshot']['version']==2
         evidence=task['result']['state']['knowledge_evidence']
         assert evidence and all(e['role']=='story_planner' for e in evidence)
 

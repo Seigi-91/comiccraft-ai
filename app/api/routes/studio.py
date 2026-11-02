@@ -240,6 +240,6 @@ async def search_knowledge(role: str, query: str = ""):
     if len(query)>2000:
         raise HTTPException(422,"知识查询不能超过2000字符")
     try:
-        return {'role':role,'method':'local_role_filtered_lexical','cards':retrieve(role,query)}
+        return {'role':role,'method':'weighted_role_lexical_v2','cards':retrieve(role,query)}
     except ValueError:
         raise HTTPException(404,"未知知识库角色")

@@ -246,3 +246,13 @@ class TaskLease(Base):
     task_id: Mapped[str] = mapped_column(String, primary_key=True)
     owner: Mapped[str] = mapped_column(String)
     expires_at: Mapped[datetime] = mapped_column(DateTime)
+
+class KnowledgeTrial(Base):
+    __tablename__ = 'knowledge_trials'
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    role: Mapped[str] = mapped_column(String, index=True)
+    manifest: Mapped[dict] = mapped_column(JSON)
+    replies: Mapped[dict] = mapped_column(JSON, default=dict)
+    review: Mapped[dict] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String, default='awaiting_replies')
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))

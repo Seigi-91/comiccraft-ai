@@ -3,6 +3,7 @@ import axios from 'axios'
 import ModelConnection from '../components/ModelConnection'
 import TextConnection from '../components/TextConnection'
 import ProviderChecks from '../components/ProviderChecks'
+import KnowledgeLab from '../components/KnowledgeLab'
 import KnowledgeLibrary, { KnowledgeCard } from '../components/KnowledgeLibrary'
 
 type UpstreamSkill = {
@@ -42,6 +43,7 @@ export default function Studio() {
       <section className="studio-card min-w-0"><h2 className="font-semibold mb-2">{current?.name}</h2>
         <p className="text-xs text-primary-300 mb-4">{current?.skill}</p>
         {current && <KnowledgeLibrary key={current.id} role={current.id} cards={current.knowledge_cards || []} />}
+        {current && <KnowledgeLab key={current.id+'-lab'} role={current.id}/>}
         {current?.upstream_skills?.map(skill => <article key={skill.name} className="bg-dark-900 border border-dark-600 rounded-xl p-4 mb-5">
           <div className="flex items-center flex-wrap gap-2"><strong>{skill.name}</strong><span className="badge">已安装并加载</span></div>
           <p className="text-sm text-gray-400 mt-3 leading-6">{skill.adaptation}</p>

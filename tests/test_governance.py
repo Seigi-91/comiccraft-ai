@@ -74,7 +74,7 @@ def test_character_approval_lock_and_draft_isolation():
         c.post(base+'/unlock',json={'expected_revision':r.json()['revision_id']})
 
 
-def test_consistency_unknown_is_not_pass_and_stale_hash_rejected():
+def test_consistency_unknown_is_not_pass_and_stale_hash_rejected(monkeypatch):
     from app.api.routes.consistency import DIMENSIONS
     with TestClient(app) as c:
         cid=c.post('/api/onboarding/sample').json()['chapter_id'];base=f'/api/quality/chapters/{cid}/consistency'
@@ -82,9 +82,18 @@ def test_consistency_unknown_is_not_pass_and_stale_hash_rejected():
         panels=[{'index':p['index'],'scores':{k:None for k in DIMENSIONS}} for p in current['panels']]
         r=c.post(base,json={'hashes':current['hashes'],'panels':panels});assert r.status_code==200,r.text
         assert r.json()['percent'] is None and not r.json()['passed']
-        for p in panels:p['scores']={k:2 for k in DIMENSIONS}
+        for p in panels:
+            p['scores']={k:2 for k in DIMENSIONS}
+            p['observations']={k:'测试夹具：该维度有具体可见观察' for k in DIMENSIONS}
         assert c.post(base,json={'hashes':current['hashes'],'panels':panels}).json()['passed']
         assert c.post(base,json={'hashes':{},'panels':panels}).status_code==409
+        from app.api.routes import consistency
+        original_hash=consistency.asset_hash
+        panel_urls={p['image_url'] for p in current['panels']}
+        assert current['hashes']['_final_image'] not in {None,'not_composed'}
+        monkeypatch.setattr(consistency,'asset_hash',lambda url:original_hash(url) if url in panel_urls else 'changed-final-render')
+        assert not c.get(base).json()['reports'][0]['matches_current_images']
+        assert c.post(base,json={'hashes':current['hashes'],'panels':panels}).status_code==409
 
 
 def test_probe_requires_cost_consent_and_records_protocol_only(monkeypatch):

@@ -1,0 +1,297 @@
+{
+  "version": 1,
+  "authorship": "maintainer-authored, not independent evaluation",
+  "frozen_before_retriever_change": true,
+  "baseline_commit": "242c9ba05ec19b17be4b172352003b3e6473886e",
+  "scope": "24 relevant + 6 negative queries; not model generation quality",
+  "cases": [
+    {
+      "id": "k01",
+      "split": "development",
+      "role": "story_planner",
+      "query": "为什么这些事件要发生，怎样让前一件事导致后一件事？",
+      "expected": [
+        "story-causality"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k02",
+      "split": "holdout",
+      "role": "story_planner",
+      "query": "Show a character arc through a difficult choice.",
+      "expected": [
+        "story-character"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k03",
+      "split": "development",
+      "role": "story_planner",
+      "query": "六格中想留一格反应，不想每格都有新事件。",
+      "expected": [
+        "story-beats"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k04",
+      "split": "holdout",
+      "role": "story_planner",
+      "query": "The timeline loses who knows the secret and who holds the letter.",
+      "expected": [
+        "story-continuity"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k05",
+      "split": "development",
+      "role": "storyboard_artist",
+      "query": "两个人轮流说话，换镜头后左右位置应该怎样安排？",
+      "expected": [
+        "board-axis"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k06",
+      "split": "holdout",
+      "role": "storyboard_artist",
+      "query": "Preserve eyeline and screen direction across reverse shots.",
+      "expected": [
+        "board-axis"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k07",
+      "split": "development",
+      "role": "storyboard_artist",
+      "query": "Show a match on action while her right hand opens the door.",
+      "expected": [
+        "board-action"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k08",
+      "split": "holdout",
+      "role": "storyboard_artist",
+      "query": "两个地点的事件交替出现，怎样表达关联和省略时间？",
+      "expected": [
+        "board-time"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k09",
+      "split": "development",
+      "role": "dialogue_master",
+      "query": "Each speaker needs a distinct voice and unspoken intent.",
+      "expected": [
+        "dialogue-purpose"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k10",
+      "split": "holdout",
+      "role": "dialogue_master",
+      "query": "这句旁白把已经看见的动作又说了一遍，想给情绪留空。",
+      "expected": [
+        "dialogue-silence"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k11",
+      "split": "development",
+      "role": "dialogue_master",
+      "query": "Prepare a lettering script with speaker and caption labels.",
+      "expected": [
+        "dialogue-lettering"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k12",
+      "split": "holdout",
+      "role": "dialogue_master",
+      "query": "删掉前格问句后，后格的代词和回答失去对象了。",
+      "expected": [
+        "dialogue-continuity"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k13",
+      "split": "development",
+      "role": "panel_designer",
+      "query": "Keep canonical reference and outfit while varying pose.",
+      "expected": [
+        "art-identity"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k14",
+      "split": "holdout",
+      "role": "panel_designer",
+      "query": "建筑线和人物轮廓混在一起，消失点也不统一。",
+      "expected": [
+        "art-staging"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k15",
+      "split": "development",
+      "role": "panel_designer",
+      "query": "Correct the grip and extra fingers without repainting the scene.",
+      "expected": [
+        "art-hands"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k16",
+      "split": "holdout",
+      "role": "panel_designer",
+      "query": "Maintain practical light direction and palette after entering the shop.",
+      "expected": [
+        "art-light"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k17",
+      "split": "development",
+      "role": "style_reviewer",
+      "query": "I need observable defect evidence rather than a generic pass.",
+      "expected": [
+        "review-evidence"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k18",
+      "split": "holdout",
+      "role": "style_reviewer",
+      "query": "A small localized repair should be preferred to unnecessary redraw.",
+      "expected": [
+        "review-severity"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k19",
+      "split": "development",
+      "role": "style_reviewer",
+      "query": "Make a blind comparison with fixed conditions for an ablation.",
+      "expected": [
+        "review-benchmark"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k20",
+      "split": "holdout",
+      "role": "style_reviewer",
+      "query": "缩略图看每格都漂亮，合起来却不知道接下来发生什么。",
+      "expected": [
+        "review-reading"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k21",
+      "split": "development",
+      "role": "layout_artist",
+      "query": "Do not cover a face or hand with balloon placement.",
+      "expected": [
+        "layout-safe"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k22",
+      "split": "holdout",
+      "role": "layout_artist",
+      "query": "The text is illegible at small size and has weak contrast.",
+      "expected": [
+        "layout-type"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k23",
+      "split": "development",
+      "role": "layout_artist",
+      "query": "A thought balloon tail creates a tangent with the next balloon.",
+      "expected": [
+        "layout-effects"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "k24",
+      "split": "holdout",
+      "role": "layout_artist",
+      "query": "Use gutter spacing to pace a vertical webtoon.",
+      "expected": [
+        "layout-pacing"
+      ],
+      "kind": "relevant"
+    },
+    {
+      "id": "n01",
+      "split": "holdout",
+      "role": "dialogue_master",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    },
+    {
+      "id": "n02",
+      "split": "holdout",
+      "role": "layout_artist",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    },
+    {
+      "id": "n03",
+      "split": "holdout",
+      "role": "panel_designer",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    },
+    {
+      "id": "n04",
+      "split": "holdout",
+      "role": "story_planner",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    },
+    {
+      "id": "n05",
+      "split": "holdout",
+      "role": "storyboard_artist",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    },
+    {
+      "id": "n06",
+      "split": "holdout",
+      "role": "style_reviewer",
+      "query": "PostgreSQL replication WAL checkpoint configuration",
+      "expected": [],
+      "kind": "out_of_domain"
+    }
+  ]
+}

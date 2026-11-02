@@ -42,7 +42,7 @@ Keys stay in the backend computer's `.env` and are not returned by the configura
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.2/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.2.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
 
 Or use Git on Windows:
 
@@ -103,3 +103,15 @@ If the workflow helps you, a voluntary GitHub Star makes it easier to find again
 ## License
 
 Original code/docs: [MIT](LICENSE). Third-party skills, fonts, music and components retain their own licenses; see [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md). Fictional AI-generated example images illustrate the workflow and are not a promise of exclusive rights or guaranteed model output.
+
+## v2.2: traceable knowledge and manual ChatGPT ablations
+
+The 24 role cards distinguish 16 educational/practitioner principles, 2 engineering precedents and 6 project policies. Each includes located evidence, applicability, limitations, original positive/negative examples and checks. See the [research ledger](knowledge/RESEARCH.md) and [card catalog](knowledge/CARD_CATALOG.md).
+
+Role-filtered weighted lexical retrieval preserves one core card and adds only relevant specialist cards. Each generation task freezes the complete corpus; resuming that task retains its snapshot. This is local retrieval, not vector RAG or model training.
+
+The [retrieval regression](benchmarks/KNOWLEDGE_EVALUATION.md) improved top-three hits from 21/24 to 24/24 on maintainer-written queries and removed irrelevant specialist filler on 6 negative queries. Small, non-independent cases do not establish comic quality gains.
+
+Each agent's settings page now provides paired manual ChatGPT tasks, frozen prompts and diffs, JSON reply validation, per-dimension observations and delayed condition reveal. Use two fresh chats with the same displayed model; identity remains operator-declared. Download a separate reviewer bundle for limited blinding. No model API is called. [Protocol and limits](benchmarks/CHATGPT_AB_PROTOCOL.md). Real generation-effect evaluation remains pending.
+
+Image consistency scores now require specific observations and bind to the final rendered image as well as panel/dialogue/effect state. Legacy numeric-only reviews are incomplete. [Peer research and adoption boundaries](docs/UPSTREAM_RESEARCH_2026-11-02.md).

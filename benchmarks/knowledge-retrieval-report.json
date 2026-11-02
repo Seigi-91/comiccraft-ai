@@ -1,0 +1,1451 @@
+{
+  "scope": "maintainer-authored retrieval checks only; not generated-comic quality",
+  "dataset_sha256": "af73885da0fb377164a9931a2bebc3d47d58e75d5c1ded4cc30ee612f75bb067",
+  "corpus_sha256": "a0973eeb79fa2cf3362bfa02c049d158be24eb4f8003327b76478e28cb0bce49",
+  "baseline_commit": "242c9ba05ec19b17be4b172352003b3e6473886e",
+  "variants": {
+    "v1_frozen": {
+      "metrics": {
+        "development": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 1.0,
+          "negative_count": 0,
+          "irrelevant_supplement_rate": null
+        },
+        "holdout": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 0.75,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 1.0
+        },
+        "all": {
+          "relevant_count": 24,
+          "hit_rate_at_3": 0.875,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 1.0
+        }
+      },
+      "cases": [
+        {
+          "id": "k01",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-causality"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-continuity",
+            "story-beats"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k02",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-character"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k03",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-beats"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k04",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-continuity"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k05",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-axis",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k06",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k07",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-action"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k08",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-time"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-time",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k09",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-purpose"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k10",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-silence"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-silence",
+            "dialogue-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k11",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-lettering"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k12",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-continuity"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k13",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-identity"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k14",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-staging"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-staging",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k15",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-hands"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k16",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-light"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k17",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-evidence"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k18",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-severity"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k19",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-benchmark"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k20",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-reading"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-reading",
+            "review-benchmark"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k21",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-safe"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k22",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-type"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k23",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-effects"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k24",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-pacing"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "n01",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "dialogue_master",
+          "expected": [],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n02",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "layout_artist",
+          "expected": [],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n03",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "panel_designer",
+          "expected": [],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n04",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "story_planner",
+          "expected": [],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n05",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "storyboard_artist",
+          "expected": [],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n06",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "style_reviewer",
+          "expected": [],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        }
+      ]
+    },
+    "legacy_on_v2": {
+      "metrics": {
+        "development": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 1.0,
+          "negative_count": 0,
+          "irrelevant_supplement_rate": null
+        },
+        "holdout": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 0.75,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 1.0
+        },
+        "all": {
+          "relevant_count": 24,
+          "hit_rate_at_3": 0.875,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 1.0
+        }
+      },
+      "cases": [
+        {
+          "id": "k01",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-causality"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-continuity",
+            "story-beats"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k02",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-character"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k03",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-beats"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k04",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-continuity"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k05",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-axis",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k06",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k07",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-action"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k08",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-time"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-time",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k09",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-purpose"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k10",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-silence"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-silence",
+            "dialogue-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k11",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-lettering"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k12",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-continuity"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k13",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-identity"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k14",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-staging"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-staging",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k15",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-hands"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k16",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-light"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k17",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-evidence"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k18",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-severity"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k19",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-benchmark"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k20",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-reading"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-reading",
+            "review-benchmark"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k21",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-safe"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k22",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-type"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": false,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k23",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-effects"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k24",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-pacing"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "n01",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "dialogue_master",
+          "expected": [],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n02",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "layout_artist",
+          "expected": [],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects",
+            "layout-pacing"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n03",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "panel_designer",
+          "expected": [],
+          "retrieved": [
+            "art-identity",
+            "art-hands",
+            "art-light"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n04",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "story_planner",
+          "expected": [],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-character"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n05",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "storyboard_artist",
+          "expected": [],
+          "retrieved": [
+            "board-intent",
+            "board-action",
+            "board-axis"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        },
+        {
+          "id": "n06",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "style_reviewer",
+          "expected": [],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark",
+            "review-reading"
+          ],
+          "hit": null,
+          "irrelevant_supplement": true
+        }
+      ]
+    },
+    "v2": {
+      "metrics": {
+        "development": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 1.0,
+          "negative_count": 0,
+          "irrelevant_supplement_rate": null
+        },
+        "holdout": {
+          "relevant_count": 12,
+          "hit_rate_at_3": 1.0,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 0.0
+        },
+        "all": {
+          "relevant_count": 24,
+          "hit_rate_at_3": 1.0,
+          "negative_count": 6,
+          "irrelevant_supplement_rate": 0.0
+        }
+      },
+      "cases": [
+        {
+          "id": "k01",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-causality"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k02",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-character"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-character"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k03",
+          "split": "development",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-beats"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-beats",
+            "story-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k04",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "story_planner",
+          "expected": [
+            "story-continuity"
+          ],
+          "retrieved": [
+            "story-causality",
+            "story-continuity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k05",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-axis",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k06",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-axis"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-axis"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k07",
+          "split": "development",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-action"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-action"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k08",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "storyboard_artist",
+          "expected": [
+            "board-time"
+          ],
+          "retrieved": [
+            "board-intent",
+            "board-time"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k09",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-purpose"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k10",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-silence"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-silence"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k11",
+          "split": "development",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-lettering"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k12",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "dialogue_master",
+          "expected": [
+            "dialogue-continuity"
+          ],
+          "retrieved": [
+            "dialogue-purpose",
+            "dialogue-continuity",
+            "dialogue-lettering"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k13",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-identity"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k14",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-staging"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-staging",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k15",
+          "split": "development",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-hands"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-hands"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k16",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "panel_designer",
+          "expected": [
+            "art-light"
+          ],
+          "retrieved": [
+            "art-identity",
+            "art-light"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k17",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-evidence"
+          ],
+          "retrieved": [
+            "review-evidence"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k18",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-severity"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-severity"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k19",
+          "split": "development",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-benchmark"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-benchmark"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k20",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "style_reviewer",
+          "expected": [
+            "review-reading"
+          ],
+          "retrieved": [
+            "review-evidence",
+            "review-reading"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k21",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-safe"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k22",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-type"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-type"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k23",
+          "split": "development",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-effects"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-effects"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "k24",
+          "split": "holdout",
+          "kind": "relevant",
+          "role": "layout_artist",
+          "expected": [
+            "layout-pacing"
+          ],
+          "retrieved": [
+            "layout-safe",
+            "layout-pacing"
+          ],
+          "hit": true,
+          "irrelevant_supplement": null
+        },
+        {
+          "id": "n01",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "dialogue_master",
+          "expected": [],
+          "retrieved": [
+            "dialogue-purpose"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        },
+        {
+          "id": "n02",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "layout_artist",
+          "expected": [],
+          "retrieved": [
+            "layout-safe"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        },
+        {
+          "id": "n03",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "panel_designer",
+          "expected": [],
+          "retrieved": [
+            "art-identity"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        },
+        {
+          "id": "n04",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "story_planner",
+          "expected": [],
+          "retrieved": [
+            "story-causality"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        },
+        {
+          "id": "n05",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "storyboard_artist",
+          "expected": [],
+          "retrieved": [
+            "board-intent"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        },
+        {
+          "id": "n06",
+          "split": "holdout",
+          "kind": "out_of_domain",
+          "role": "style_reviewer",
+          "expected": [],
+          "retrieved": [
+            "review-evidence"
+          ],
+          "hit": null,
+          "irrelevant_supplement": false
+        }
+      ]
+    }
+  }
+}

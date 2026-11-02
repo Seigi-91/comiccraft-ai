@@ -43,9 +43,9 @@ def _base_instructions(role):
     return "\n\n".join([prompt, skill, *upstream])
 
 
-def instructions(role, query=""):
+def instructions(role, query="", include_knowledge=True):
     from app.agents.knowledge import context
-    return _base_instructions(role) + "\n\n" + context(role, query)
+    return _base_instructions(role) + ("\n\n" + context(role, query) if include_knowledge else "")
 
 
 def catalog():

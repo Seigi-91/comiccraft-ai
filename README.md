@@ -40,7 +40,7 @@
 
 ## Windows 一键安装
 
-下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.2/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.2.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
 
 启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
 
@@ -92,6 +92,17 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 - 无登录、租户隔离和生产级权限控制。默认只绑定 `127.0.0.1`，不要直接将当前版本开放到公网。
 - 气泡保护框依赖视觉判断，可能漏检；手动位置、蒙版接缝和特效遮挡仍需人工检查。
 
+## v2.2：可追溯知识与 ChatGPT 对照实验
+
+六角色共 24 张知识卡：16 张有定位到章节的教学/从业者原则依据、2 张有同类项目工程先例、6 张明确属于项目规则。每张卡都有适用条件、局限、原创正反例、检查项与审阅状态。资料只支撑所列原则，不代表机构认可或生成效果已证实。
+
+- [资料调研与排除记录](knowledge/RESEARCH.md) · [完整知识卡目录](knowledge/CARD_CATALOG.md)
+- 检索按角色硬过滤、保留核心卡，再按中英关键词加权匹配专项卡；无关查询不凑满条目。每次生成冻结完整知识快照，同一任务恢复时沿用原快照。
+- [离线检索对照](benchmarks/KNOWLEDGE_EVALUATION.md)：维护者编写的 24 个相关查询，前三项命中率从 87.5% 到 100%；6 个无关查询不再填入无关专项卡。小样本、同团队编写，只是回归证据。
+- 设置页各 Agent 下可创建有/无额外知识的成对任务：冻结提示词与差异，复制到本机 ChatGPT 的两个新对话，回填真实 JSON，再逐项观察评分、完整后揭盲。[操作与盲评限制](benchmarks/CHATGPT_AB_PROTOCOL.md)。不自动调用 API；实验比较文字建议，漫画画质提升仍待实测。
+- 一致性评测的已知分数须附逐项观察，并绑定最终成稿指纹。历史无观察评分不再视为完整通过。
+- [同类项目代码调研与实际采纳边界](docs/UPSTREAM_RESEARCH_2026-11-02.md)：参考 OpenManga 的规则版本/差异、TT_AutoManga 的单项可审阅流程、comicsol 的证据化视觉检查；没有移植其完整运行系统。
+
 ## 专业知识与可控生产
 
 六个 Agent 各有 4 张[专业知识卡](knowledge/README.md)，本地按角色与任务检索后接入实际提示词。分镜师可使用导演式叙事任务、景别、轴线/正反打、动作衔接和格间时间知识。它是原创应用笔记与来源链接，不是教材转载或模型微调；生成状态保存知识卡指纹。
@@ -109,7 +120,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 36 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 42 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 

@@ -1,36 +1,208 @@
 {
-  "version": 1,
+  "version": 2,
   "license": "MIT (original knowledge cards only; linked sources retain their licenses)",
   "sources": {
     "yale-editing": {
       "title": "Yale Film Analysis — Editing",
       "url": "https://filmanalysis.yale.edu/editing/",
-      "use": "延伸阅读：连续性与镜头衔接"
+      "use": "延伸阅读：连续性与镜头衔接",
+      "publisher": "Yale University",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "scope": "核对连续性、视线匹配、动作匹配、交叉剪辑的文字说明；未观看或逐帧分析页面影片。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     },
     "yale-camera": {
       "title": "Yale Film Analysis — Cinematography",
       "url": "https://filmanalysis.yale.edu/cinematography/",
-      "use": "延伸阅读：构图、光线与景别"
+      "use": "延伸阅读：构图、光线与景别",
+      "publisher": "Yale University",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "scope": "核对色彩、反差、焦点及取景/机位的文字说明；未观看或逐帧分析页面影片。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     },
     "adobe-board": {
       "title": "Adobe — How to get started on storyboarding",
       "url": "https://www.adobe.com/creativecloud/video/discover/storyboarding.html",
-      "use": "延伸阅读：从剧本到可执行画面"
+      "use": "延伸阅读：从剧本到可执行画面",
+      "publisher": "Adobe",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "scope": "核对何为分镜、分镜如何传达故事/情绪的文字段落；未把访谈当作全部导演的共识。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     },
     "pixar-story": {
       "title": "Pixar in a Box — The art of storytelling",
       "url": "https://www.khanacademy.org/computing/pixar/storytelling",
-      "use": "延伸阅读：人物、结构与视觉语言；页面正文受访问限制"
+      "use": "延伸阅读：人物、结构与视觉语言；页面正文受访问限制",
+      "publisher": "Pixar / Khan Academy",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "restricted",
+      "scope": "只核对页面中明确记录的章节，不代表完整课程或书籍已研读。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     },
     "blambot": {
       "title": "Nate Piekos / Blambot — Better Letterer",
       "url": "https://blambot.com/pages/lettering-tips",
-      "use": "延伸阅读：专业漫画 lettering 图例；未复制其插图或字体"
+      "use": "延伸阅读：专业漫画 lettering 图例；未复制其插图或字体",
+      "publisher": "Nate Piekos / Blambot",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "image_index_only",
+      "scope": "只核对页面中明确记录的章节，不代表完整课程或书籍已研读。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     },
     "wcag": {
       "title": "W3C — Understanding Contrast (Minimum)",
       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
-      "use": "界面可读性参考，不宣称漫画画面自动满足 WCAG"
+      "use": "界面可读性参考，不宣称漫画画面自动满足 WCAG",
+      "publisher": "W3C WAI",
+      "checked_at": "2026-11-02",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "scope": "核对SC1.4.3及普通/大字条款；适用边界见原文，不将其推广成整个漫画的认证。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "ou-plot": {
+      "title": "OpenLearn — 4.2 What is plot?",
+      "url": "https://www.open.edu/openlearn/mod/oucontent/view.php?id=20431&section=2",
+      "publisher": "The Open University",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "4.2 What is plot?；因果与时间序列段落",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "ou-conflict": {
+      "title": "OpenLearn — 5.4 Summary of Week 5",
+      "url": "https://www.open.edu/openlearn/mod/oucontent/view.php?id=101090&section=_unit5.4",
+      "publisher": "The Open University",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "5.4；人物矛盾与冲突概述",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "ou-character": {
+      "title": "Novakovich excerpt — Portraying a character",
+      "url": "https://www.open.edu/openlearn/mod/oucontent/view.php?id=20441&section=1.3.1",
+      "publisher": "The Open University；课程所引 Josip Novakovich 节选",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "Summary / Repeated action or habit / Appearance / Scene / Combining techniques；只核对课程节选，不宣称读完原书",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "ou-feedback": {
+      "title": "OpenLearn — 7.3 Questions to ask",
+      "url": "https://www.open.edu/openlearn/mod/oucontent/view.php?id=20448&section=3",
+      "publisher": "The Open University",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_educational",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "7.3；读者投入、人物吸引力与困惑等反馈问题",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "blambot-script": {
+      "title": "Comic Script Basics",
+      "url": "https://blambot.com/pages/comic-script-basics",
+      "publisher": "Nate Piekos / Blambot",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_practitioner",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "编号5–10及总结；参考链接、排字条目与说话状态",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "blambot-grammar": {
+      "title": "Comic Book Grammar & Tradition",
+      "url": "https://blambot.com/pages/comic-book-grammar-tradition",
+      "publisher": "Nate Piekos / Blambot",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_practitioner",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "Balloon Tails / Thought Balloons / Tangents；文字段落，不复制插图",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "to-comix": {
+      "title": "Lettering Conventions",
+      "url": "https://www.tocomix.com/articles/reference/lettering",
+      "publisher": "TO Comix Press",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_practitioner",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "Balloons；安全区、留边与不遮挡人物",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "csp-perspective": {
+      "title": "Perspective Rulers",
+      "url": "https://help.clip-studio.com/en-us/manual_en/510_ruler/Perspective_Rulers.htm",
+      "publisher": "CELSYS / Clip Studio Paint",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_practitioner",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "One-point / Two-point / Three-point Perspective；基础透视定义",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "csp-hands": {
+      "title": "3D Hand Models",
+      "url": "https://help.clip-studio.com/en-us/manual_en/660_3d/3D_Hand_Models.htm",
+      "publisher": "CELSYS / Clip Studio Paint",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "primary_practitioner",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "开头与 Posing the hands；只支持手姿参考工具的存在，不支持AI解剖正确性保证",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "comic-sol-qa": {
+      "title": "Comic Sol — Visual QA",
+      "url": "https://github.com/wenn-id/comicsol/blob/35fcb0237e8b2857decfb9bc3593fc8e049f9608/references/visual-qa.md",
+      "publisher": "wenn-id / Comic Sol",
+      "use": "已核对的指定章节；具体支持范围见知识卡 evidence",
+      "kind": "upstream_engineering",
+      "access_status": "verified_text",
+      "checked_at": "2026-11-02",
+      "scope": "L3–29：按分项记录证据；L50–69：选择性修复与预算。代码/文档阅读，未运行项目",
+      "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
+      "retrieval_method": "fixed_commit_raw_text",
+      "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
     }
   },
   "cards": [
@@ -47,11 +219,52 @@
       ],
       "content": "先说明主角此刻想完成什么、阻碍是什么，再把每个转折写成选择带来的后果。短篇的每格至少改变信息、行动或情绪之一。不要把一串漂亮场景当作因果链。把结尾与开头的一个具体意象联系起来；若用户选择开放式结局，不强行圆满。输出必须服从剧情 Schema。",
       "sources": [
-        "pixar-story"
+        "ou-plot"
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "story-causality-e1",
+          "source_id": "ou-plot",
+          "locator": "4.2；因果与时间序列的区分",
+          "claim": "情节组织强调事件之间的因果关系，而不只是先后发生。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "明确主角目标/阻碍，并用选择推动后果；这套输出检查表是项目应用。"
+      ],
+      "applicability": [
+        "面对无关联事件清单，需要形成可理解的短篇。"
+      ],
+      "limitations": [
+        "诗性拼贴或有意去情节作品不强制套因果链。"
+      ],
+      "examples": {
+        "positive": "她因担心小猫淋雨而返回取纸箱，返回行为改变结局。",
+        "negative": "先下雨，再出现猫，再出现灯，三件事互不影响。",
+        "explanation": "因果关系让选择和后果相连；意象出现本身不等于情节。"
+      },
+      "aliases": [
+        "causality",
+        "plot",
+        "因果推进",
+        "事件清单"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "story-character",
@@ -66,11 +279,61 @@
       ],
       "content": "区分外在目标与内在需要，并用可观察的动作证明性格。列出已确认事实、可发展的动机、仍未知的背景；未知不自动补成事实。用小选择展示变化，例如起初绕过雨中小猫，后来停步提供庇护。不能为了转折突然改变身份或已批准设定。",
       "sources": [
-        "pixar-story"
+        "ou-conflict",
+        "ou-character"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "story-character-e1",
+          "source_id": "ou-conflict",
+          "locator": "5.4；人物矛盾与缺陷段落",
+          "claim": "人物内在矛盾与冲突可以成为情节来源。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "story-character-e2",
+          "source_id": "ou-character",
+          "locator": "Scene",
+          "claim": "动作、外貌与说话方式可结合起来呈现人物。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "外在目标/内在需要是本项目可选分析框架，并非唯一人物理论。"
+      ],
+      "applicability": [
+        "角色被形容为善良，却没有可见选择。"
+      ],
+      "limitations": [
+        "先尊重已批准的人物设定，不为制造反差随意改性格。"
+      ],
+      "examples": {
+        "positive": "她嘴上说赶时间，却蹲下来替小猫挡雨。",
+        "negative": "旁白只写她非常善良，行为却完全不相关。",
+        "explanation": "可见行为让性格判断有依据；矛盾可以形成张力。"
+      },
+      "aliases": [
+        "character motivation",
+        "character arc",
+        "人物动机",
+        "show character"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "story-beats",
@@ -87,7 +350,39 @@
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "建立—线索—选择—行动—后果—余韵是本项目六格练习模板，不是普适六步定律。"
+      ],
+      "applicability": [
+        "需要控制六格短篇的节奏和信息量。"
+      ],
+      "limitations": [
+        "长篇、多线或实验漫画不必用六格，也不以固定格数判质量。"
+      ],
+      "examples": {
+        "positive": "为发现小猫后的犹豫单独留一格，再画抱起它。",
+        "negative": "六格都引入新人物，每个动作没有结果。",
+        "explanation": "反应格提供理解选择的时间；模板可按故事调整。"
+      },
+      "aliases": [
+        "six panel",
+        "beats",
+        "反应格",
+        "六格节拍"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "story-continuity",
@@ -104,7 +399,39 @@
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "只把输入中确认的事实写入角色/时间线；人物所知与读者所知分开。"
+      ],
+      "applicability": [
+        "跨章出现物品归属或知情范围矛盾。"
+      ],
+      "limitations": [
+        "闪回、误导叙述和超自然知识须由作者明确设定。"
+      ],
+      "examples": {
+        "positive": "信封先由小雨拿着，交给店主后才改为店主持有。",
+        "negative": "人物尚未看信就准确复述信的内容，且无设定解释。",
+        "explanation": "记录已发生的转移和信息获取，减少无理由跳变。"
+      },
+      "aliases": [
+        "story bible",
+        "timeline",
+        "知情范围",
+        "事实表"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "board-intent",
@@ -125,7 +452,56 @@
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "board-intent-e1",
+          "source_id": "adobe-board",
+          "locator": "What’s a storyboard? / A good storyboard brings the storyline to life",
+          "claim": "分镜用于把剧本变成能够传达故事与情绪的执行指引。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "board-intent-e2",
+          "source_id": "yale-camera",
+          "locator": "Section 2 – Framing / Angle of Framing",
+          "claim": "取景和机位角度是画面选择的一部分，其含义取决于语境。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "静态一格锁定一个时刻；电影运镜转译成漫画前后格，是项目适配方法。"
+      ],
+      "applicability": [
+        "需要从故事说明转成可画的镜头。"
+      ],
+      "limitations": [
+        "不把低机位一律理解成强者；具体含义需看上下文。"
+      ],
+      "examples": {
+        "positive": "远景交代门、窗和长椅的位置，再用近景展示手伸向小猫。",
+        "negative": "只写电影感拉近旋转，既不说明画面内容，也不交代空间。",
+        "explanation": "先决定读者此刻需要的信息，再选择景别与构图。"
+      },
+      "aliases": [
+        "shot purpose",
+        "coverage",
+        "镜头任务",
+        "建立空间"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "board-axis",
@@ -146,7 +522,49 @@
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "board-axis-e1",
+          "source_id": "yale-editing",
+          "locator": "CONTINUITY EDITING / EYELINE MATCH",
+          "claim": "连续性剪辑通过方向和视线关系帮助观众理解空间；重新建立空间可以处理跨轴。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "漫画采用同类空间检查；轴线是可选择的清晰性工具，不是禁止越界的法律。"
+      ],
+      "applicability": [
+        "两人对话、对峙或多人视线关系容易混淆。"
+      ],
+      "limitations": [
+        "有意迷失方向的表达可以违背惯例，但要说明创作意图。"
+      ],
+      "examples": {
+        "positive": "先画甲左乙右；正反打保持对视，需要跨轴时补空间建立格。",
+        "negative": "双方都向画面右侧看，却被脚本说成面对面对话。",
+        "explanation": "位置和视线必须共同构成可理解的关系。"
+      },
+      "aliases": [
+        "shot reverse shot",
+        "eyeline",
+        "screen direction",
+        "正反打",
+        "越轴"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "board-action",
@@ -166,7 +584,49 @@
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "board-action-e1",
+          "source_id": "yale-editing",
+          "locator": "MATCH ON ACTION / CONTINUITY EDITING",
+          "claim": "跨镜头动作衔接可维持观众对持续动作的理解。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "哪只手、接触点、承重和道具去向是本项目静态格执行检查项。"
+      ],
+      "applicability": [
+        "复杂交接、开门、抱猫或手持道具的连续动作。"
+      ],
+      "limitations": [
+        "动作省略可以成立，只要读者仍能推断；不要求逐帧描绘。"
+      ],
+      "examples": {
+        "positive": "前格右手握门把，后格右手将门推开，左臂一直托住猫。",
+        "negative": "前格左手拿信，后格无过渡变到右手，同时多出一只撑伞手。",
+        "explanation": "把动作拆成可验证的关键时刻，而非只增加解剖形容词。"
+      },
+      "aliases": [
+        "match on action",
+        "contact",
+        "handedness",
+        "持物",
+        "左右手"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "board-time",
@@ -186,7 +646,49 @@
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "board-time-e1",
+          "source_id": "yale-editing",
+          "locator": "CROSSCUTTING, aka PARALLEL EDITING",
+          "claim": "交叉剪辑可把不同地点的行动组织成关联。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "漫画格间省略、留白与反应格的节奏由项目适配，来源没有规定像素格距或固定节拍。"
+      ],
+      "applicability": [
+        "多处事件交替，或需要控制动作与停顿。"
+      ],
+      "limitations": [
+        "非同时发生的并置也可使用，但不要错误标成同一时刻。"
+      ],
+      "examples": {
+        "positive": "交替画窗内等候和门外返回，用同一雨势建立时间关联。",
+        "negative": "两个地点反复切换，却没有时间或叙事联系。",
+        "explanation": "切换应创造关系；并置本身不能自动形成可读的故事。"
+      },
+      "aliases": [
+        "ellipsis",
+        "crosscutting",
+        "parallel editing",
+        "格间省略",
+        "停顿"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "dialogue-purpose",
@@ -200,10 +702,53 @@
         "口吻"
       ],
       "content": "每句台词至少承担推进动作、提供必要信息、表达关系或制造张力之一。先按人物目标写想说什么，再按性格改成会怎样说。用词、句长和停顿区分角色，不把所有人写成同一种旁白。潜台词通过动作和回应体现，不要求模型解释一切。遵守每泡60字上限，必要时拆分或删减。",
-      "sources": [],
+      "sources": [
+        "ou-character"
+      ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "dialogue-purpose-e1",
+          "source_id": "ou-character",
+          "locator": "Scene",
+          "claim": "场景中的声音与措辞可以参与人物呈现。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "以推进动作/关系/必要信息检查台词功能，是项目工作规则。"
+      ],
+      "applicability": [
+        "不同角色说话像同一个旁白。"
+      ],
+      "limitations": [
+        "角色可刻意模仿他人；不能用机械口头禅代替性格。"
+      ],
+      "examples": {
+        "positive": "寡言店主只说进来吧，焦急的小雨连续追问猫能否留下。",
+        "negative": "每个人都用同样长的抒情句解释彼此已经知道的事实。",
+        "explanation": "声音差异要与当下人物目标和情境相连。"
+      },
+      "aliases": [
+        "character voice",
+        "subtext",
+        "对白意图",
+        "说话口吻"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "dialogue-silence",
@@ -217,10 +762,53 @@
         "短句"
       ],
       "content": "画面已显示的动作不再逐句解说。保留关键线索而压缩解释，必要时用沉默与视线承担情绪。旁白承担时间、视角或画面不可见的信息；内心独白不让其他人物作出听见后的回应。先给句子排序再分配气泡，不能靠长尾巴修复混乱的阅读顺序。",
-      "sources": [],
+      "sources": [
+        "ou-character"
+      ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "dialogue-silence-e1",
+          "source_id": "ou-character",
+          "locator": "Summary / Scene",
+          "claim": "总结与场景呈现各有作用；背景说明有时能帮助维持叙事焦点。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "删重复旁白与用沉默承接情绪是项目建议，不是禁用说明文字。"
+      ],
+      "applicability": [
+        "画面和台词重复叙述同一动作。"
+      ],
+      "limitations": [
+        "不要把所有旁白都删掉；时间跳跃、视角或背景可能需要它。"
+      ],
+      "examples": {
+        "positive": "抱猫入门后留一格沉默，下一格才回应先前的问话。",
+        "negative": "画面已显示关门，旁白仍逐字写她关上了门且没有新信息。",
+        "explanation": "留白需要前后文支撑，说明文字也可以有效压缩背景。"
+      },
+      "aliases": [
+        "silence",
+        "exposition",
+        "pause",
+        "重复说明"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "dialogue-lettering",
@@ -235,11 +823,52 @@
       ],
       "content": "输出说话人、分镜索引、气泡类型与简短文本，别把绘图指令写成台词。长句先编辑措辞，再考虑缩小字号；避免一格过多说话人。英文单词和中文标点在换行后仍须可读；中文习惯不直接照搬美漫字形规则。排版约束优先于华丽修辞。",
       "sources": [
-        "blambot"
+        "blambot-script"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "dialogue-lettering-e1",
+          "source_id": "blambot-script",
+          "locator": "编号5–10：参考图与 lettering items",
+          "claim": "脚本可以明确标记排字条目、说话状态与旁白类别。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "本项目每泡60字上限、固定JSON字段及不让模型画字，属于工程约束。"
+      ],
+      "applicability": [
+        "脚本无法明确对应人物和气泡。"
+      ],
+      "limitations": [
+        "美漫文档格式不直接等于中文排版标准；60字并非行业通则。"
+      ],
+      "examples": {
+        "positive": "为每条台词标明格号、说话人、类型和文本，保持顺序。",
+        "negative": "把关门和镜头推近混在台词文字中，排字时被一起印出。",
+        "explanation": "对话内容和画面指令必须在结构上区分。"
+      },
+      "aliases": [
+        "lettering script",
+        "speaker",
+        "caption",
+        "排字脚本"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "dialogue-continuity",
@@ -256,7 +885,39 @@
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "称谓、知情范围、代词对象和邻格回应关系由当前故事事实核对。"
+      ],
+      "applicability": [
+        "修订一格后相邻台词失去对象。"
+      ],
+      "limitations": [
+        "意识流或刻意答非所问可保留，但需区分意图与错误。"
+      ],
+      "examples": {
+        "positive": "上一格问能否让猫留下，下一格店主回答可以。",
+        "negative": "删除问句后保留可以两个字，读者不知道在回应什么。",
+        "explanation": "局部文本修改也要核对邻格的指代和因果。"
+      },
+      "aliases": [
+        "dialogue continuity",
+        "pronoun",
+        "指代",
+        "称谓"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "art-identity",
@@ -273,7 +934,39 @@
       "sources": [],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "身份不变量、表演变量、批准服装与参考图用途分离，是项目连续性协议。"
+      ],
+      "applicability": [
+        "换角度或换装后角色身份漂移。"
+      ],
+      "limitations": [
+        "提示词和参考图不能保证模型层的一致性，须看实际成图。"
+      ],
+      "examples": {
+        "positive": "换新雨衣时仍保留批准的脸型、发长和体态，并附审批版参考图。",
+        "negative": "参考图穿旧衣就无视当前服装设定，或为了保持一致性复制同一姿势。",
+        "explanation": "固定身份并不等于冻结镜头与表情。"
+      },
+      "aliases": [
+        "identity lock",
+        "outfit",
+        "canonical reference",
+        "身份不变量"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "art-staging",
@@ -289,11 +982,62 @@
       ],
       "content": "先安排前中后景与视觉重点，再加装饰细节。主要动作的手、道具和人物轮廓要分离，避免边缘相切造成误读。给后期气泡预留负空间，但不把所有人物挤到底部。机位变化须保留已建立的地理关系和光源方向。",
       "sources": [
-        "yale-camera"
+        "yale-camera",
+        "csp-perspective"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "art-staging-e1",
+          "source_id": "yale-camera",
+          "locator": "DEEP FOCUS / SHALLOW FOCUS",
+          "claim": "焦点分配会影响前后景的可读性和注意力。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "art-staging-e2",
+          "source_id": "csp-perspective",
+          "locator": "One-point / Two-point Perspective",
+          "claim": "透视可以由一个或同一地平线上的两个消失点组织。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "轮廓分离、为气泡预留负空间和跨格地理锁定是项目应用检查。"
+      ],
+      "applicability": [
+        "人物、道具和背景争夺同一个焦点。"
+      ],
+      "limitations": [
+        "风格化扁平构图可以不采用写实透视，不应自动判为失真。"
+      ],
+      "examples": {
+        "positive": "让伸出的手与门框分开，背景线条遵循一致透视。",
+        "negative": "手与门框边线重合，看起来像手指变成门板。",
+        "explanation": "层次和边缘关系应支持动作识别。"
+      },
+      "aliases": [
+        "staging",
+        "silhouette",
+        "vanishing point",
+        "负空间",
+        "消失点"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "art-hands",
@@ -308,10 +1052,53 @@
         "接触"
       ],
       "content": "用具体接触关系描述手势：哪只手、手掌朝向、接触物、承重位置。减少同时进行的动作，必要时建议拆格。审核手指数量不是唯一指标，还要看关节、遮挡和力的方向。局部损坏优先进入蒙版修复流程，未选区像素保护由程序合成完成，不由模型口头承诺。",
-      "sources": [],
+      "sources": [
+        "csp-hands"
+      ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "art-hands-e1",
+          "source_id": "csp-hands",
+          "locator": "开头 / Posing the hands",
+          "claim": "可调姿态的手部参考模型是绘画辅助方式之一。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "手指数、关节、接触点和受力关系须按可见证据检查；来源不证明AI手部必然正确。"
+      ],
+      "applicability": [
+        "抱猫或递物等复杂手部发生失真。"
+      ],
+      "limitations": [
+        "官方工具手册不是医学解剖教材；遮挡部位不可凭空断言。"
+      ],
+      "examples": {
+        "positive": "用清楚的手姿参考，并说明右掌托底、左手扶侧。",
+        "negative": "仅写完美双手，却没有说明左右手与物体的接触。",
+        "explanation": "姿态参考和任务约束可以帮助描述，最终仍需核对图像。"
+      },
+      "aliases": [
+        "hand pose",
+        "grip",
+        "fingers",
+        "接触关系"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "art-light",
@@ -325,13 +1112,54 @@
         "材质",
         "照明"
       ],
-      "content": "建立主光和辅光的来源，再推导阴影与反光。跨格保持光源方位、天气和场所材质；人物入室可变亮，但外景不应突然停雨。细节依附叙事重点：湿衣反光、窗面雨痕应辅助动作，不能淹没主体。不要用“电影感”替代明确的光线说明。",
+      "content": "建立主光和辅光的来源，再推导阴影与反光。跨格保持光源方位、天气和场所材质；人物入室可变亮，但外景不应突然停雨。细节依附叙事重点：湿衣反光、窗面雨痕应辅助动作，不能淹没主体。不要用“电影感”替代明确的光线说明。 色彩含义依赖语境，不把红色等色相固定解释成单一情绪。",
       "sources": [
         "yale-camera"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "art-light-e1",
+          "source_id": "yale-camera",
+          "locator": "COLOR / CONTRAST",
+          "claim": "色彩与反差参与叙事表达，颜色并无跨语境唯一含义。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "主光方向、天气与材质的跨格连续性是项目场景检查表。"
+      ],
+      "applicability": [
+        "人物入室后外部天气和灯光无故改变。"
+      ],
+      "limitations": [
+        "幻想、回忆或情绪化色彩可以改变现实照明，但需明确叙事语境。"
+      ],
+      "examples": {
+        "positive": "外雨持续，入室后人物受暖灯照明，窗外仍是冷蓝街巷。",
+        "negative": "两格相隔几秒，灯光来源和雨势却无解释地完全变化。",
+        "explanation": "区分有叙事原因的光色变化与无理由漂移。"
+      },
+      "aliases": [
+        "lighting continuity",
+        "palette",
+        "practical light",
+        "光源"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "review-evidence",
@@ -345,10 +1173,53 @@
         "一致性"
       ],
       "content": "先确认实际附图顺序，再对身份、服装、动作、道具、空间、文字遮挡分别检查。每条问题指明格号、可见现象、严重程度与可执行建议。看不清或被遮挡时记录不确定，不能宣称通过；不能只凭提示词给图像评分。固定角色参考与相邻格分别用于身份和时空判断。",
-      "sources": [],
+      "sources": [
+        "comic-sol-qa"
+      ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "review-evidence-e1",
+          "source_id": "comic-sol-qa",
+          "locator": "L3–29：分项检查与证据",
+          "claim": "同类工程把身份、动作等检查项与可见证据记录关联。",
+          "relationship": "engineering_precedent",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "本项目要求格号、严重度、观察和修复建议；它不是通用视觉质量标准。"
+      ],
+      "applicability": [
+        "仅凭提示词或一句通过评价图片。"
+      ],
+      "limitations": [
+        "来源仅做代码/文档研究，未运行对方系统或独立验证其效果。"
+      ],
+      "examples": {
+        "positive": "第3格右手与杯柄粘连，建议仅修复该接触区域。",
+        "negative": "没有查看图片，就按提示词内容给出100分。",
+        "explanation": "证据要指向实际观察，工程记录不能替代艺术判断。"
+      },
+      "aliases": [
+        "visual evidence",
+        "audit",
+        "observable defect",
+        "可见证据"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "review-severity",
@@ -362,10 +1233,53 @@
         "返工"
       ],
       "content": "身份错误、错误角色数量、关键动作或道具缺失通常比装饰差异优先。将问题区分为阻断剧情、影响阅读和轻微美观；修复建议限定到必要区域，避免为改手重绘整页。局部补丁仍需核对接缝、光线和尺度。若当前图不可用或看不到对应部位，说明限制而非编造检测框。",
-      "sources": [],
+      "sources": [
+        "comic-sol-qa"
+      ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "review-severity-e1",
+          "source_id": "comic-sol-qa",
+          "locator": "L50–69：选择性修复与保留通过图",
+          "claim": "同类工程区分局部修复和整格重绘，并保留已接受素材。",
+          "relationship": "engineering_precedent",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "先修阻断剧情的问题，再考虑轻微美观；修复范围按证据而定。"
+      ],
+      "applicability": [
+        "一个局部缺陷引发无边界整页返工。"
+      ],
+      "limitations": [
+        "整体机位或身份错误未必能用小蒙版修好；不强制所有问题局部修。"
+      ],
+      "examples": {
+        "positive": "右手有六指且区域明确时提出局部修复，并检查接缝。",
+        "negative": "仅因一颗纽扣不同就重绘全章，且丢失原稿。",
+        "explanation": "问题严重度和修复范围应分别判断。"
+      },
+      "aliases": [
+        "severity",
+        "localized repair",
+        "repair scope",
+        "阻断问题"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "review-benchmark",
@@ -383,7 +1297,39 @@
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "固定案例/参考/模型条件，分项评分，并保留未知项和失败候选，是本项目评测协议。"
+      ],
+      "applicability": [
+        "需要比较加入知识前后的收益。"
+      ],
+      "limitations": [
+        "小样本、同一评审者与聊天产品版本变化都限制结论外推。"
+      ],
+      "examples": {
+        "positive": "同一输入生成两组，隐藏条件后按同一量表记录观察和差异。",
+        "negative": "一组挑最好作品，另一组取第一次失败，就声称全面提升。",
+        "explanation": "比较条件与选择偏差要公开；检索命中不等于生成质量提升。"
+      },
+      "aliases": [
+        "ablation",
+        "blind comparison",
+        "evaluation",
+        "对照评测"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "review-reading",
@@ -398,11 +1344,52 @@
       ],
       "content": "除了逐格放大，还在整页和缩略图尺度检查视觉重点、阅读顺序与台词大小。漂亮的单格不代表连续叙事成立。区分蓄意打破规则和无理由的空间跳跃，保留有意的情绪留白。把无法同时满足的构图和台词约束反馈给分镜与台词角色，而非无限重绘。",
       "sources": [
-        "adobe-board"
+        "ou-feedback"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "review-reading-e1",
+          "source_id": "ou-feedback",
+          "locator": "7.3；读者反馈问题",
+          "claim": "阅读反馈应关心投入感、人物吸引力和不清楚之处，而不只看技术细节。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "缩略图、整页和逐格三个尺度检查是本项目漫画适配方法。"
+      ],
+      "applicability": [
+        "单格漂亮但整体剧情无法读懂。"
+      ],
+      "limitations": [
+        "文字创作课程的反馈问题不是漫画视觉检测算法。"
+      ],
+      "examples": {
+        "positive": "缩略图先读顺序，放大后查细节，再指出哪个跳转令人困惑。",
+        "negative": "只凭高分辨率和细节数量判故事流畅。",
+        "explanation": "把具体困惑反馈到分镜/台词，比只给总分更可执行。"
+      },
+      "aliases": [
+        "reader test",
+        "thumbnail",
+        "reading flow",
+        "读者测试"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "layout-safe",
@@ -418,11 +1405,52 @@
       ],
       "content": "先从实际图片识别人脸、手、关键道具和叙事焦点，再寻找负空间。气泡按目标阅读方向组织，尾尖指向说话人而非挡住其脸；旁白通常不需要对白尾巴。模型给出的保护框可能漏检，程序负责边界与交叠校验。找不到空间时请求精简台词或人工调整，不编造“已避让”。",
       "sources": [
-        "blambot"
+        "to-comix"
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "layout-safe-e1",
+          "source_id": "to-comix",
+          "locator": "Balloons；安全区、留边、不遮挡人物",
+          "claim": "出版方建议文字保持安全区、留边一致，并尽量不遮挡脸手等画面重点。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "本项目用视觉保护框和程序交叠检查辅助放置，模型框可能漏检。"
+      ],
+      "applicability": [
+        "气泡挡脸、挡手或压住关键道具。"
+      ],
+      "limitations": [
+        "该出版方允许某些气泡跨格；本项目目前要求边界内，不把工程限制归给来源。"
+      ],
+      "examples": {
+        "positive": "在空白墙面放泡，保留脸和持物手，并检查阅读顺序。",
+        "negative": "默认把气泡放底端，遮住救猫的关键动作。",
+        "explanation": "画面负空间比固定底端位置更适合按格决定。"
+      },
+      "aliases": [
+        "balloon placement",
+        "face occlusion",
+        "safe area",
+        "气泡避让"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "layout-type",
@@ -441,7 +1469,48 @@
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "layout-type-e1",
+          "source_id": "wcag",
+          "locator": "SC 1.4.3：普通/大字对比度条款",
+          "claim": "网页普通文字和大字有不同最低对比度要求。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "中文断行、内边距与容量检查由本项目实现；该条款不构成整幅漫画的认证。"
+      ],
+      "applicability": [
+        "小屏阅读困难或长句挤出气泡。"
+      ],
+      "limitations": [
+        "大字定义、例外及图片文字语境须看原条款，不能机械套一项数值评所有画面。"
+      ],
+      "examples": {
+        "positive": "先缩短台词或加宽气泡，再用足够可读的字号导出检查。",
+        "negative": "把字号缩到无法阅读，只为塞进固定小泡。",
+        "explanation": "容量与可读性要同时满足，不能只追求不溢出。"
+      },
+      "aliases": [
+        "typography",
+        "legibility",
+        "contrast",
+        "文本容量"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "layout-effects",
@@ -456,11 +1525,52 @@
       ],
       "content": "尾尖不应横穿别的气泡、盖住关键脸部或指错说话人。思考泡与旁白应有不同视觉语义。拟声词与光效放在独立层，检查叠加后的文字和手部可读性；保留原始分镜和气泡坐标，导出时使用同一几何语义。不要把显示层合成和原图像素保护混为一谈。",
       "sources": [
-        "blambot"
+        "blambot-grammar"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [
+        {
+          "id": "layout-effects-e1",
+          "source_id": "blambot-grammar",
+          "locator": "Balloon Tails / Thought Balloons / Tangents",
+          "claim": "对白尾尖、思考泡和边线相切有各自的常见排字惯例。",
+          "relationship": "supports_principle",
+          "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        }
+      ],
+      "basis": "source_and_project",
+      "project_rules": [
+        "特效独立图层、原图保护及当前三类气泡是项目实现，不涵盖全部漫画惯例。"
+      ],
+      "applicability": [
+        "尾尖指错人，或特效挡住关键文字。"
+      ],
+      "limitations": [
+        "画外音和实验排版可能采用不同约定，应尊重作者意图。"
+      ],
+      "examples": {
+        "positive": "对白尾尖沿说话者方向，思考泡采用不同语义，特效另存层。",
+        "negative": "尾尖指向旁人的手，且和另一泡边缘相切。",
+        "explanation": "尾尖要帮助归属判断，而非仅是装饰。"
+      },
+      "aliases": [
+        "balloon tail",
+        "thought balloon",
+        "tangent",
+        "尾尖"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     },
     {
       "id": "layout-pacing",
@@ -477,7 +1587,45 @@
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02"
+      "reviewed_at": "2026-11-02",
+      "evidence": [],
+      "basis": "project_rule",
+      "project_rules": [
+        "根据目标阅读方向安排格距和留白，导出后检查文字与完整阅读顺序，是项目设计规则。"
+      ],
+      "applicability": [
+        "竖屏条漫的停顿和连读需要控制。"
+      ],
+      "limitations": [
+        "不规定所有语言/画种统一方向或固定像素格距。"
+      ],
+      "examples": {
+        "positive": "情绪转折前适度留白，并在导出后检查整页节奏。",
+        "negative": "为填满页面把反应格移到原因之前，却不说明倒叙。",
+        "explanation": "页面布局不能破坏已经建立的叙事关系。"
+      },
+      "aliases": [
+        "webtoon pacing",
+        "gutter",
+        "page rhythm",
+        "竖屏节奏"
+      ],
+      "checks": [
+        "说明此方法对当前任务的作用，并核对可见/已知证据。",
+        "不满足适用条件时说明例外或保留未知，不强制套用。"
+      ],
+      "review": {
+        "status": "maintainer_researched",
+        "reviewer_kind": "maintainer_assisted_not_external_expert",
+        "checked_at": "2026-11-02",
+        "effect_status": "not_evaluated"
+      }
     }
-  ]
+  ],
+  "research_policy": {
+    "blocked_sources_are_evidence": false,
+    "quotes_stored": false,
+    "full_text_redistributed": false,
+    "review_scope": "每卡原则、应用规则与例外人工整理；不是同行评审或完整教材体系认证。"
+  }
 }

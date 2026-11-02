@@ -18,7 +18,8 @@ class GenerateService:
         self.chapter_repo = ChapterRepository(db)
 
     async def _run_chapter_generation(self, project_id, chapter_id, task_id):
-        from app.agents.knowledge import knowledge_trace
+        from app.agents.knowledge import knowledge_trace,knowledge_corpus,corpus
+        corpus_token=None
         evidence=[]
         evidence_token=knowledge_trace.set(evidence)
         token = task_context.set(task_id)
@@ -48,6 +49,12 @@ class GenerateService:
                     "next_node": "generate_outline",
                     "events": [],
                 }
+            if state.get('knowledge_snapshot_task_id')!=task_id:
+                from copy import deepcopy
+                state['knowledge_snapshot']=deepcopy(corpus())
+                state['knowledge_snapshot_task_id']=task_id
+                state['knowledge_snapshot_origin']='captured_at_start_or_explicit_new_task'
+            corpus_token=knowledge_corpus.set(state['knowledge_snapshot'])
             await self.task_repo.update(
                 task_id,
                 {"status": TaskStatus.RUNNING, "error_message": None, "result": {"state": state}},
@@ -127,6 +134,7 @@ class GenerateService:
                 },
             )
         finally:
+            if corpus_token is not None:knowledge_corpus.reset(corpus_token)
             knowledge_trace.reset(evidence_token)
             task_context.reset(token)
 

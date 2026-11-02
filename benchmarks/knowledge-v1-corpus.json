@@ -1,0 +1,483 @@
+{
+  "version": 1,
+  "license": "MIT (original knowledge cards only; linked sources retain their licenses)",
+  "sources": {
+    "yale-editing": {
+      "title": "Yale Film Analysis — Editing",
+      "url": "https://filmanalysis.yale.edu/editing/",
+      "use": "延伸阅读：连续性与镜头衔接"
+    },
+    "yale-camera": {
+      "title": "Yale Film Analysis — Cinematography",
+      "url": "https://filmanalysis.yale.edu/cinematography/",
+      "use": "延伸阅读：构图、光线与景别"
+    },
+    "adobe-board": {
+      "title": "Adobe — How to get started on storyboarding",
+      "url": "https://www.adobe.com/creativecloud/video/discover/storyboarding.html",
+      "use": "延伸阅读：从剧本到可执行画面"
+    },
+    "pixar-story": {
+      "title": "Pixar in a Box — The art of storytelling",
+      "url": "https://www.khanacademy.org/computing/pixar/storytelling",
+      "use": "延伸阅读：人物、结构与视觉语言；页面正文受访问限制"
+    },
+    "blambot": {
+      "title": "Nate Piekos / Blambot — Better Letterer",
+      "url": "https://blambot.com/pages/lettering-tips",
+      "use": "延伸阅读：专业漫画 lettering 图例；未复制其插图或字体"
+    },
+    "wcag": {
+      "title": "W3C — Understanding Contrast (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+      "use": "界面可读性参考，不宣称漫画画面自动满足 WCAG"
+    }
+  },
+  "cards": [
+    {
+      "id": "story-causality",
+      "role": "story_planner",
+      "title": "目标、阻力、选择与后果",
+      "tags": [
+        "剧情",
+        "因果",
+        "结构",
+        "冲突",
+        "目标"
+      ],
+      "content": "先说明主角此刻想完成什么、阻碍是什么，再把每个转折写成选择带来的后果。短篇的每格至少改变信息、行动或情绪之一。不要把一串漂亮场景当作因果链。把结尾与开头的一个具体意象联系起来；若用户选择开放式结局，不强行圆满。输出必须服从剧情 Schema。",
+      "sources": [
+        "pixar-story"
+      ],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "story-character",
+      "role": "story_planner",
+      "title": "人物欲望与内在需要",
+      "tags": [
+        "人物",
+        "性格",
+        "成长",
+        "人物弧",
+        "动机"
+      ],
+      "content": "区分外在目标与内在需要，并用可观察的动作证明性格。列出已确认事实、可发展的动机、仍未知的背景；未知不自动补成事实。用小选择展示变化，例如起初绕过雨中小猫，后来停步提供庇护。不能为了转折突然改变身份或已批准设定。",
+      "sources": [
+        "pixar-story"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "story-beats",
+      "role": "story_planner",
+      "title": "六格短篇节拍与留白",
+      "tags": [
+        "六格",
+        "短篇",
+        "节奏",
+        "铺垫",
+        "收束"
+      ],
+      "content": "六格可按建立处境、异常线索、选择、行动、后果、余韵安排，但不是强制公式。为关键反应保留一格，避免每格都塞新角色和新道具。长篇先形成场景目标，再分配格数。无对白的反应格也要推进理解；不要用旁白重复观众已能看到的动作。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "story-continuity",
+      "role": "story_planner",
+      "title": "故事事实表与时间线",
+      "tags": [
+        "时间线",
+        "世界观",
+        "连续性",
+        "前章",
+        "伏笔"
+      ],
+      "content": "维护谁知道什么、谁持有什么、地点和时间的简表。区分读者知道与人物知道，防止角色无故获得信息。前章事件只能从提供的资料引用；未提供原文时不要宣称完整检索。伏笔回收须对应已出现的物或动作，超自然变化要有故事规则依据。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "board-intent",
+      "role": "storyboard_artist",
+      "title": "导演式分镜：每格的叙事任务",
+      "tags": [
+        "分镜",
+        "导演",
+        "景别",
+        "建立镜头",
+        "近景",
+        "远景"
+      ],
+      "content": "先写这一格让读者知道或感受到什么，再决定景别与机位。远景建立地理，中景交代动作关系，近景强调反应或关键物件。景别变化应跟随信息变化，不为变化而变化。用 action、shot_type、perspective 和 composition 表达可执行画面；镜头运动在静态漫画中改写为前后格变化，不要求一格同时完成推拉摇移。",
+      "sources": [
+        "adobe-board",
+        "yale-camera"
+      ],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "board-axis",
+      "role": "storyboard_artist",
+      "title": "180度轴线、视线和正反打",
+      "tags": [
+        "轴线",
+        "180",
+        "正反打",
+        "对话",
+        "视线",
+        "左右",
+        "多人"
+      ],
+      "content": "对话或对峙先建立两人的空间轴线，给出人物在画面的左右位置与朝向。相邻正反打维持可理解的视线关系，不能让双方都朝同一方向却看似对视。跨轴可用中性机位、建立镜头或清楚的动作重新定向；轴线是帮助理解的惯例，不是不可违背的法则。多人场景先说明关系，再细分反应。",
+      "sources": [
+        "yale-editing"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "board-action",
+      "role": "storyboard_artist",
+      "title": "动作衔接与道具插入镜头",
+      "tags": [
+        "动作",
+        "接续",
+        "手部",
+        "道具",
+        "匹配剪辑",
+        "持物"
+      ],
+      "content": "将复杂动作拆成准备、接触、结果；静态一格锁定一个清楚瞬间。写明哪只手持物、物件朝向、视线目标和动作起止，后格沿用或明确转移。小道具成为转折时可用特写，但随后要交代它与人物的位置关系。不要同时要求手推门、抱猫、撑伞和拿信却只画两只手。",
+      "sources": [
+        "yale-editing"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "board-time",
+      "role": "storyboard_artist",
+      "title": "格间时间、省略与情绪节奏",
+      "tags": [
+        "节奏",
+        "格间",
+        "时间",
+        "蒙太奇",
+        "省略",
+        "反应"
+      ],
+      "content": "格间省略需要留足让读者推断的线索。动作变化大的两格之间可插入反应或环境格；连续静止近景适合停顿，不能让所有场景都停滞。并置可创造含义，但并非每个故事都要交叉剪辑。竖屏阅读的留白有停顿作用；提示词里明确时间是否连续，防止光线和天气无故跳变。",
+      "sources": [
+        "yale-editing"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "dialogue-purpose",
+      "role": "dialogue_master",
+      "title": "人物声音与台词功能",
+      "tags": [
+        "台词",
+        "人物声音",
+        "潜台词",
+        "对话",
+        "口吻"
+      ],
+      "content": "每句台词至少承担推进动作、提供必要信息、表达关系或制造张力之一。先按人物目标写想说什么，再按性格改成会怎样说。用词、句长和停顿区分角色，不把所有人写成同一种旁白。潜台词通过动作和回应体现，不要求模型解释一切。遵守每泡60字上限，必要时拆分或删减。",
+      "sources": [],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "dialogue-silence",
+      "role": "dialogue_master",
+      "title": "少解释、留反应与沉默",
+      "tags": [
+        "沉默",
+        "留白",
+        "旁白",
+        "重复",
+        "短句"
+      ],
+      "content": "画面已显示的动作不再逐句解说。保留关键线索而压缩解释，必要时用沉默与视线承担情绪。旁白承担时间、视角或画面不可见的信息；内心独白不让其他人物作出听见后的回应。先给句子排序再分配气泡，不能靠长尾巴修复混乱的阅读顺序。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "dialogue-lettering",
+      "role": "dialogue_master",
+      "title": "可排版的台词脚本",
+      "tags": [
+        "气泡",
+        "排字",
+        "字号",
+        "阅读顺序",
+        "标点"
+      ],
+      "content": "输出说话人、分镜索引、气泡类型与简短文本，别把绘图指令写成台词。长句先编辑措辞，再考虑缩小字号；避免一格过多说话人。英文单词和中文标点在换行后仍须可读；中文习惯不直接照搬美漫字形规则。排版约束优先于华丽修辞。",
+      "sources": [
+        "blambot"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "dialogue-continuity",
+      "role": "dialogue_master",
+      "title": "知识边界与对话接续",
+      "tags": [
+        "连续性",
+        "称呼",
+        "前章",
+        "伏笔",
+        "对白"
+      ],
+      "content": "检查称谓、人物所知、承诺和物品归属。回答应回应上一句的意图，允许有意识的回避，但不要无缘无故换话题。参考资料只提供到当前章节时，不泄露未来情节。修订一格台词时检查相邻两格，避免代词失去对象或反应先于原因。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "art-identity",
+      "role": "panel_designer",
+      "title": "锁定身份与可变表演",
+      "tags": [
+        "人物一致性",
+        "角色表",
+        "身份",
+        "服装",
+        "参考图"
+      ],
+      "content": "把身份不变量与表演变量分开：脸型、发长、体态、标志物固定；表情、姿态和镜头角度按剧情变化。服装使用当前批准版本，参考图旧衣不覆盖新衣。将角色表与上一格标明各自用途，不要求照抄参考图构图。多角度仍可能漂移，不能把提示词当作身份保证。",
+      "sources": [],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "art-staging",
+      "role": "panel_designer",
+      "title": "构图层次与可读轮廓",
+      "tags": [
+        "构图",
+        "前景",
+        "中景",
+        "后景",
+        "轮廓",
+        "导演"
+      ],
+      "content": "先安排前中后景与视觉重点，再加装饰细节。主要动作的手、道具和人物轮廓要分离，避免边缘相切造成误读。给后期气泡预留负空间，但不把所有人物挤到底部。机位变化须保留已建立的地理关系和光源方向。",
+      "sources": [
+        "yale-camera"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "art-hands",
+      "role": "panel_designer",
+      "title": "手部与复杂交互的约束",
+      "tags": [
+        "手部",
+        "手指",
+        "抱猫",
+        "持物",
+        "解剖",
+        "接触"
+      ],
+      "content": "用具体接触关系描述手势：哪只手、手掌朝向、接触物、承重位置。减少同时进行的动作，必要时建议拆格。审核手指数量不是唯一指标，还要看关节、遮挡和力的方向。局部损坏优先进入蒙版修复流程，未选区像素保护由程序合成完成，不由模型口头承诺。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "art-light",
+      "role": "panel_designer",
+      "title": "光色连续与材质细节",
+      "tags": [
+        "灯光",
+        "色彩",
+        "夜景",
+        "雨",
+        "材质",
+        "照明"
+      ],
+      "content": "建立主光和辅光的来源，再推导阴影与反光。跨格保持光源方位、天气和场所材质；人物入室可变亮，但外景不应突然停雨。细节依附叙事重点：湿衣反光、窗面雨痕应辅助动作，不能淹没主体。不要用“电影感”替代明确的光线说明。",
+      "sources": [
+        "yale-camera"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "review-evidence",
+      "role": "style_reviewer",
+      "title": "基于实际图像的分项审核",
+      "tags": [
+        "审核",
+        "证据",
+        "人脸",
+        "手部",
+        "一致性"
+      ],
+      "content": "先确认实际附图顺序，再对身份、服装、动作、道具、空间、文字遮挡分别检查。每条问题指明格号、可见现象、严重程度与可执行建议。看不清或被遮挡时记录不确定，不能宣称通过；不能只凭提示词给图像评分。固定角色参考与相邻格分别用于身份和时空判断。",
+      "sources": [],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "review-severity",
+      "role": "style_reviewer",
+      "title": "严重度与修复范围",
+      "tags": [
+        "严重度",
+        "修复",
+        "蒙版",
+        "细节失真",
+        "返工"
+      ],
+      "content": "身份错误、错误角色数量、关键动作或道具缺失通常比装饰差异优先。将问题区分为阻断剧情、影响阅读和轻微美观；修复建议限定到必要区域，避免为改手重绘整页。局部补丁仍需核对接缝、光线和尺度。若当前图不可用或看不到对应部位，说明限制而非编造检测框。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "review-benchmark",
+      "role": "style_reviewer",
+      "title": "一致性基准与比较证据",
+      "tags": [
+        "基准",
+        "评测",
+        "六格",
+        "身份",
+        "服装",
+        "空间"
+      ],
+      "content": "同一案例记录模型、提示词、参考图、尺寸、日期与已知成本，才可比较修订效果。按身份、服装、手部、道具、空间、遮挡分别打分；未知不当作合格。人工评价是独立环节，模型自评分不能替代用户接受度。不得把预生成示例说成当前模型刚生成的成果。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "review-reading",
+      "role": "style_reviewer",
+      "title": "缩略图和完整页阅读检查",
+      "tags": [
+        "阅读",
+        "缩略图",
+        "节奏",
+        "构图",
+        "气泡"
+      ],
+      "content": "除了逐格放大，还在整页和缩略图尺度检查视觉重点、阅读顺序与台词大小。漂亮的单格不代表连续叙事成立。区分蓄意打破规则和无理由的空间跳跃，保留有意的情绪留白。把无法同时满足的构图和台词约束反馈给分镜与台词角色，而非无限重绘。",
+      "sources": [
+        "adobe-board"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "layout-safe",
+      "role": "layout_artist",
+      "title": "阅读路径和保护区域",
+      "tags": [
+        "排版",
+        "气泡",
+        "人脸",
+        "手部",
+        "道具",
+        "保护框"
+      ],
+      "content": "先从实际图片识别人脸、手、关键道具和叙事焦点，再寻找负空间。气泡按目标阅读方向组织，尾尖指向说话人而非挡住其脸；旁白通常不需要对白尾巴。模型给出的保护框可能漏检，程序负责边界与交叠校验。找不到空间时请求精简台词或人工调整，不编造“已避让”。",
+      "sources": [
+        "blambot"
+      ],
+      "core": true,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "layout-type",
+      "role": "layout_artist",
+      "title": "文字与气泡容量",
+      "tags": [
+        "字号",
+        "换行",
+        "对比度",
+        "内边距",
+        "文字"
+      ],
+      "content": "先保证文字完整、内边距和气泡容量，再修饰外形。背景复杂时用稳定的底色或描边；目标设备缩略图下仍要能读。界面普通文本可参考4.5:1对比度、大字3:1，但这不是自动宣告整幅漫画符合WCAG。容量不足优先增大气泡或改写台词，不把字缩成无法阅读的注脚。",
+      "sources": [
+        "wcag"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "layout-effects",
+      "role": "layout_artist",
+      "title": "尾尖、特效与非破坏合成",
+      "tags": [
+        "尾尖",
+        "特效",
+        "图层",
+        "遮挡",
+        "合成"
+      ],
+      "content": "尾尖不应横穿别的气泡、盖住关键脸部或指错说话人。思考泡与旁白应有不同视觉语义。拟声词与光效放在独立层，检查叠加后的文字和手部可读性；保留原始分镜和气泡坐标，导出时使用同一几何语义。不要把显示层合成和原图像素保护混为一谈。",
+      "sources": [
+        "blambot"
+      ],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    },
+    {
+      "id": "layout-pacing",
+      "role": "layout_artist",
+      "title": "页面节奏与输出验证",
+      "tags": [
+        "条漫",
+        "留白",
+        "格距",
+        "导出",
+        "阅读顺序"
+      ],
+      "content": "格距、大小和留白共同组织节奏。对话密集场景避免连续窄格，情绪停顿可用适度留白。先保证目标阅读方向，再选择条漫或页面结构；不要为了填满页面破坏镜头顺序。导出后检查尺寸、文字裁切、字体字形和完整页阅读，不以画布预览代替成稿验证。",
+      "sources": [],
+      "core": false,
+      "authorship": "project-original",
+      "reviewed_at": "2026-11-02"
+    }
+  ]
+}
