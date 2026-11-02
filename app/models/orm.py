@@ -187,3 +187,62 @@ class ProductionBatch(Base):
     status: Mapped[str] = mapped_column(String, default="paused")
     items: Mapped[list] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+class ModelBudget(Base):
+    __tablename__ = 'model_budgets'
+    task_id: Mapped[str] = mapped_column(String, primary_key=True)
+    reserved: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class ModelCall(Base):
+    __tablename__ = 'model_calls'
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    task_id: Mapped[str] = mapped_column(String, index=True)
+    kind: Mapped[str] = mapped_column(String)
+    model: Mapped[str] = mapped_column(String)
+    stage: Mapped[str] = mapped_column(String)
+    status: Mapped[str] = mapped_column(String)
+    usage: Mapped[Optional[dict]] = mapped_column(JSON)
+    error: Mapped[Optional[str]] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+
+class ProviderVerification(Base):
+    __tablename__ = 'provider_verifications'
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    kind: Mapped[str] = mapped_column(String)
+    model: Mapped[str] = mapped_column(String)
+    fingerprint: Mapped[str] = mapped_column(String)
+    status: Mapped[str] = mapped_column(String)
+    detail: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+class CharacterAssetRevision(Base):
+    __tablename__ = 'character_asset_revisions'
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    character_id: Mapped[str] = mapped_column(String, index=True)
+    snapshot: Mapped[dict] = mapped_column(JSON)
+    sha256: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+
+class CharacterAssetPolicy(Base):
+    __tablename__ = 'character_asset_policies'
+    character_id: Mapped[str] = mapped_column(String, primary_key=True)
+    revision_id: Mapped[str] = mapped_column(String)
+    locked: Mapped[bool] = mapped_column(Boolean, default=True)
+
+class ConsistencyEvaluation(Base):
+    __tablename__ = 'consistency_evaluations'
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    chapter_id: Mapped[str] = mapped_column(String, index=True)
+    snapshot: Mapped[dict] = mapped_column(JSON)
+    scores: Mapped[list] = mapped_column(JSON)
+    notes: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+class TaskLease(Base):
+    __tablename__ = 'task_leases'
+    task_id: Mapped[str] = mapped_column(String, primary_key=True)
+    owner: Mapped[str] = mapped_column(String)
+    expires_at: Mapped[datetime] = mapped_column(DateTime)

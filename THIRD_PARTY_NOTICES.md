@@ -16,3 +16,8 @@
 公开版没有分发此前私有开发中使用、但未核实再分发许可的 dialogue 和 visual-reviewer 包及其摘录；对应能力由本项目重新编写的原创规则提供，见 skills/local/。
 
 AI 漫画样例描述虚构人物。样例不构成对第三方商标、肖像或素材权利的额外授权，也不承诺 AI 输出在所有地区具有独占版权。请自行检查再利用场景涉及的第三方权利。
+
+
+## 专业知识卡的参考链接
+
+`knowledge/cards.json` 的正文为项目原创应用笔记，按 MIT 提供；来源表列出 Yale Film Analysis、Adobe Storyboarding、Pixar in a Box、Nate Piekos / Blambot 与 W3C 的延伸阅读链接。没有下载或再分发其教材、插图、影片或字体；外部资料保留原权利。链接不代表这些机构参与、授权或认可本项目。访问与内容边界见 `knowledge/README.md`。

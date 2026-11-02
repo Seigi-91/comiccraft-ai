@@ -43,7 +43,7 @@ class PanelDesignerAgent(TextAgent):
                 },
             }
             prompt = (
-                instructions("panel_designer") + "\n输入：" + json.dumps(data, ensure_ascii=False)
+                instructions("panel_designer", json.dumps(data, ensure_ascii=False)) + "\n输入：" + json.dumps(data, ensure_ascii=False)
             )
             references = [
                 c["reference_image_url"] for c in characters or [] if c.get("reference_image_url")

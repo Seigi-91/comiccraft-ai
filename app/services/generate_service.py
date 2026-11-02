@@ -18,6 +18,9 @@ class GenerateService:
         self.chapter_repo = ChapterRepository(db)
 
     async def _run_chapter_generation(self, project_id, chapter_id, task_id):
+        from app.agents.knowledge import knowledge_trace
+        evidence=[]
+        evidence_token=knowledge_trace.set(evidence)
         token = task_context.set(task_id)
         state = {}
         try:
@@ -53,6 +56,7 @@ class GenerateService:
             async for event in graph.astream(state, stream_mode="updates"):
                 for update in event.values():
                     state.update(update)
+                state["knowledge_evidence"] = list({(e["id"],e["sha256"],e["stage"]):e for e in [*state.get("knowledge_evidence", []),*evidence]}.values())[-120:]
                 await self.task_repo.update(task_id, {"result": {"state": state}})
                 phase = state.get("phase")
                 if phase in {p.value for p in Phase}:
@@ -99,6 +103,7 @@ class GenerateService:
                 },
             )
         except PendingChatGPT as pending:
+            state["knowledge_evidence"] = list({(e["id"],e["sha256"],e["stage"]):e for e in [*state.get("knowledge_evidence", []),*evidence]}.values())[-120:]
             await self.task_repo.update(
                 task_id,
                 {
@@ -122,6 +127,7 @@ class GenerateService:
                 },
             )
         finally:
+            knowledge_trace.reset(evidence_token)
             task_context.reset(token)
 
     async def get_task(self, task_id):

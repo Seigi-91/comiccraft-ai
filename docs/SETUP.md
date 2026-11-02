@@ -9,7 +9,7 @@
 
 ## Windows
 
-运行根目录 `start.ps1`，或：
+优先参见 [Windows 一键安装](INSTALL.md)。已有源码可运行根目录 `start.ps1`，或：
 
 ```powershell
 python -m venv .venv
@@ -23,6 +23,8 @@ npm.cmd --prefix frontend run build
 已有 `.env` 时不要覆盖它。
 
 ## macOS / Linux
+
+已有 Python 3.11+ 和 Node.js 20+ 时，可直接在源码目录执行 `bash start.sh`；手动方式如下。
 
 ```bash
 python3 -m venv .venv

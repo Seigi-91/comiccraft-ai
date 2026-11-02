@@ -7,7 +7,7 @@ from app.models.schemas import StoryboardSchema
 class StoryboardArtistAgent(TextAgent):
     async def generate_storyboard(self, outline, style_ref_urls=None):
         prompt = (
-            instructions("storyboard_artist")
+            instructions("storyboard_artist", json.dumps(outline, ensure_ascii=False))
             + "\n输出 JSON Schema："
             + json.dumps(StoryboardSchema.model_json_schema(), ensure_ascii=False)
             + "\n输入："

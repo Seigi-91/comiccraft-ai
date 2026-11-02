@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModelConnection from '../components/ModelConnection'
 import TextConnection from '../components/TextConnection'
+import ProviderChecks from '../components/ProviderChecks'
+import KnowledgeLibrary, { KnowledgeCard } from '../components/KnowledgeLibrary'
 
 type UpstreamSkill = {
   name: string; skillsmp_url?: string; github_url?: string; commit?: string; source_kind?: string
   installed_path: string; runtime_path: string; adaptation: string
 }
-type Agent = { id: string; name: string; instructions: string; skill: string; upstream_skills: UpstreamSkill[] }
+type Agent = { id: string; name: string; instructions: string; skill: string; upstream_skills: UpstreamSkill[]; knowledge_cards: KnowledgeCard[] }
 
 export default function Studio() {
   const [agents, setAgents] = useState<Agent[]>([])
@@ -30,6 +32,7 @@ export default function Studio() {
       <p className="text-gray-500 mt-2 text-sm">Skills 提供专业方法，不改变模型连接方式。角色表与相邻格会作为连续性参考交接。</p></section>
     <TextConnection onSaved={() => { axios.get('/api/studio/config').then(r => setConfig(r.data)).catch(() => setError('无法刷新连接状态')) }} />
     <ModelConnection />
+    <ProviderChecks />
     <div className="grid md:grid-cols-[240px_minmax(0,1fr)] gap-5">
       <nav className="space-y-2" aria-label="Agent 列表">{agents.map((a, i) =>
         <button key={a.id} className={'chapter-button ' + (selected === a.id ? 'selected' : '')} onClick={() => setSelected(a.id)}>
@@ -38,6 +41,7 @@ export default function Studio() {
         </button>)}</nav>
       <section className="studio-card min-w-0"><h2 className="font-semibold mb-2">{current?.name}</h2>
         <p className="text-xs text-primary-300 mb-4">{current?.skill}</p>
+        {current && <KnowledgeLibrary key={current.id} role={current.id} cards={current.knowledge_cards || []} />}
         {current?.upstream_skills?.map(skill => <article key={skill.name} className="bg-dark-900 border border-dark-600 rounded-xl p-4 mb-5">
           <div className="flex items-center flex-wrap gap-2"><strong>{skill.name}</strong><span className="badge">已安装并加载</span></div>
           <p className="text-sm text-gray-400 mt-3 leading-6">{skill.adaptation}</p>

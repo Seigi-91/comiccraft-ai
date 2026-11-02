@@ -16,7 +16,7 @@ class StyleReviewerAgent(VisionAgent):
             if position:
                 references.extend([panels[0]["image_url"], panels[position - 1]["image_url"]])
             references = list(dict.fromkeys(references))[:6]
-            prompt = instructions("style_reviewer") + "\n分镜要求：" + panel.get("prompt", "")
+            prompt = instructions("style_reviewer", panel.get("prompt", "")) + "\n分镜要求：" + panel.get("prompt", "")
             prompt += (
                 "\n第一张为待审面板，其余为角色表及已生成的开场/前一格参考。"
                 "必须跨图对比脸型、发型、服装、道具、动物花纹、天气和场景结构。镜头变化不等于连续性错误。"

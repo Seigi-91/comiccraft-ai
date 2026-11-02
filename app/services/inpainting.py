@@ -27,6 +27,9 @@ def create_mask(source_url, polygons):
     return '/media/'+path.name
 
 
+from app.services.model_budget import tracked, report_usage
+
+@tracked("image_edit", lambda: settings.IMAGE_EDIT_PROVIDER != "chatgpt_desktop")
 async def edit_image(source_url, mask_url, instructions):
     if not settings.IMAGE_EDIT_BASE_URL:
         raise ValueError('图像编辑服务未配置；请设置 IMAGE_EDIT_BASE_URL、IMAGE_EDIT_MODEL 和密钥')
@@ -42,6 +45,7 @@ async def edit_image(source_url, mask_url, instructions):
             files={'image':('source.png',png(source),'image/png'),'mask':('mask.png',png(api_mask),'image/png')})
         if response.status_code>=400:
             raise ValueError(f'图像编辑接口返回 HTTP {response.status_code}，请检查模型、接口、密钥和额度')
+        report_usage(response.json().get('usage'))
         items=response.json().get('data') or []
         if not items or not items[0].get('b64_json'):
             raise ValueError('编辑服务须返回 data[0].b64_json 图片；当前返回格式不受支持')

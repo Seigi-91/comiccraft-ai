@@ -42,7 +42,9 @@ Keys stay in the backend computer's `.env` and are not returned by the configura
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows:
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+
+Or use Git on Windows:
 
 ```powershell
 git clone https://github.com/Seigi-91/comiccraft-ai.git
@@ -66,7 +68,13 @@ npm --prefix frontend run build
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Install a Chinese-capable font, such as Noto Sans CJK, and set `COMIC_FONT_PATH` if needed. A fresh install starts with an empty database. Example images are available in `outputs/rain-night-light/`; there is not yet a one-click import into the full editor.
+Install a Chinese-capable font, such as Noto Sans CJK, and set `COMIC_FONT_PATH` if needed. A fresh install starts with an empty database. Click the home screen’s sample-import button to load an editable six-panel example without model calls. Re-import opens it without overwriting edits. Environment diagnostics are available there too.
+
+## Professional knowledge and production controls
+
+Each agent has four original knowledge cards (24 total), including directing/storyboard grammar, continuity, dialogue, anatomy checks and lettering. Role-filtered local lexical retrieval adds relevant cards to real prompts and records their IDs/hashes. This is not vector RAG, model training, or a redistribution of textbooks. [Knowledge guide](knowledge/README.md).
+
+Approve and lock character assets; draft edits stay separate until re-approved. The workbench includes a human six-axis consistency rubric bound to panel and lettering state. Explicit cost-consented probes test five provider capabilities. Persistent request caps and numerical usage records help bound API attempts; currency costs remain unknown. Database leases/heartbeats reduce duplicate runner entry in the supported single-instance deployment. They do not promise exactly-once provider billing.
 
 ## Limits and validation
 

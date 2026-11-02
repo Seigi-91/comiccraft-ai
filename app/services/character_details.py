@@ -36,8 +36,15 @@ async def modules(db, profile):
 
 async def creative_character(db, profile):
     data = await modules(db, profile)
+    from app.services.character_assets import approved_asset
+    revision=await approved_asset(db,profile.id)
+    name,reference=profile.name,profile.reference_image_url
+    if revision:
+        data=CharacterModules.model_validate(revision.snapshot['modules']).model_dump()
+        name,reference=revision.snapshot['name'],revision.snapshot['reference_image_url']
     outfit = next((o for o in data['outfits'] if o['id'] == data['active_outfit_id']), None)
-    return {"id": profile.id, "name": profile.name, "appearance": data['appearance'],
-            "reference_image_url": profile.reference_image_url, **data,
+    return {"id": profile.id, "name": name, "appearance": data['appearance'],
+            "reference_image_url": reference, **data,
+            "asset_revision_id":revision.id if revision else None,"asset_sha256":revision.sha256 if revision else None,
             "active_outfit": outfit,
             "wardrobe_instruction": "人物脸型、发型与体态遵循外貌设定和角色参考图；服装以 active_outfit 为准，参考图旧服装不得覆盖当前服装。无当前方案则沿用原设定。"}

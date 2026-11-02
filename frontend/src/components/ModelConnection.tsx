@@ -18,7 +18,7 @@ export default function ModelConnection() {
     e.preventDefault(); setBusy(true); setMessage('')
     try {
       const r = await axios.put('/api/studio/config', { image_provider: provider, image_base_url: base, image_model: model, api_key: key || null, clear_key: clear, use_for_repairs: repairs })
-      apply(r.data); setKey(''); setClear(false); setMessage('已保存。新的图片任务使用此配置；尚未向模型发送付费请求。')
+      apply(r.data); window.dispatchEvent(new Event('comiccraft-config-saved')); setKey(''); setClear(false); setMessage('已保存。新的图片任务使用此配置；尚未向模型发送付费请求。')
     } catch (error) { setMessage(axios.isAxiosError(error) ? error.response?.data?.detail || '保存失败' : '保存失败') }
     finally { setBusy(false) }
   }

@@ -9,6 +9,9 @@ from app.models.orm import ProductionBatch,Task,TaskStatus
 dispatch_lock=asyncio.Lock()
 
 
+from app.services.task_leases import leased_task
+
+@leased_task
 async def run_experiment(task_id):
     from app.tools.desktop_bridge import task_context,stage_context,PendingChatGPT
     from app.tools.image_gen import ImageGeneratorClient

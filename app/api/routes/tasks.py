@@ -9,6 +9,9 @@ router = APIRouter()
 active_tasks = set()
 
 
+from app.services.task_leases import leased_task
+
+@leased_task
 async def run_generation(project_id, chapter_id, task_id):
     if task_id in active_tasks:
         return
@@ -64,6 +67,11 @@ async def resume_task(task_id: str, background_tasks: BackgroundTasks, db=Depend
     task = await db.get(Task, task_id)
     if not task:
         raise HTTPException(404, "任务不存在")
+    from app.models.orm import TaskLease
+    from app.services.task_leases import now
+    lease=await db.get(TaskLease,task_id)
+    if lease and lease.expires_at>now() and task_id not in active_tasks:
+        raise HTTPException(409,"任务租约尚未过期；进程中断后最多等待120秒再继续，先核对未确认请求的账单。")
     if task_id in active_tasks or task.status == TaskStatus.COMPLETED:
         raise HTTPException(409, "任务正在执行或已完成")
     await GenerateService(db).task_repo.update(

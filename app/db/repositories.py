@@ -62,12 +62,33 @@ class ProjectRepository:
         return project
 
     async def delete(self, project_id: str) -> bool:
-        project = await self.get(project_id)
-        if project:
-            await self.session.delete(project)
-            await self.session.commit()
-            return True
-        return False
+        if not await self.get(project_id): return False
+        from sqlalchemy import delete, or_
+        from fastapi import HTTPException
+        from app.models.orm import (Task,TaskStatus,Chapter,Panel,ChapterVersion,PanelRepair,CharacterDetails,
+            CharacterAssetPolicy,CharacterAssetRevision,ConsistencyEvaluation,ProductionBatch,ProductionRecord,
+            ModelCall,ModelBudget,TaskLease,CharacterProfile)
+        from app.api.routes.tasks import active_tasks
+        tasks=list((await self.session.execute(select(Task).where(Task.project_id==project_id))).scalars())
+        if any(t.id in active_tasks or t.status in (TaskStatus.RUNNING,TaskStatus.PENDING) for t in tasks):
+            raise HTTPException(409,'任务执行中，暂不能删除项目')
+        task_ids=[t.id for t in tasks]
+        chapter_ids=list((await self.session.execute(select(Chapter.id).where(Chapter.project_id==project_id))).scalars())
+        character_ids=list((await self.session.execute(select(CharacterProfile.id).where(CharacterProfile.project_id==project_id))).scalars())
+        for model in (ModelCall,ModelBudget,TaskLease):
+            await self.session.execute(delete(model).where(model.task_id.in_(task_ids)))
+        await self.session.execute(delete(ProductionRecord).where(or_(ProductionRecord.task_id.in_(task_ids),ProductionRecord.chapter_id.in_(chapter_ids))))
+        for model in (Panel,ChapterVersion,PanelRepair,ConsistencyEvaluation):
+            await self.session.execute(delete(model).where(model.chapter_id.in_(chapter_ids)))
+        await self.session.execute(delete(Task).where(Task.project_id==project_id))
+        await self.session.execute(delete(Chapter).where(Chapter.project_id==project_id))
+        await self.session.execute(delete(ProductionBatch).where(ProductionBatch.project_id==project_id))
+        for model in (CharacterDetails,CharacterAssetPolicy,CharacterAssetRevision):
+            await self.session.execute(delete(model).where(model.character_id.in_(character_ids)))
+        await self.session.execute(delete(CharacterProfile).where(CharacterProfile.project_id==project_id))
+        await self.session.execute(delete(Project).where(Project.id==project_id))
+        await self.session.commit()
+        return True
 
 
 class ChapterRepository:

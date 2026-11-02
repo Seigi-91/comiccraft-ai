@@ -13,3 +13,13 @@ paths.MEDIA = temporary / "media"
 paths.JOBS = temporary / "jobs"
 paths.MEDIA.mkdir()
 paths.JOBS.mkdir()
+
+
+# Standalone adapter tests also need the request-accounting tables.
+import pytest
+import asyncio
+
+@pytest.fixture(scope="session", autouse=True)
+def initialized_schema():
+    from app.db.session import init_db
+    asyncio.run(init_db())

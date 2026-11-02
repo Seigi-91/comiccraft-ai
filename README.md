@@ -9,7 +9,7 @@
 
 **公开仓库提供源码、文档和成稿供浏览；完整创作网站需要在本机运行。** 默认使用 ChatGPT 协作回填，不是自动控制桌面客户端，也不是免费代理模型 API。无需 API key 即可启动网站；模型创作需要你已有的 ChatGPT 或实际可用的模型服务。
 
-**[免安装气泡编辑体验](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
+**[免安装气泡编辑体验](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [Windows 一键安装](docs/INSTALL.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
 
 ## 看看成稿
 
@@ -38,6 +38,12 @@
 
 ![素材生产工作台](docs/images/production.png)
 
+## Windows 一键安装
+
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+
+启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
+
 ## 5 分钟启动（依赖下载时间另计）
 
 需要 **Python 3.11+、Node.js 20+、Git**，建议先使用 Windows。
@@ -50,7 +56,7 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 浏览器打开 **http://127.0.0.1:8000**。脚本创建虚拟环境、复制 `.env.example`、安装依赖并构建前端。
 
-手动安装及 macOS/Linux 说明见 [SETUP](docs/SETUP.md)。从公开仓库安装后是新数据库；示例漫画在 `outputs/`，不会自动恢复作者电脑中的项目记录。
+手动安装及 macOS/Linux 说明见 [SETUP](docs/SETUP.md)。从公开仓库安装后是新数据库；首页可显式导入预生成示例，保留原始来源标记，不恢复作者电脑中的私有项目记录。
 
 ## 文字和图片，分别选择自己的模型
 
@@ -86,6 +92,14 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 - 无登录、租户隔离和生产级权限控制。默认只绑定 `127.0.0.1`，不要直接将当前版本开放到公网。
 - 气泡保护框依赖视觉判断，可能漏检；手动位置、蒙版接缝和特效遮挡仍需人工检查。
 
+## 专业知识与可控生产
+
+六个 Agent 各有 4 张[专业知识卡](knowledge/README.md)，本地按角色与任务检索后接入实际提示词。分镜师可使用导演式叙事任务、景别、轴线/正反打、动作衔接和格间时间知识。它是原创应用笔记与来源链接，不是教材转载或模型微调；生成状态保存知识卡指纹。
+
+角色可审批锁定，解锁后的草稿不改变正在使用的审批版，重新审批后才用于新生成。生产工作台提供六维人工一致性评测，绑定图片及台词/特效状态。设置页可显式验证五类模型能力，并设置每任务 API 请求预留上限；调用记录保留服务返回的数值 usage，未知金额显示未知。批次仍是单实例调度，新增数据库租约与心跳用于防重复进入，不宣称跨系统恰好一次计费。
+
+[知识库](knowledge/README.md) · [质量、预算与恢复](docs/PRODUCTION_SAFETY.md) · [一致性基准](benchmarks/consistency-cases.json)
+
 ## 测试
 
 ```powershell
@@ -95,7 +109,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 25 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 35 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 

@@ -20,7 +20,7 @@ def sources():
 
 
 @lru_cache
-def instructions(role):
+def _base_instructions(role):
     if role not in ROLES:
         raise ValueError(f"Unknown comic agent: {role}")
     prompt = (ROOT / "app" / "prompts" / f"{role}.md").read_text(encoding="utf-8")
@@ -43,13 +43,20 @@ def instructions(role):
     return "\n\n".join([prompt, skill, *upstream])
 
 
+def instructions(role, query=""):
+    from app.agents.knowledge import context
+    return _base_instructions(role) + "\n\n" + context(role, query)
+
+
 def catalog():
+    from app.agents.knowledge import role_cards
     return [
         {
             "id": key,
             "name": name,
             "instructions": instructions(key),
             "skill": f"skills/{key.replace('_', '-')}/SKILL.md",
+            "knowledge_cards": role_cards(key),
             "upstream_skills": [entry for entry in sources() if entry["role"] == key],
         }
         for key, name in ROLES.items()

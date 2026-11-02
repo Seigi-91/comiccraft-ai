@@ -19,6 +19,7 @@ router = APIRouter()
 @router.get("/config")
 async def public_config():
     return {
+        "max_model_requests": settings.MAX_MODEL_REQUESTS_PER_TASK,
         "provider": settings.AI_PROVIDER,
         "text_base_url": settings.LOCAL_GPT_BASE_URL,
         "text_key_configured": bool(settings.LOCAL_GPT_API_KEY),
@@ -145,6 +146,7 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
     return {"status": "accepted"}
 
 class ConnectionUpdate(BaseModel):
+    max_model_requests: int | None = Field(default=None,ge=1,le=1000)
     image_provider: str | None = None
     text_provider: str | None = None
     text_base_url: str = Field(default="https://api.openai.com/v1", max_length=500)
@@ -166,14 +168,11 @@ async def update_connection(data: ConnectionUpdate, request: Request):
     from pathlib import Path
     import os
     from app.core.paths import ROOT
-    peer = request.client.host if request.client else ''
-    host = urlsplit('http://' + request.headers.get('host', '')).hostname
-    origin = request.headers.get('origin')
-    local = {'localhost', '127.0.0.1', '::1', 'testserver', 'testclient'}
-    if not settings.ENABLE_LOCAL_SETTINGS or peer not in local or host not in local:
-        raise HTTPException(403, '模型设置仅允许本机访问；远程部署请由管理员配置 .env')
-    if origin and urlsplit(origin).hostname not in local:
-        raise HTTPException(403, '不允许跨站修改模型设置')
+    from app.api.local_access import require_local_settings
+    from app.api.routes.compatibility import probe_lock
+    require_local_settings(request)
+    if probe_lock.locked():
+        raise HTTPException(409,"模型验证进行中，请完成后修改设置")
     if active_tasks:
         raise HTTPException(409, '请等待正在生成的任务完成后再切换模型')
     def validate_address(url):
@@ -215,6 +214,8 @@ async def update_connection(data: ConnectionUpdate, request: Request):
                       LOCAL_GPT_API_KEY=None if data.clear_text_key else (data.text_api_key or settings.LOCAL_GPT_API_KEY),
                       DEFAULT_TEXT_MODEL=data.text_model.strip(), DEFAULT_INFERENCE_MODEL=data.text_model.strip(),
                       DEFAULT_VISION_MODEL=data.vision_model.strip())
+    if data.max_model_requests is not None:
+        values["MAX_MODEL_REQUESTS_PER_TASK"]=data.max_model_requests
     if not values:
         raise HTTPException(422, '请指定要修改的模型连接')
     env_path = ROOT / '.env'
@@ -231,3 +232,14 @@ async def update_connection(data: ConnectionUpdate, request: Request):
     for name, value in values.items():
         setattr(settings, name, value)
     return await public_config()
+
+
+@router.get("/knowledge/{role}")
+async def search_knowledge(role: str, query: str = ""):
+    from app.agents.knowledge import retrieve
+    if len(query)>2000:
+        raise HTTPException(422,"知识查询不能超过2000字符")
+    try:
+        return {'role':role,'method':'local_role_filtered_lexical','cards':retrieve(role,query)}
+    except ValueError:
+        raise HTTPException(404,"未知知识库角色")

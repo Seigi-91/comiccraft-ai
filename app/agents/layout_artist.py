@@ -11,7 +11,7 @@ from app.tools.media import local_image_path
 
 class LayoutArtistAgent(TextAgent):
     async def compose_final(self, panels, dialogues, effects=None):
-        self.system_prompt = instructions("layout_artist")
+        self.system_prompt = instructions("layout_artist", str(dialogues))
         return await asyncio.to_thread(self._render, panels, dialogues, effects)
 
     def _render(self, panels, dialogues, effects=None):
@@ -34,6 +34,9 @@ class LayoutArtistAgent(TextAgent):
         if font_path is None:
             raise ValueError("未找到字体，请安装中文字体")
         font = ImageFont.truetype(str(font_path), 26)
+        has_chinese=any('\u4e00'<=char<='\u9fff' for bubble in dialogues.get('bubbles',[]) for char in bubble.get('text',''))
+        if has_chinese and bytes(font.getmask('中'))==bytes(font.getmask('\uffff')):
+            raise ValueError('所选字体缺少中文字形，请安装 Noto Sans CJK 并设置 COMIC_FONT_PATH')
         width, margin = 1000, 28
         pieces = []
         geometry = []

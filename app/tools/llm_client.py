@@ -1,6 +1,7 @@
 import json
 import httpx
 from app.core.config import settings
+from app.services.model_budget import tracked, report_usage
 from app.tools.desktop_bridge import request_chatgpt
 
 
@@ -19,6 +20,7 @@ class LLMClient:
         self.model = model or settings.DEFAULT_TEXT_MODEL
         self.temperature = temperature
 
+    @tracked("text_or_vision", lambda: settings.AI_PROVIDER != "chatgpt_desktop")
     async def _request(self, prompt, images=None):
         if settings.AI_PROVIDER == "chatgpt_desktop":
             return request_chatgpt("vision" if images else "text", prompt, images)
@@ -43,6 +45,7 @@ class LLMClient:
                 },
             )
             response.raise_for_status()
+            report_usage(response.json().get("usage"))
             result = response.json()["choices"][0]["message"]["content"]
             if not isinstance(result, str) or not result.strip():
                 raise ValueError("本地 GPT 返回空内容")

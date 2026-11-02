@@ -41,11 +41,15 @@ async def lifespan(app):
         batches=(await session.execute(select(ProductionBatch).where(ProductionBatch.status=="running"))).scalars()
         for batch in batches:
             batch.status="paused"
+        from app.models.orm import ModelCall
+        for call in (await session.execute(select(ModelCall).where(ModelCall.status=="reserved"))).scalars():
+            call.status="interrupted"
+            call.error="进程中断，服务可能已计费；重试前核对服务账单"
         await session.commit()
     yield
 
 
-app = FastAPI(title="ComicCraft AI", version="2.0.0", lifespan=lifespan)
+app = FastAPI(title="ComicCraft AI", version="2.1.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -62,6 +66,14 @@ app.include_router(characters, prefix="/api/projects")
 app.include_router(tasks, prefix="/api/tasks")
 app.include_router(websocket, prefix="/api/ws")
 app.include_router(studio, prefix="/api/studio")
+from app.api.routes.onboarding import router as onboarding
+app.include_router(onboarding, prefix="/api/onboarding")
+from app.api.routes.compatibility import router as compatibility
+app.include_router(compatibility, prefix="/api/studio")
+from app.api.routes.assets import router as assets
+app.include_router(assets, prefix="/api/assets")
+from app.api.routes.consistency import router as consistency
+app.include_router(consistency, prefix="/api/quality")
 app.include_router(editing, prefix="/api/editing")
 app.include_router(repairs, prefix="/api/repairs")
 app.include_router(production, prefix="/api/production")

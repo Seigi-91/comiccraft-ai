@@ -49,6 +49,8 @@ async def set_character_reference(
             raise ValueError("参考图不存在")
     except ValueError as error:
         raise HTTPException(422, str(error))
+    from app.services.character_assets import assert_draft_editable
+    await assert_draft_editable(db,character_id)
     await repo.update(
         character_id, {"reference_image_url": reference_image_url, "is_confirmed": True}
     )
@@ -56,7 +58,7 @@ async def set_character_reference(
         "character_id": character_id,
         "reference_image_url": reference_image_url,
         "embedding_extracted": False,
-        "message": "参考图将直接附给 ChatGPT，不使用 SD/SAM",
+        "message": "参考图将附给所选的生图和视觉服务；未提取人脸 embedding",
     }
 
 
@@ -142,6 +144,12 @@ async def delete_character_profile(
     if not profile or profile.project_id != project_id:
         raise HTTPException(status_code=404, detail="角色不存在")
 
+    from app.services.character_assets import assert_draft_editable
+    await assert_draft_editable(db,character_id)
+    from sqlalchemy import delete
+    from app.models.orm import CharacterAssetPolicy,CharacterAssetRevision
+    for model in (CharacterDetails,CharacterAssetPolicy,CharacterAssetRevision):
+        await db.execute(delete(model).where(model.character_id==character_id))
     success = await repo.delete(character_id)
     if success:
         return {"message": "角色已删除"}
@@ -153,6 +161,8 @@ async def update_modules(project_id: str, character_id: str, data: CharacterModu
     profile = await CharacterProfileRepository(db).get(character_id)
     if not profile or profile.project_id != project_id:
         raise HTTPException(404, "角色不存在")
+    from app.services.character_assets import assert_draft_editable
+    await assert_draft_editable(db,character_id)
     row = await db.get(CharacterDetails, character_id)
     if row:
         row.data = data.model_dump()

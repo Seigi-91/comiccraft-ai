@@ -7,7 +7,7 @@ from app.models.schemas import StorySchema
 class StoryPlannerAgent(TextAgent):
     async def generate_outline(self, inspiration, style_ref_urls=None, characters=None):
         prompt = (
-            instructions("story_planner")
+            instructions("story_planner", inspiration)
             + "\n输出 JSON Schema："
             + json.dumps(StorySchema.model_json_schema(), ensure_ascii=False)
             + "\n输入："

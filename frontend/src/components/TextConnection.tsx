@@ -18,7 +18,7 @@ export default function TextConnection({ onSaved }: { onSaved?: () => void }) {
     e.preventDefault(); setBusy(true); setMessage('')
     try {
       const r = await axios.put('/api/studio/config', { text_provider: provider, text_base_url: base, text_model: model, vision_model: vision, text_api_key: key || null, clear_text_key: clear })
-      apply(r.data); setKey(''); setClear(false); onSaved?.(); setMessage('文字设置已保存。新任务使用此连接，图片连接保持不变；尚未发送付费请求。')
+      apply(r.data); window.dispatchEvent(new Event('comiccraft-config-saved')); setKey(''); setClear(false); onSaved?.(); setMessage('文字设置已保存。新任务使用此连接，图片连接保持不变；尚未发送付费请求。')
     } catch (error) { setMessage(axios.isAxiosError(error) ? error.response?.data?.detail || '保存失败' : '保存失败') }
     finally { setBusy(false) }
   }

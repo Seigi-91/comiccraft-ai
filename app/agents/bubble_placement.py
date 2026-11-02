@@ -61,7 +61,8 @@ async def place_bubbles(state):
         bubbles={i:b for i,b in enumerate(dialogues['bubbles']) if b['panel_index']==panel['index'] and b['text'].strip()}
         if not bubbles:
             continue
-        prompt=skill+'\n输出 Schema：'+json.dumps(PlacementPlan.model_json_schema(),ensure_ascii=False)+'\n台词（id 不得改变）：'+json.dumps(bubbles,ensure_ascii=False)
+        from app.agents.skills import instructions
+        prompt=instructions('layout_artist', json.dumps(bubbles,ensure_ascii=False))+'\n'+skill+'\n输出 Schema：'+json.dumps(PlacementPlan.model_json_schema(),ensure_ascii=False)+'\n台词（id 不得改变）：'+json.dumps(bubbles,ensure_ascii=False)
         token=stage_context.set('bubble_placement:'+str(panel['index']))
         try:
             plan=PlacementPlan.model_validate(await VisionLLMClient().review_images([panel['image_url']],prompt))

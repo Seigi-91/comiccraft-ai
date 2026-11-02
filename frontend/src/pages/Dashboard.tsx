@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Plus, BookOpen, Clock, ChevronRight, Sparkles } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import GettingStarted from '../components/GettingStarted'
 
 interface Project {
   id: string
@@ -58,6 +59,7 @@ function Dashboard() {
         </button>
       </div>
 
+      <GettingStarted />
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (

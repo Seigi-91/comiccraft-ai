@@ -3,6 +3,7 @@ import httpx
 from app.core.config import settings
 from app.tools.desktop_bridge import request_chatgpt
 from app.tools.media import save_image_bytes
+from app.services.model_budget import tracked, report_usage
 
 
 class ImageGeneratorClient:
@@ -34,6 +35,7 @@ class ImageGeneratorClient:
         await finish_record(record,'completed',image_url=result)
         return result
 
+    @tracked("image", lambda: settings.image_provider != "chatgpt_desktop")
     async def _generate_image(self,prompt,negative_prompt,width,height,style,reference_images):
         full_prompt = f"{prompt}\n画风：{style}。画幅 {width}×{height}。避免：{negative_prompt}。不要绘制文字或水印。"
         if settings.image_provider == "chatgpt_desktop":
@@ -51,6 +53,7 @@ class ImageGeneratorClient:
             else:
                 response = await client.post(base.rstrip("/") + "/images/generations", headers=headers, json=payload)
             response.raise_for_status()
+            report_usage(response.json().get("usage"))
             item = response.json()["data"][0]
             if item.get("b64_json"):
                 return save_image_bytes(base64.b64decode(item["b64_json"], validate=True))

@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Literal
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,6 +14,7 @@ class Settings(BaseSettings):
     LOCAL_GPT_BASE_URL: str = "http://127.0.0.1:1234/v1"
     LOCAL_GPT_API_KEY: str | None = None
     COMIC_FONT_PATH: str | None = None
+    MAX_MODEL_REQUESTS_PER_TASK: int = Field(default=96, ge=1, le=1000)
     GPT_TIMEOUT: float = 180.0
     IMAGE_EDIT_PROVIDER: Literal["chatgpt_desktop", "openai"] = "chatgpt_desktop"
     IMAGE_EDIT_BASE_URL: str | None = None

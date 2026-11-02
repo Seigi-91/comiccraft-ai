@@ -7,7 +7,7 @@ from app.models.schemas import DialogueSchema
 class DialogueMasterAgent(TextAgent):
     async def generate_dialogues(self, outline, storyboard):
         prompt = (
-            instructions("dialogue_master")
+            instructions("dialogue_master", json.dumps(storyboard, ensure_ascii=False))
             + "\n输出 JSON Schema："
             + json.dumps(DialogueSchema.model_json_schema(), ensure_ascii=False)
             + "\n输入："

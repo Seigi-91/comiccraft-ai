@@ -6,3 +6,7 @@ skills/**/UPSTREAM.md -text whitespace=cr-at-eol
 skills/local/** -text
 
 videos/**/assets/lib/*.js -whitespace
+
+# Launch scripts must remain usable on Unix checkouts.
+*.sh text eol=lf
+*.cmd text eol=crlf

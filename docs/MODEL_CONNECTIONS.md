@@ -59,3 +59,12 @@ IMAGE_EDIT_API_KEY=你的密钥（仅写入本机文件）
 网页写入的是运行后端电脑的 `.env`，不是 GitHub、浏览器本地存储或云端保管库。密钥不会通过配置读取接口返回。配置写入口检查本机连接、Host 与 Origin，远程请求禁止写入；远程部署还应设置 `ENABLE_LOCAL_SETTINGS=false`，由管理员使用环境变量配置，且增加独立的身份认证、HTTPS 和每用户密钥隔离。本项目当前不是开放给陌生人共用管理员密钥的多租户服务。
 
 协议依据：[OpenAI Images API](https://developers.openai.com/api/reference/resources/images/methods/edit)。兼容协议测试通过不等同于每一家第三方服务已通过实际付费生成验证。
+
+
+## 验证与请求上限
+
+设置页的「服务验证与请求上限」可以检查五类能力，须先勾选费用确认，每次最多一个模型请求。通过只表示协议返回可解析，尚不代表画质达标。请求上限是每任务持久次数保护，未知金额不作估算。详见 [生产控制与恢复](PRODUCTION_SAFETY.md)。
+
+## 专业知识库
+
+六个 agent 的任务提示词会读取对应的原创知识卡；分镜师包含景别、轴线、动作衔接和格间时间方法。不需要另配 embedding API。详见 [知识库接入](../knowledge/README.md)。
