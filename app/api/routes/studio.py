@@ -1,6 +1,6 @@
 import base64
 import json
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile
+from fastapi import Request, APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile
 from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import select
 from app.agents.skills import catalog
@@ -20,7 +20,12 @@ router = APIRouter()
 async def public_config():
     return {
         "provider": settings.AI_PROVIDER,
-        "requires_manual_handoff": settings.AI_PROVIDER == "chatgpt_desktop",
+        "image_provider": settings.image_provider,
+        "image_base_url": settings.IMAGE_API_BASE_URL,
+        "image_api_model": settings.IMAGE_API_MODEL,
+        "image_key_configured": bool(settings.IMAGE_API_KEY),
+        "edit_provider": settings.IMAGE_EDIT_PROVIDER,
+        "requires_manual_handoff": settings.AI_PROVIDER == "chatgpt_desktop" or settings.image_provider == "chatgpt_desktop",
         "description": (
             "ChatGPT 协作模式：复制任务到本机 ChatGPT，再回填 JSON 或上传图片。"
             if settings.AI_PROVIDER == "chatgpt_desktop"
@@ -135,3 +140,57 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
     else:
         background_tasks.add_task(run_generation, task.project_id, task.chapter_id, task.id)
     return {"status": "accepted"}
+
+class ConnectionUpdate(BaseModel):
+    image_provider: str
+    image_base_url: str = Field(default="https://api.openai.com/v1", max_length=500)
+    image_model: str = Field(default="gpt-image-1", min_length=1, max_length=200)
+    api_key: str | None = Field(default=None, max_length=1000)
+    clear_key: bool = False
+    use_for_repairs: bool = True
+
+
+@router.put("/config")
+async def update_connection(data: ConnectionUpdate, request: Request):
+    # This unauthenticated app may only change credentials from its local browser.
+    from urllib.parse import urlsplit
+    from pathlib import Path
+    import os
+    from app.core.paths import ROOT
+    peer = request.client.host if request.client else ''
+    host = urlsplit('http://' + request.headers.get('host', '')).hostname
+    origin = request.headers.get('origin')
+    local = {'localhost', '127.0.0.1', '::1', 'testserver', 'testclient'}
+    if not settings.ENABLE_LOCAL_SETTINGS or peer not in local or host not in local:
+        raise HTTPException(403, '模型设置仅允许本机访问；远程部署请由管理员配置 .env')
+    if origin and urlsplit(origin).hostname not in local:
+        raise HTTPException(403, '不允许跨站修改模型设置')
+    if active_tasks:
+        raise HTTPException(409, '请等待正在生成的任务完成后再切换模型')
+    if data.image_provider not in {'chatgpt_desktop', 'openai'}:
+        raise HTTPException(422, '未知图片提供方')
+    address = urlsplit(data.image_base_url)
+    if address.scheme not in {'http', 'https'} or not address.hostname or address.username or address.password or address.query or address.fragment:
+        raise HTTPException(422, 'API 地址必须是无密钥、无查询参数的 http/https 基础地址')
+    if any('\n' in value or '\r' in value for value in [data.image_base_url, data.image_model, data.api_key or '']):
+        raise HTTPException(422, '配置不能包含换行')
+    key = None if data.clear_key else (data.api_key or settings.IMAGE_API_KEY)
+    values = {'IMAGE_PROVIDER': data.image_provider, 'IMAGE_API_BASE_URL': data.image_base_url.rstrip('/'),
+              'IMAGE_API_MODEL': data.image_model, 'IMAGE_API_KEY': key}
+    if data.use_for_repairs:
+        values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
+                      IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
+    env_path = ROOT / '.env'
+    lines = env_path.read_text(encoding='utf-8').splitlines() if env_path.exists() else []
+    lines = [line for line in lines if line.split('=', 1)[0].strip() not in values]
+    lines.extend(f'{name}={json.dumps(value or "", ensure_ascii=False)}' for name, value in values.items())
+    temporary = env_path.with_suffix('.env.tmp')
+    try:
+        temporary.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        os.chmod(temporary, 0o600)
+        os.replace(temporary, env_path)
+    except OSError:
+        raise HTTPException(500, '无法保存本机配置，请检查 .env 写入权限')
+    for name, value in values.items():
+        setattr(settings, name, value)
+    return await public_config()

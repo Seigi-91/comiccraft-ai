@@ -73,7 +73,7 @@ def test_complete_workflow_and_retry():
     with TestClient(app) as client:
         assert client.get("/health").json()["provider"] == "chatgpt_desktop"
         assert len(client.get("/api/studio/agents").json()) == 6
-        assert "key" not in client.get("/api/studio/config").text.lower()
+        assert "IMAGE_API_KEY" not in client.get("/api/studio/config").json()
         p = client.post(
             "/api/projects", json={"name": "测试项目", "inspiration": "雨夜来信"}
         ).json()

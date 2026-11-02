@@ -7,7 +7,7 @@ from app.tools.media import save_image_bytes
 
 class ImageGeneratorClient:
     def __init__(self, model=None):
-        self.model = model or settings.DEFAULT_IMAGE_MODEL
+        self.model = model or (settings.IMAGE_API_MODEL if settings.IMAGE_PROVIDER else settings.DEFAULT_IMAGE_MODEL)
 
     async def generate_image(
         self,
@@ -36,26 +36,20 @@ class ImageGeneratorClient:
 
     async def _generate_image(self,prompt,negative_prompt,width,height,style,reference_images):
         full_prompt = f"{prompt}\n画风：{style}。画幅 {width}×{height}。避免：{negative_prompt}。不要绘制文字或水印。"
-        if settings.AI_PROVIDER == "chatgpt_desktop":
+        if settings.image_provider == "chatgpt_desktop":
             return request_chatgpt("image", full_prompt, reference_images)
-        if reference_images:
-            raise ValueError("HTTP 模式暂不支持参考图编辑，请使用 ChatGPT 协作模式")
-        headers = (
-            {"Authorization": f"Bearer {settings.LOCAL_GPT_API_KEY}"}
-            if settings.LOCAL_GPT_API_KEY
-            else {}
-        )
+        from app.tools.media import local_image_path
+        key = settings.IMAGE_API_KEY if settings.IMAGE_PROVIDER else settings.LOCAL_GPT_API_KEY
+        base = settings.IMAGE_API_BASE_URL if settings.IMAGE_PROVIDER else settings.LOCAL_GPT_BASE_URL
+        headers = {"Authorization": f"Bearer {key}"} if key else {}
         async with httpx.AsyncClient(timeout=settings.GPT_TIMEOUT) as client:
-            response = await client.post(
-                settings.LOCAL_GPT_BASE_URL.rstrip("/") + "/images/generations",
-                headers=headers,
-                json={
-                    "model": self.model,
-                    "prompt": full_prompt,
-                    "n": 1,
-                    "size": f"{width}x{height}",
-                },
-            )
+            payload = {"model": self.model, "prompt": full_prompt, "n": 1, "size": f"{width}x{height}"}
+            if reference_images:
+                files = [("image[]", (f"reference-{i}.png", local_image_path(url).read_bytes(), "image/png")) for i, url in enumerate(reference_images)]
+                response = await client.post(base.rstrip("/") + "/images/edits", headers=headers,
+                    data={k: str(v) for k, v in payload.items()}, files=files)
+            else:
+                response = await client.post(base.rstrip("/") + "/images/generations", headers=headers, json=payload)
             response.raise_for_status()
             item = response.json()["data"][0]
             if item.get("b64_json"):

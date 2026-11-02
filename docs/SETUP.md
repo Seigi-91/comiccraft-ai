@@ -72,7 +72,7 @@ npm run dev -- --host 127.0.0.1
 - **页面打不开/只有提示 JSON**：先构建 `frontend/dist`，确认工作目录为仓库根目录。
 - **等待协作**：这是默认模式，复制任务并附图、回填结果后才继续，不是服务卡住。
 - **HTTP 401/403**：检查你自己的密钥、权限与模型；ChatGPT 订阅不等于 API 额度。
-- **参考图编辑不支持**：现有 HTTP 生图适配器明确拒绝该能力；用协作模式，或另行开发支持参考图的适配器。
+- **参考图接口报错**：检查服务是否支持 multipart `/images/edits` 和 `image[]` 上传；若厂商格式不同，请切换协作模式或增加专用适配器。
 - **返回 JSON 不合法**：完整复制 Schema 和任务，粘贴完整 JSON；不会自动伪造补全。
 - **中文方块**：安装 CJK 字体并设置 `COMIC_FONT_PATH` 后重启。
 - **skill 校验失败**：不要手动修改固定上游文件；检查 `.gitattributes` 是否保留原始字节，或恢复文件。原创规则可单独修改。
@@ -86,3 +86,7 @@ npm run dev -- --host 127.0.0.1
 ## Docker（可选）
 
 仓库提供单服务 Dockerfile/Compose，不启动旧版 Redis/Chroma/MinIO 栈。安装 Docker 后，先从 `.env.example` 复制 `.env`，再执行 `docker compose up --build`。数据保存在挂载的 `data/`，默认仅将端口发布到主机 `127.0.0.1`。容器内 `127.0.0.1` 不是宿主机；连接主机模型服务时需自行配置适用地址。该配置已静态检查，当前发布环境未运行 Docker 构建，使用前请按自身平台验证。
+
+## 网页切换图片服务
+
+新版支持本机设置面板，参见 [两种图片生成方式](MODEL_CONNECTIONS.md)。IMAGE_PROVIDER 独立于文字 AI_PROVIDER；有参考图时使用 multipart /images/edits，因此兼容接口现在可以参与角色一致性和参数实验流程。第三方服务须实际支持该协议。

@@ -169,7 +169,6 @@ async def adopt_experiment(task_id:str,payload:AdoptExperiment,db=Depends(get_db
 @router.post('/chapters/{chapter_id}/experiments')
 async def experiment(chapter_id:str,payload:ExperimentRequest,db=Depends(get_db)):
     chapter,tasks=await context(db,chapter_id)
-    if settings.AI_PROVIDER!='chatgpt_desktop':raise HTTPException(422,'当前 HTTP 生图适配器不支持参考图实验；请先配置支持参考图的服务')
     source=(await db.execute(select(Panel).where(Panel.chapter_id==chapter_id,Panel.index==payload.panel_index))).scalar_one_or_none()
     if not source:raise HTTPException(404,'分镜不存在')
     state=deepcopy((tasks[0].result or {}).get('state',{})) if tasks else {}

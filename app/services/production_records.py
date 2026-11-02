@@ -17,8 +17,8 @@ def asset_hash(url):
 async def start_record(prompt, references, model, width, height, style, context):
     task_id=task_context.get();stage=stage_context.get()
     payload={'prompt':prompt,'references':[{'url':u,'sha256':asset_hash(u)} for u in references or []],
-             'provider':settings.AI_PROVIDER,'model_requested':model,'parameters_requested':{'width':width,'height':height,'style':style},
-             'parameter_semantics':'desktop: prompt constraints, not guaranteed inference parameters' if settings.AI_PROVIDER=='chatgpt_desktop' else 'HTTP: model, n=1 and size sent; style is prompt text',
+             'provider':settings.image_provider,'model_requested':model,'parameters_requested':{'width':width,'height':height,'style':style},
+             'parameter_semantics':'desktop: prompt constraints, not guaranteed inference parameters' if settings.image_provider=='chatgpt_desktop' else 'HTTP: model, n=1 and size sent; style is prompt text',
              'context':deepcopy(context or {}),'prompt_sha256':hashlib.sha256(prompt.encode()).hexdigest()}
     record_id=hashlib.sha256(json.dumps([task_id,stage,payload],sort_keys=True,ensure_ascii=False).encode()).hexdigest()
     async with AsyncSessionLocal() as db:

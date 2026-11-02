@@ -5,6 +5,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     AI_PROVIDER: Literal["chatgpt_desktop", "local_http"] = "chatgpt_desktop"
+    IMAGE_PROVIDER: Literal["chatgpt_desktop", "openai"] | None = None
+    IMAGE_API_BASE_URL: str = "https://api.openai.com/v1"
+    IMAGE_API_KEY: str | None = None
+    IMAGE_API_MODEL: str = "gpt-image-1"
+    ENABLE_LOCAL_SETTINGS: bool = True
     LOCAL_GPT_BASE_URL: str = "http://127.0.0.1:1234/v1"
     LOCAL_GPT_API_KEY: str | None = None
     COMIC_FONT_PATH: str | None = None
@@ -47,6 +52,11 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     CELERY_BROKER_URL: str | None = None
     CELERY_RESULT_BACKEND: str | None = None
+
+
+    @property
+    def image_provider(self):
+        return self.IMAGE_PROVIDER or ("chatgpt_desktop" if self.AI_PROVIDER == "chatgpt_desktop" else "openai")
 
 
 settings = Settings()

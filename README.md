@@ -63,7 +63,7 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 ## 自动接口与边界
 
 - 可配置 OpenAI 兼容文字/视觉/生图 HTTP 服务，以及独立 `/images/edits` 图像编辑服务；密钥只放本机 `.env`。
-- 当前 HTTP **生图**适配器不支持参考图，有参考图时明确报错；不要把本地文字模型等同于生图服务。
+- 图片 API 支持文生图与 multipart 参考图生成；服务须同时支持 `/images/generations` 和 `/images/edits`，不能把纯文字模型当作生图服务。
 - ChatGPT 模式中的尺寸和风格是提示词约束，**不是 seed、步数或去噪强度等底层推理参数**。
 - 没有完整向量 RAG；当前使用角色资料及最近三章大纲构造上下文。
 - 批次是单进程本地调度，暂停/取消不强杀当前项；不提供分布式任务保证。
@@ -79,7 +79,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 20 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 22 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 
@@ -95,3 +95,7 @@ npm.cmd --prefix frontend run build
 ## 许可
 
 项目原创代码与文档采用 [MIT](LICENSE)。上游技能、字体、音乐、JavaScript 等第三方资源保留各自许可，**不因根目录 MIT 而改换许可**。示例漫画为 AI 生成的虚构人物作品，仅作为效果示例提供；第三方素材详见 [许可清单](THIRD_PARTY_NOTICES.md)。
+
+### 选择 ChatGPT 或图像 API
+
+现在可以在「创作团队与设置」直接切换本机 ChatGPT 协作回填或图像 API 自动生成，也支持文字 ChatGPT + 图片 API 混合使用。[完整配置、协议与密钥说明](docs/MODEL_CONNECTIONS.md)。

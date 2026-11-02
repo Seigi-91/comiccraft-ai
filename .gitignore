@@ -38,3 +38,5 @@ videos/**/tools/
 *.zip
 *.mp4
 videos/comiccraft-demo/
+
+.env.tmp
