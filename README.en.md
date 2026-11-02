@@ -42,7 +42,7 @@ Keys stay in the backend computer's `.env` and are not returned by the configura
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.2.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.3.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
 
 Or use Git on Windows:
 
@@ -115,3 +115,9 @@ The [retrieval regression](benchmarks/KNOWLEDGE_EVALUATION.md) improved top-thre
 Each agent's settings page now provides paired manual ChatGPT tasks, frozen prompts and diffs, JSON reply validation, per-dimension observations and delayed condition reveal. Use two fresh chats with the same displayed model; identity remains operator-declared. Download a separate reviewer bundle for limited blinding. No model API is called. [Protocol and limits](benchmarks/CHATGPT_AB_PROTOCOL.md). Real generation-effect evaluation remains pending.
 
 Image consistency scores now require specific observations and bind to the final rendered image as well as panel/dialogue/effect state. Legacy numeric-only reviews are incomplete. [Peer research and adoption boundaries](docs/UPSTREAM_RESEARCH_2026-11-02.md).
+
+## Novel adaptation (v2.3)
+
+Open a project and choose **小说改编 · 导入原著**. Paste a novel or upload UTF-8/GB18030 TXT/Markdown, preview local segmentation and save the source. Choose an excerpt, fidelity mode, 1–24 panels and required facts. Creating its comic chapter makes no model call. Generate through the existing ChatGPT/API connection, review the editable adaptation outline, then explicitly continue to storyboards, dialogue and art.
+
+Original text and provenance stay separate from existing chapters. Bubble editing, masked repair, production tools and chapter rollback remain available. Each task retains its source/settings snapshot. Limits: 300,000 characters per import, 2MB files, 8,000 characters per excerpt and 200 excerpts. This is a per-excerpt workflow, not automatic whole-book adaptation or a guarantee of fidelity. [Detailed guide](docs/NOVEL_ADAPTATION.md).

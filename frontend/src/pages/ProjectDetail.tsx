@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import Characters from '../components/Characters'
@@ -8,9 +8,11 @@ import PanelRepairEditor from '../components/PanelRepairEditor'
 import ProductionWorkbench from '../components/ProductionWorkbench'
 import { ArrowLeft, Plus, Play, Download, RefreshCw, Copy, Check, Upload, BookOpen } from 'lucide-react'
 
+const NovelAdaptation = lazy(() => import('../components/NovelAdaptation'))
+
 type Panel = { id?: string; index: number; image_url: string; status: string }
 type Chapter = { id: string; title: string; phase: string; panels: Panel[]; outline?: Record<string, unknown>; storyboard?: Record<string, unknown>; dialogues?: Record<string, unknown> }
-type Task = { id: string; status: string; error_message?: string; result?: { state?: { next_node?: string; events?: { node: string }[]; panels?: Panel[]; outline?: Record<string, unknown>; storyboard?: Record<string, unknown>; dialogues?: Record<string, unknown>; phase?: string }; pending_job_id?: string; final_comic?: { final_image_url: string } } }
+type Task = { id: string; status: string; error_message?: string; result?: { state?: { next_node?: string; events?: { node: string }[]; panels?: Panel[]; outline?: Record<string, unknown>; storyboard?: Record<string, unknown>; dialogues?: Record<string, unknown>; phase?: string }; pending_job_id?: string; waiting_for?: string; final_comic?: { final_image_url: string } } }
 type Job = { id: string; kind: string; stage: string; prompt: string; images: string[]; status: string }
 const stages = [['generate_outline','剧情策划'],['generate_storyboard','分镜设计'],['generate_dialogue','台词创作'],['arbitrate_conflicts','交接检查'],['generate_panels','画面生成'],['review_panels','风格审核'],['final_layout','成稿排版']]
 const statusText: Record<string,string> = {pending:'排队中',running:'处理中',needs_human:'等待协作',failed:'任务失败',completed:'创作完成'}
@@ -42,6 +44,7 @@ export default function ProjectDetail() {
   const [bubbleOpen,setBubbleOpen]=useState(false)
   const [repairOpen,setRepairOpen]=useState(false)
   const [productionOpen,setProductionOpen]=useState(false)
+  const [novelOpen,setNovelOpen]=useState(false)
   const [editorKey,setEditorKey]=useState(0)
   const [editorDirty,setEditorDirty]=useState(false)
   function mayLeave(){return !editorDirty || window.confirm('有未保存的编辑，确定放弃这些输入吗？')}
@@ -137,6 +140,9 @@ export default function ProjectDetail() {
       <div className="min-w-0"><p className="eyebrow">COMIC WORKSPACE</p><h1 className="text-3xl font-bold break-words">{project?.name || '加载创作空间…'}</h1><p className="text-gray-400 mt-2">{project?.description}</p></div>
     </div>
     <button className="secondary-button" disabled={!selectedId} onClick={()=>setProductionOpen(true)}>素材生产工作台：快照 / 批量 / 实验 / 特效</button>
+    <button className="secondary-button" onClick={()=>setNovelOpen(!novelOpen)}>小说改编 · 导入原著</button>
+    {novelOpen && projectId && <Suspense fallback={<p>正在打开小说工作台…</p>}><NovelAdaptation projectId={projectId} chapterId={selectedId} onCreated={async id=>{if(mayLeave()){setSelectedId(id);setTab('outline');await refresh()}}}/></Suspense>}
+    {task?.result?.waiting_for==='adaptation_review' && <section className="studio-card"><h2 className="font-semibold">小说改编方案待审阅</h2><p className="text-sm text-gray-400 my-3">先检查原著事实、改编调整、删减与待确认信息。可在大纲中编辑并保存，再点击“继续任务”生成分镜。此时尚未开始生图。</p><button className="secondary-button" onClick={()=>{if(mayLeave())setTab('outline')}}>查看并编辑改编大纲</button></section>}
     {productionOpen && projectId && selectedId && <ProductionWorkbench key={selectedId} projectId={projectId} chapterId={selectedId} chapters={chapters} panels={art} onSaved={reloadEditor} onClose={()=>setProductionOpen(false)}/>}
     {error && <div role="alert" className="error-box">{error}<button className="ml-4 underline" onClick={()=>setError('')}>关闭</button></div>}
     <div className="grid lg:grid-cols-[260px_minmax(0,1fr)] gap-6">

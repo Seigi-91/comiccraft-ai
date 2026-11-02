@@ -114,11 +114,17 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
                 bubbles = {i:b for i,b in enumerate(source_state.get("dialogues", {}).get("bubbles", [])) if b["panel_index"] == panel_index and b["text"].strip()}
                 validate_plan(plan, bubbles)
                 result = plan.model_dump()
+            if job["stage"] == "generate_outline" and (task.result or {}).get("state", {}).get("novel_adaptation"):
+                from app.models.schemas import NovelStorySchema
+                schema = NovelStorySchema
             if schema:
-                result = schema.model_validate(result).model_dump()
+                result = schema.model_validate(result).model_dump(exclude_none=True)
             state = (task.result or {}).get("state", {})
             if job["stage"] == "generate_storyboard":
                 panels = result["panels"]
+                novel_source = state.get("novel_adaptation")
+                if novel_source and len(panels) != novel_source["settings"]["panel_count"]:
+                    raise ValueError("小说改编分镜数须与改编设定一致")
                 if (
                     not panels
                     or len(panels) > 24

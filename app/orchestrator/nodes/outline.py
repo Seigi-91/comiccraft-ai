@@ -6,6 +6,7 @@ async def generate_outline_node(state):
         inspiration=state.get("inspiration", ""),
         style_ref_urls=state.get("style_ref_urls", []),
         characters=state.get("characters", []),
+        novel_adaptation=state.get("novel_adaptation"),
     )
     existing = {c["name"]: c for c in state.get("characters", [])}
     characters = [{**c, **existing.get(c["name"], {})} for c in result["characters"]]

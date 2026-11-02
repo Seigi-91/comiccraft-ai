@@ -49,6 +49,12 @@ class GenerateService:
                     "next_node": "generate_outline",
                     "events": [],
                 }
+            if not state.get("novel_adaptation") and not state.get("events"):
+                from app.services.novel_adaptation import chapter_source
+                source = await chapter_source(self.session, chapter_id)
+                if source:
+                    from copy import deepcopy
+                    state["novel_adaptation"] = deepcopy(source)
             if state.get('knowledge_snapshot_task_id')!=task_id:
                 from copy import deepcopy
                 state['knowledge_snapshot']=deepcopy(corpus())
@@ -64,6 +70,13 @@ class GenerateService:
                 for update in event.values():
                     state.update(update)
                 state["knowledge_evidence"] = list({(e["id"],e["sha256"],e["stage"]):e for e in [*state.get("knowledge_evidence", []),*evidence]}.values())[-120:]
+                if state.get("novel_adaptation") and "generate_outline" in event:
+                    await self.chapter_repo.update(chapter_id, {"outline": state["outline"], "phase": Phase.STORYBOARDING})
+                    await self.task_repo.update(task_id, {"status": TaskStatus.NEEDS_HUMAN, "result": {"state": state, "waiting_for": "adaptation_review"}})
+                    from app.api.routes.editing import snapshot
+                    await snapshot(self.session, chapter, [task], "小说改编方案待审阅")
+                    await self.session.commit()
+                    return
                 await self.task_repo.update(task_id, {"result": {"state": state}})
                 phase = state.get("phase")
                 if phase in {p.value for p in Phase}:

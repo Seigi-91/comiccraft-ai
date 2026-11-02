@@ -26,6 +26,7 @@
 | 能力 | 内容 |
 |---|---|
 | 六个 Agent | 剧情策划、分镜、台词、画面设计、视觉审核、排版；明确职责和结构化输出 |
+| 小说改编 | 粘贴/TXT/Markdown、章节分段、忠实/适度/自由改编、来源快照、大纲审阅后继续原有漫画流程 |
 | 创作编辑 | 大纲、分镜、台词表单编辑；下游失效提示与阶段继续 |
 | 角色档案 | 身份、性格、外貌、背景、关系、语言风格；多个服装方案切换 |
 | 人物连续性 | 向生图与审核传递角色表、开场/前格参考；失败格修订 |
@@ -40,7 +41,7 @@
 
 ## Windows 一键安装
 
-下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.2.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.3.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
 
 启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
 
@@ -92,6 +93,12 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 - 无登录、租户隔离和生产级权限控制。默认只绑定 `127.0.0.1`，不要直接将当前版本开放到公网。
 - 气泡保护框依赖视觉判断，可能漏检；手动位置、蒙版接缝和特效遮挡仍需人工检查。
 
+## 小说改编入口
+
+打开项目，点击「小说改编 · 导入原著」：预览并保存小说，选择片段、改编方式、1–24格篇幅与保留事实，创建漫画章。点击生成后先审阅可编辑改编方案，再继续现有分镜、台词和绘画。原著独立保存，不替换旧稿；普通灵感创作、气泡、精修和版本回退继续可用。导入/建章不调用模型，生成时使用你已有的ChatGPT或API。
+
+支持单次30万字符、2MB文本文件，长章分为最多8000字符的片段。当前按片段逐章改编，尚非整本长篇一键自动制作。[完整小说改编说明](docs/NOVEL_ADAPTATION.md)
+
 ## v2.2：可追溯知识与 ChatGPT 对照实验
 
 六角色共 24 张知识卡：16 张有定位到章节的教学/从业者原则依据、2 张有同类项目工程先例、6 张明确属于项目规则。每张卡都有适用条件、局限、原创正反例、检查项与审阅状态。资料只支撑所列原则，不代表机构认可或生成效果已证实。
@@ -120,7 +127,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 42 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 46 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 

@@ -64,7 +64,7 @@ async def edit(chapter_id: str, payload: Edit, db=Depends(get_db)):
     if (latest.id if latest else None) != payload.expected_version:
         raise HTTPException(409, "版本已变化，请刷新后重新编辑")
     try:
-        content = {"outline": StorySchema, "storyboard": StoryboardSchema, "dialogues": DialogueSchema}[payload.section].model_validate(payload.content).model_dump()
+        content = {"outline": StorySchema, "storyboard": StoryboardSchema, "dialogues": DialogueSchema}[payload.section].model_validate(payload.content).model_dump(exclude_none=payload.section == "outline")
     except ValidationError as e:
         raise HTTPException(422, str(e))
     state = deepcopy((tasks[0].result or {}).get("state", {})) if tasks else {}

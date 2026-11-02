@@ -5,7 +5,7 @@ async def generate_storyboard_node(state):
     storyboarder = StoryboardArtistAgent()
 
     result = await storyboarder.generate_storyboard(
-        outline=state.get("outline", {}),
+        outline={**state.get("outline", {}), **({"novel_source": state["novel_adaptation"]} if state.get("novel_adaptation") else {})},
         style_ref_urls=state.get("style_ref_urls", []),
     )
 

@@ -43,7 +43,7 @@ function CreateProject() {
         </button>
         <div>
           <h1 className="text-2xl font-bold text-white">创建新项目</h1>
-          <p className="text-gray-400">输入灵感，开始你的漫画创作之旅</p>
+          <p className="text-gray-400">输入灵感创作，或创建项目后导入小说改编</p>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ function CreateProject() {
             </div>
             <div>
               <h2 className="font-semibold text-white">项目基本信息</h2>
-              <p className="text-sm text-gray-400">为你的漫画项目设置基本信息</p>
+              <p className="text-sm text-gray-400">小说改编可只填项目名称，创建后点击“小说改编 · 导入原著”</p>
             </div>
           </div>
 

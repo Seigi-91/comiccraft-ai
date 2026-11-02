@@ -49,7 +49,7 @@ async def lifespan(app):
     yield
 
 
-app = FastAPI(title="ComicCraft AI", version="2.2.0", lifespan=lifespan)
+app = FastAPI(title="ComicCraft AI", version="2.3.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -61,6 +61,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+from app.api.routes.novels import router as novels
+app.include_router(novels, prefix="/api/novels")
 app.include_router(projects, prefix="/api/projects")
 app.include_router(characters, prefix="/api/projects")
 app.include_router(tasks, prefix="/api/tasks")

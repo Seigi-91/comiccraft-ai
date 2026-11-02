@@ -85,11 +85,24 @@ class HumanFixRequest(BaseModel):
     fixed_image_url: Optional[str] = None
 
 
+class AdaptationPlan(BaseModel):
+    summary: str = Field(min_length=1)
+    kept_facts: List[str]
+    changes: List[str]
+    omissions: List[str]
+    open_questions: List[str]
+
+
 class StorySchema(BaseModel):
     title: str
     world_view: str
+    adaptation: Optional[AdaptationPlan] = None
     outline: List[Dict[str, Any]]
     characters: List[Dict[str, Any]]
+
+
+class NovelStorySchema(StorySchema):
+    adaptation: AdaptationPlan
 
 
 class StoryboardPanel(BaseModel):

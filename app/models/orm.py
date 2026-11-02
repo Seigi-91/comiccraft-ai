@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import JSON, Boolean, Column, DateTime
+from sqlalchemy import JSON, Boolean, Column, DateTime, UniqueConstraint
 from sqlalchemy import Enum as SQLAlchemyEnum
 from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import declarative_base
@@ -45,6 +45,28 @@ class Phase(str, Enum):
 
 
 Base: Any = declarative_base()
+
+
+class NovelDocument(Base):
+    __tablename__ = "novel_documents"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    project_id: Mapped[str] = mapped_column(String, ForeignKey("projects.id"), index=True)
+    title: Mapped[str] = mapped_column(String)
+    text: Mapped[str] = mapped_column(Text)
+    sha256: Mapped[str] = mapped_column(String)
+    segments: Mapped[list] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+
+class NovelAdaptation(Base):
+    __tablename__ = "novel_adaptations"
+    __table_args__ = (UniqueConstraint("document_id", "segment_index"),)
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    project_id: Mapped[str] = mapped_column(String, ForeignKey("projects.id"), index=True)
+    chapter_id: Mapped[str] = mapped_column(String, ForeignKey("chapters.id"), unique=True)
+    document_id: Mapped[str] = mapped_column(String, ForeignKey("novel_documents.id"), index=True)
+    segment_index: Mapped[int] = mapped_column(Integer)
+    snapshot: Mapped[dict] = mapped_column(JSON)
 
 
 class Project(Base):

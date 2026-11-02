@@ -2,6 +2,7 @@ from typing import Any, Dict, List, NotRequired, Optional, TypedDict
 
 
 class ComicState(TypedDict, total=False):
+    novel_adaptation: Optional[Dict[str, Any]]
     project_id: str
     user_id: str
     inspiration: Optional[str]

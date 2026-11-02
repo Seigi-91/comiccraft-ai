@@ -3,8 +3,9 @@ import axios from 'axios'
 
 type Value = string | number | boolean | null | Value[] | { [key: string]: Value }
 type Doc = Record<string, unknown>
-const labels: Record<string,string> = {title:'标题',world_view:'世界观',outline:'剧情段落',characters:'角色设定',name:'姓名',description:'描述',appearance:'外貌',personality:'性格',scene:'场景',summary:'情节摘要',content:'内容',panels:'分镜',index:'分镜索引',shot_type:'景别',perspective:'视角',composition:'构图',action:'动作',dialogue_ref:'台词关联',layout_type:'阅读版式',bubbles:'对白',panel_index:'所属分镜',text:'台词',character:'角色',bubble_type:'气泡类型',position:'位置',x:'横坐标',y:'纵坐标',background:'背景',foreground:'前景',main_subject:'主体',mood:'情绪',lighting:'光线',setting:'场景',conflict:'冲突',resolution:'结局',beat:'剧情节拍',purpose:'目的',event:'事件',emotion:'情绪',visual_description:'画面描述'}
+const labels: Record<string,string> = {adaptation:'小说改编方案',kept_facts:'保留的原著事实',changes:'改编调整',omissions:'删减内容',open_questions:'待确认信息',title:'标题',world_view:'世界观',outline:'剧情段落',characters:'角色设定',name:'姓名',description:'描述',appearance:'外貌',personality:'性格',scene:'场景',summary:'情节摘要',content:'内容',panels:'分镜',index:'分镜索引',shot_type:'景别',perspective:'视角',composition:'构图',action:'动作',dialogue_ref:'台词关联',layout_type:'阅读版式',bubbles:'对白',panel_index:'所属分镜',text:'台词',character:'角色',bubble_type:'气泡类型',position:'位置',x:'横坐标',y:'纵坐标',background:'背景',foreground:'前景',main_subject:'主体',mood:'情绪',lighting:'光线',setting:'场景',conflict:'冲突',resolution:'结局',beat:'剧情节拍',purpose:'目的',event:'事件',emotion:'情绪',visual_description:'画面描述'}
 function template(key: string): Value {
+  if(['kept_facts','changes','omissions','open_questions'].includes(key))return ''
   if(key==='panels')return {index:0,shot_type:'中景',perspective:'平视',composition:{background:'',main_subject:''},action:'',dialogue_ref:null}
   if(key==='bubbles')return {panel_index:0,text:'',character:'',bubble_type:'speech',position:{x:50,y:50}}
   if(key==='characters')return {name:'新角色',appearance:'',personality:''}

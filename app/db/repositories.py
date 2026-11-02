@@ -81,6 +81,9 @@ class ProjectRepository:
         for model in (Panel,ChapterVersion,PanelRepair,ConsistencyEvaluation):
             await self.session.execute(delete(model).where(model.chapter_id.in_(chapter_ids)))
         await self.session.execute(delete(Task).where(Task.project_id==project_id))
+        from app.models.orm import NovelAdaptation, NovelDocument
+        await self.session.execute(delete(NovelAdaptation).where(NovelAdaptation.project_id==project_id))
+        await self.session.execute(delete(NovelDocument).where(NovelDocument.project_id==project_id))
         await self.session.execute(delete(Chapter).where(Chapter.project_id==project_id))
         await self.session.execute(delete(ProductionBatch).where(ProductionBatch.project_id==project_id))
         for model in (CharacterDetails,CharacterAssetPolicy,CharacterAssetRevision):
