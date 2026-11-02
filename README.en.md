@@ -42,7 +42,7 @@ Keys stay in the backend computer's `.env` and are not returned by the configura
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.1/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
 
 Or use Git on Windows:
 
