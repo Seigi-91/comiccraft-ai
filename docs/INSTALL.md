@@ -2,11 +2,11 @@
 
 ## Windows：下载、解压、双击
 
-下载 [ComicCraft-AI-Windows-Installer.zip](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.1/ComicCraft-AI-Windows-Installer.zip)，先解压到本机文件夹，再双击 `Install-ComicCraft.cmd`。
+下载 [ComicCraft-AI-Windows-Installer.zip](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.2/ComicCraft-AI-Windows-Installer.zip)，先解压到本机文件夹，再双击 `Install-ComicCraft.cmd`。
 
 安装器会：
 
-1. 从本仓库固定的 `v2.1.1` 标签下载源码，不需要 Git。优先使用 Windows 系统 curl 流式下载，带连接与总时长上限；没有 curl 时使用有超时的 PowerShell 备用方式。
+1. 从本仓库固定的 `v2.1.2` 标签下载源码，不需要 Git。优先使用 Windows 系统 curl 流式下载，带连接与总时长上限；没有 curl 时使用有超时的 PowerShell 备用方式。
 2. 将源码放入 `%LOCALAPPDATA%\ComicCraft-AI\source`。
 3. 检查 Python 3.11+ 和 Node.js 20+；缺失时使用 Windows 自带的 winget 下载 Python 3.12 与 Node.js LTS。该步骤会接受对应安装器/源协议，可能出现系统权限提示。没有 winget 时会给出手动安装提示，不绕过系统安全设置。
 4. 创建项目独立 `.venv`，安装 Python/前端依赖，首次构建网页。

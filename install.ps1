@@ -33,8 +33,8 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceDirectory 'start.ps1'))) {
     New-Item -ItemType Directory -Path $downloadDirectory | Out-Null
     $archivePath = Join-Path $downloadDirectory 'source.zip'
     # A tagged source archive is reproducible and never includes the author's database or credentials.
-    $sourceUrl = 'https://github.com/Seigi-91/comiccraft-ai/archive/refs/tags/v2.1.1.zip'
-    Write-Host 'Downloading ComicCraft AI v2.1.1 from GitHub...'
+    $sourceUrl = 'https://github.com/Seigi-91/comiccraft-ai/archive/refs/tags/v2.1.2.zip'
+    Write-Host 'Downloading ComicCraft AI v2.1.2 from GitHub...'
     $curlCommand = Get-Command curl.exe -ErrorAction SilentlyContinue
     if ($curlCommand) {
         & ($curlCommand.Source) --fail --location --retry 2 --connect-timeout 20 --max-time 600 --silent --show-error --output $archivePath $sourceUrl
@@ -43,7 +43,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceDirectory 'start.ps1'))) {
         Invoke-WebRequest -UseBasicParsing -Uri $sourceUrl -OutFile $archivePath -TimeoutSec 300
     }
     Expand-Archive -LiteralPath $archivePath -DestinationPath $downloadDirectory
-    $extractedDirectory = Join-Path $downloadDirectory 'comiccraft-ai-2.1.1'
+    $extractedDirectory = Join-Path $downloadDirectory 'comiccraft-ai-2.1.2'
     if (-not (Test-Path -LiteralPath (Join-Path $extractedDirectory 'start.ps1'))) { throw 'Downloaded archive is incomplete.' }
     # Only copy a fresh installation. Never replace an existing .env, database or user work.
     if (Test-Path -LiteralPath $sourceDirectory) { throw 'An incomplete source directory already exists. Choose another InstallDirectory; existing files were preserved.' }

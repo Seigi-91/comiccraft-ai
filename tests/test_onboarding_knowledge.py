@@ -75,3 +75,9 @@ def test_deleting_and_reimporting_sample_cleans_database_children():
         second=c.post('/api/onboarding/sample').json()
         assert not second['reused']
         assert len(c.get('/api/projects/'+second['project_id']+'/chapters').json())==1
+
+
+def test_standalone_tool_and_knowledge_imports_without_main():
+    import subprocess,sys
+    result=subprocess.run([sys.executable,'-c','from app.agents.knowledge import role_cards; from app.tools import LLMClient; from app.services import GenerateService; assert len(role_cards("storyboard_artist")) == 4'],capture_output=True,text=True,timeout=30)
+    assert result.returncode==0,result.stderr

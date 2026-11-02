@@ -40,7 +40,7 @@
 
 ## Windows 一键安装
 
-下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.1/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.1.2/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
 
 启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
 
@@ -109,7 +109,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 35 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 36 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 
