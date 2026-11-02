@@ -1,0 +1,31 @@
+name: Provider compatibility / 服务兼容报告
+description: Share a tested model endpoint or a reproducible protocol issue.
+body:
+  - type: markdown
+    attributes:
+      value: "只填写服务名和不含凭据的基础地址；不要粘贴 Authorization 或私有网关令牌。 / Do not share credentials."
+  - type: input
+    id: provider
+    attributes:
+      label: Provider and model / 服务与模型名
+    validations:
+      required: true
+  - type: dropdown
+    id: capability
+    attributes:
+      label: Capability tested / 测试能力
+      options:
+        - Text JSON / 文字
+        - Vision input / 视觉
+        - Text-to-image / 文生图
+        - Reference images / 参考图
+        - Mask edit / 蒙版编辑
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Date, version, result and redacted reproduction / 日期、版本、结果与脱敏复现
+      description: State whether this was a real provider call or a mock test.
+    validations:
+      required: true

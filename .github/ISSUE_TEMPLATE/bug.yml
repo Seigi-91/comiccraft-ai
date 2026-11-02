@@ -1,0 +1,29 @@
+name: Bug report / 问题报告
+description: Report a reproducible failure without sharing secrets.
+body:
+  - type: markdown
+    attributes:
+      value: "请先查阅安装说明。不要上传 API Key、.env、账号或私人漫画。 / Never share keys, .env files or private projects."
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version / 版本
+      placeholder: e630c70 / v2.0.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS, Python, Node, browser / 环境
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected result, actual result / 复现与预期
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted errors or screenshots / 脱敏日志和截图

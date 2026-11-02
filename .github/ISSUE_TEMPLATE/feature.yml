@@ -1,0 +1,19 @@
+name: Feature proposal / 功能建议
+description: Propose a bounded improvement with a clear user need.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What user problem does this solve? / 要解决的用户问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and acceptance criteria / 方案与验收
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or relevant examples / 替代方案与参考

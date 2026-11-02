@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Setup and model connections / 安装与模型配置
+    url: https://github.com/Seigi-91/comiccraft-ai/blob/main/docs/MODEL_CONNECTIONS.md
+    about: Check endpoint formats and the ChatGPT handoff boundary first.

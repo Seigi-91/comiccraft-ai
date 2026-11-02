@@ -1,4 +1,6 @@
-# ComicCraft AI · 多智能体漫画创作工作室
+# ComicCraft AI · 可编辑、可回退的漫画创作工作室
+
+**简体中文** · [English](README.en.md)
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
@@ -7,7 +9,7 @@
 
 **公开仓库提供源码、文档和成稿供浏览；完整创作网站需要在本机运行。** 默认使用 ChatGPT 协作回填，不是自动控制桌面客户端，也不是免费代理模型 API。无需 API key 即可启动网站；模型创作需要你已有的 ChatGPT 或实际可用的模型服务。
 
-[在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
+**[免安装气泡编辑体验](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
 
 ## 看看成稿
 
@@ -49,6 +51,20 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 浏览器打开 **http://127.0.0.1:8000**。脚本创建虚拟环境、复制 `.env.example`、安装依赖并构建前端。
 
 手动安装及 macOS/Linux 说明见 [SETUP](docs/SETUP.md)。从公开仓库安装后是新数据库；示例漫画在 `outputs/`，不会自动恢复作者电脑中的项目记录。
+
+## 文字和图片，分别选择自己的模型
+
+在「创作团队与设置」中分别保存「文字与视觉模型连接」和「图片模型连接」。密钥各自独立，留空保留已有值，也可以明确清除；不会在配置读取接口回显。
+
+| 使用方式 | 文字/视觉设置 | 图片设置 |
+|---|---|---|
+| 全程人工协作 | 本机 ChatGPT 回填 | 本机 ChatGPT 回填 |
+| 自动生成 | API 地址 + 文字/视觉模型 + Key | API 地址 + 图片模型 + Key |
+| 混合创作 | API 或 ChatGPT | 独立选择 API 或 ChatGPT |
+
+文字采用 OpenAI 兼容 `/chat/completions`，视觉模型还须支持图片输入；图片使用 `/images/generations`，有参考图或蒙版时需支持 `/images/edits`。不是每家供应商的私有协议都能直接填入。保存配置不会产生付费测试，也不代表已验证账户额度。
+
+[完整模型连接说明](docs/MODEL_CONNECTIONS.md) · [能力与实际验证状态](docs/PROVIDERS.md)。免安装体验只使用预生成图片，不演示 AI 生成，刷新会重置修改；完整创作仍在本机应用中进行。
 
 ## ChatGPT 协作如何工作
 
@@ -96,6 +112,8 @@ npm.cmd --prefix frontend run build
 
 项目原创代码与文档采用 [MIT](LICENSE)。上游技能、字体、音乐、JavaScript 等第三方资源保留各自许可，**不因根目录 MIT 而改换许可**。示例漫画为 AI 生成的虚构人物作品，仅作为效果示例提供；第三方素材详见 [许可清单](THIRD_PARTY_NOTICES.md)。
 
-### 选择 ChatGPT 或图像 API
+## 继续参与
 
-现在可以在「创作团队与设置」分别切换文字/视觉模型及图片模型：使用本机 ChatGPT 协作回填，或填写各自的 API 地址、模型和密钥自动生成；支持任意组合。[完整配置、协议与密钥说明](docs/MODEL_CONNECTIONS.md)。
+如果编辑流程对你有帮助，欢迎点 Star 留作收藏。安装反馈、脱敏的服务兼容报告和文档改进同样有价值。
+
+[同类项目调研与优缺点](docs/COMPETITIVE_ANALYSIS.md) · [下一步路线图](docs/ROADMAP.md) · [服务兼容证据](docs/PROVIDERS.md) · [问题与需求反馈](https://github.com/Seigi-91/comiccraft-ai/issues/new/choose)
