@@ -185,6 +185,7 @@ def test_http_adapters_with_local_compatible_responses(monkeypatch):
 
     original_client = httpx.AsyncClient
     monkeypatch.setattr(settings, "AI_PROVIDER", "local_http")
+    monkeypatch.setattr(settings, "IMAGE_PROVIDER", None)
     monkeypatch.setattr(settings, "LOCAL_GPT_BASE_URL", "http://127.0.0.1:1234/v1")
     monkeypatch.setattr(
         httpx,
@@ -216,6 +217,7 @@ def test_http_failure_is_not_replaced_by_fake_art(monkeypatch):
 
     original_client = httpx.AsyncClient
     monkeypatch.setattr(settings, "AI_PROVIDER", "local_http")
+    monkeypatch.setattr(settings, "IMAGE_PROVIDER", None)
     monkeypatch.setattr(
         httpx,
         "AsyncClient",

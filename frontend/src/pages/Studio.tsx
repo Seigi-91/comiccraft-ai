@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModelConnection from '../components/ModelConnection'
+import TextConnection from '../components/TextConnection'
 
 type UpstreamSkill = {
   name: string; skillsmp_url?: string; github_url?: string; commit?: string; source_kind?: string
@@ -27,6 +28,7 @@ export default function Studio() {
       <span className="badge">{config?.provider === 'chatgpt_desktop' ? 'ChatGPT 协作模式' : 'HTTP 服务模式'}</span>
       <p className="text-gray-400 mt-3 text-sm">{config?.description}</p>
       <p className="text-gray-500 mt-2 text-sm">Skills 提供专业方法，不改变模型连接方式。角色表与相邻格会作为连续性参考交接。</p></section>
+    <TextConnection onSaved={() => { axios.get('/api/studio/config').then(r => setConfig(r.data)).catch(() => setError('无法刷新连接状态')) }} />
     <ModelConnection />
     <div className="grid md:grid-cols-[240px_minmax(0,1fr)] gap-5">
       <nav className="space-y-2" aria-label="Agent 列表">{agents.map((a, i) =>

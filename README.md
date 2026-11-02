@@ -79,7 +79,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 22 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 25 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 
@@ -98,4 +98,4 @@ npm.cmd --prefix frontend run build
 
 ### 选择 ChatGPT 或图像 API
 
-现在可以在「创作团队与设置」直接切换本机 ChatGPT 协作回填或图像 API 自动生成，也支持文字 ChatGPT + 图片 API 混合使用。[完整配置、协议与密钥说明](docs/MODEL_CONNECTIONS.md)。
+现在可以在「创作团队与设置」分别切换文字/视觉模型及图片模型：使用本机 ChatGPT 协作回填，或填写各自的 API 地址、模型和密钥自动生成；支持任意组合。[完整配置、协议与密钥说明](docs/MODEL_CONNECTIONS.md)。

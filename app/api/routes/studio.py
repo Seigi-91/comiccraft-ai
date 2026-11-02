@@ -20,6 +20,9 @@ router = APIRouter()
 async def public_config():
     return {
         "provider": settings.AI_PROVIDER,
+        "text_base_url": settings.LOCAL_GPT_BASE_URL,
+        "text_key_configured": bool(settings.LOCAL_GPT_API_KEY),
+        "vision_model": settings.DEFAULT_VISION_MODEL,
         "image_provider": settings.image_provider,
         "image_base_url": settings.IMAGE_API_BASE_URL,
         "image_api_model": settings.IMAGE_API_MODEL,
@@ -142,7 +145,13 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
     return {"status": "accepted"}
 
 class ConnectionUpdate(BaseModel):
-    image_provider: str
+    image_provider: str | None = None
+    text_provider: str | None = None
+    text_base_url: str = Field(default="https://api.openai.com/v1", max_length=500)
+    text_model: str = Field(default="", max_length=200)
+    vision_model: str = Field(default="", max_length=200)
+    text_api_key: str | None = Field(default=None, max_length=1000)
+    clear_text_key: bool = False
     image_base_url: str = Field(default="https://api.openai.com/v1", max_length=500)
     image_model: str = Field(default="gpt-image-1", min_length=1, max_length=200)
     api_key: str | None = Field(default=None, max_length=1000)
@@ -167,19 +176,47 @@ async def update_connection(data: ConnectionUpdate, request: Request):
         raise HTTPException(403, '不允许跨站修改模型设置')
     if active_tasks:
         raise HTTPException(409, '请等待正在生成的任务完成后再切换模型')
-    if data.image_provider not in {'chatgpt_desktop', 'openai'}:
-        raise HTTPException(422, '未知图片提供方')
-    address = urlsplit(data.image_base_url)
-    if address.scheme not in {'http', 'https'} or not address.hostname or address.username or address.password or address.query or address.fragment:
-        raise HTTPException(422, 'API 地址必须是无密钥、无查询参数的 http/https 基础地址')
-    if any('\n' in value or '\r' in value for value in [data.image_base_url, data.image_model, data.api_key or '']):
+    def validate_address(url):
+        try:
+            address = urlsplit(url)
+            valid = address.scheme in {'http', 'https'} and address.hostname and not (address.username or address.password or address.query or address.fragment)
+        except ValueError:
+            valid = False
+        if not valid:
+            raise HTTPException(422, 'API 地址必须是无密钥、无查询参数的 http/https 基础地址')
+
+    if any('\n' in value or '\r' in value for value in [data.image_base_url, data.image_model, data.api_key or '', data.text_base_url, data.text_model, data.vision_model, data.text_api_key or '']):
         raise HTTPException(422, '配置不能包含换行')
-    key = None if data.clear_key else (data.api_key or settings.IMAGE_API_KEY)
-    values = {'IMAGE_PROVIDER': data.image_provider, 'IMAGE_API_BASE_URL': data.image_base_url.rstrip('/'),
-              'IMAGE_API_MODEL': data.image_model, 'IMAGE_API_KEY': key}
-    if data.use_for_repairs:
-        values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
-                      IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
+    values = {}
+    if data.image_provider is not None:
+        if data.image_provider not in {'chatgpt_desktop', 'openai'}:
+            raise HTTPException(422, '未知图片提供方')
+        validate_address(data.image_base_url)
+        key = None if data.clear_key else (data.api_key or settings.IMAGE_API_KEY)
+        values.update(IMAGE_PROVIDER=data.image_provider, IMAGE_API_BASE_URL=data.image_base_url.rstrip('/'),
+                      IMAGE_API_MODEL=data.image_model, IMAGE_API_KEY=key)
+        if data.use_for_repairs:
+            values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
+                          IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
+    if data.text_provider is not None:
+        if data.text_provider not in {'chatgpt_desktop', 'local_http'}:
+            raise HTTPException(422, '未知文字提供方')
+        validate_address(data.text_base_url)
+        if not data.text_model.strip() or not data.vision_model.strip():
+            raise HTTPException(422, '请填写文字模型与视觉模型名；可填写相同的多模态模型')
+        # Freeze legacy image fallback before changing AI_PROVIDER, so a text-only
+        # switch cannot silently reroute images or their credentials.
+        if settings.IMAGE_PROVIDER is None and 'IMAGE_PROVIDER' not in values:
+            values.update(IMAGE_PROVIDER=settings.image_provider)
+            if settings.image_provider == 'openai':
+                values.update(IMAGE_API_BASE_URL=settings.LOCAL_GPT_BASE_URL,
+                              IMAGE_API_KEY=settings.LOCAL_GPT_API_KEY, IMAGE_API_MODEL=settings.DEFAULT_IMAGE_MODEL)
+        values.update(AI_PROVIDER=data.text_provider, LOCAL_GPT_BASE_URL=data.text_base_url.rstrip('/'),
+                      LOCAL_GPT_API_KEY=None if data.clear_text_key else (data.text_api_key or settings.LOCAL_GPT_API_KEY),
+                      DEFAULT_TEXT_MODEL=data.text_model.strip(), DEFAULT_INFERENCE_MODEL=data.text_model.strip(),
+                      DEFAULT_VISION_MODEL=data.vision_model.strip())
+    if not values:
+        raise HTTPException(422, '请指定要修改的模型连接')
     env_path = ROOT / '.env'
     lines = env_path.read_text(encoding='utf-8').splitlines() if env_path.exists() else []
     lines = [line for line in lines if line.split('=', 1)[0].strip() not in values]
