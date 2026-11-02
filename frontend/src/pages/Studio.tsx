@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ModelConnection from '../components/ModelConnection'
 import TextConnection from '../components/TextConnection'
+import CodexConnection from '../components/CodexConnection'
 import ProviderChecks from '../components/ProviderChecks'
 import KnowledgeLab from '../components/KnowledgeLab'
 import KnowledgeLibrary, { KnowledgeCard } from '../components/KnowledgeLibrary'
@@ -28,9 +29,10 @@ export default function Studio() {
       <p className="text-gray-400 mt-3">六个专业 agent，配备可追溯的上游技能与项目原创规则。</p></div>
     {error && <p role="alert" className="error-box">{error}</p>}
     <section className="studio-card"><h2 className="font-semibold mb-3">模型连接</h2>
-      <span className="badge">{config?.provider === 'chatgpt_desktop' ? 'ChatGPT 协作模式' : 'HTTP 服务模式'}</span>
+      <span className="badge">{config?.provider === 'chatgpt_desktop' ? 'ChatGPT 协作模式' : config?.provider === 'codex_cli' ? 'Codex 自动连接' : 'HTTP 服务模式'}</span>
       <p className="text-gray-400 mt-3 text-sm">{config?.description}</p>
       <p className="text-gray-500 mt-2 text-sm">Skills 提供专业方法，不改变模型连接方式。角色表与相邻格会作为连续性参考交接。</p></section>
+    <CodexConnection />
     <TextConnection onSaved={() => { axios.get('/api/studio/config').then(r => setConfig(r.data)).catch(() => setError('无法刷新连接状态')) }} />
     <ModelConnection />
     <ProviderChecks />

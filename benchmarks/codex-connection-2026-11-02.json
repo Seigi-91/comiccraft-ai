@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-02",
+  "kind": "maintainer_live_connection_smoke_not_quality_benchmark",
+  "auth": "official_cli_reports_ChatGPT_login",
+  "cli_version": "0.166.0",
+  "model_requested": "CLI default",
+  "actual_backend_model": "not_independently_verified",
+  "checks": [
+    {
+      "kind": "text_json",
+      "status": "passed",
+      "observation": "Actual CLI connector returned a parseable object with ok=true."
+    },
+    {
+      "kind": "vision",
+      "status": "passed",
+      "observation": "Actual CLI connector received a generated test fixture and returned color=red, shape=circle."
+    },
+    {
+      "kind": "image_generation",
+      "status": "failed",
+      "observation": "No actual PNG was returned to the task output directory. No placeholder or API fallback was used."
+    },
+    {
+      "kind": "novel_adaptation_outline",
+      "status": "passed",
+      "observation": "Website submitted an original short excerpt through Codex automatically, received editable adaptation JSON and paused at adaptation_review. One adapter call completed and numerical usage was recorded. No image was generated."
+    }
+  ],
+  "earlier_image_checks": {
+    "cli_version": "0.152.1",
+    "read_only": "no_image",
+    "workspace_write": "no_image"
+  },
+  "scope": "One local ChatGPT account and constrained CLI adapter; not a universal service compatibility or image quality claim. No API keys or login tokens exported."
+}

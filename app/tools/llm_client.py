@@ -17,13 +17,16 @@ def parse_json(content):
 
 class LLMClient:
     def __init__(self, model=None, temperature=0.7):
-        self.model = model or settings.DEFAULT_TEXT_MODEL
+        self.model = (settings.CODEX_MODEL or "CLI default") if settings.AI_PROVIDER == "codex_cli" else (model or settings.DEFAULT_TEXT_MODEL)
         self.temperature = temperature
 
     @tracked("text_or_vision", lambda: settings.AI_PROVIDER != "chatgpt_desktop")
     async def _request(self, prompt, images=None):
         if settings.AI_PROVIDER == "chatgpt_desktop":
             return request_chatgpt("vision" if images else "text", prompt, images)
+        if settings.AI_PROVIDER == "codex_cli":
+            from app.tools.codex_connector import execute
+            return await execute(prompt, images)
         headers = (
             {"Authorization": f"Bearer {settings.LOCAL_GPT_API_KEY}"}
             if settings.LOCAL_GPT_API_KEY

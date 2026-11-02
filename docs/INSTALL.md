@@ -2,11 +2,11 @@
 
 ## Windows：下载、解压、双击
 
-下载 [ComicCraft-AI-Windows-Installer.zip](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.3.0/ComicCraft-AI-Windows-Installer.zip)，先解压到本机文件夹，再双击 `Install-ComicCraft.cmd`。
+下载 [ComicCraft-AI-Windows-Installer.zip](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.4.0/ComicCraft-AI-Windows-Installer.zip)，先解压到本机文件夹，再双击 `Install-ComicCraft.cmd`。
 
 安装器会：
 
-1. 从本仓库固定的 `v2.3.0` 标签下载源码，不需要 Git。优先使用 Windows 系统 curl 流式下载，带连接与总时长上限；没有 curl 时使用有超时的 PowerShell 备用方式。
+1. 从本仓库固定的 `v2.4.0` 标签下载源码，不需要 Git。优先使用 Windows 系统 curl 流式下载，带连接与总时长上限；没有 curl 时使用有超时的 PowerShell 备用方式。
 2. 将源码放入 `%LOCALAPPDATA%\ComicCraft-AI\source`。
 3. 检查 Python 3.11+ 和 Node.js 20+；缺失时使用 Windows 自带的 winget 下载 Python 3.12 与 Node.js LTS。该步骤会接受对应安装器/源协议，可能出现系统权限提示。没有 winget 时会给出手动安装提示，不绕过系统安全设置。
 4. 创建项目独立 `.venv`，安装 Python/前端依赖，首次构建网页。
@@ -48,3 +48,8 @@ python -m app.services.diagnostics
 ## 验证边界
 
 维护者使用自动化测试验证导入、回退、接口格式、知识接入、请求限制和任务租约；使用浏览器检查实际界面。PowerShell 安装/启动脚本执行语法检查；本机实际创建新的项目虚拟环境、安装依赖、构建并启动了网站，并提供干净源码下载验证。依赖全部缺失时的 winget 安装、系统权限弹窗和不同网络代理不能仅靠当前机器上的检查保证，需要用户真实安装反馈；容器和多系统支持以各自验证记录为准。
+
+
+## 可选：安装官方Codex自动连接器
+
+完整应用启动后，从设置页下载登录助手，或在源码中双击`Install-Codex-Connector.cmd`。登录需本人完成，安装不代表所有模型能力已通过。当前本机文字/视觉成功、内置生图未通过。[详细步骤与验证范围](CODEX_CONNECTION.md)。

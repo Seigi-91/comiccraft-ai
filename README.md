@@ -41,7 +41,7 @@
 
 ## Windows 一键安装
 
-下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.3.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.4.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
 
 启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
 
@@ -65,6 +65,7 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 | 使用方式 | 文字/视觉设置 | 图片设置 |
 |---|---|---|
+| 官方 Codex 自动连接 | ChatGPT 登录的官方 CLI | 内置生图需实测，或独立选 API / 人工回填 |
 | 全程人工协作 | 本机 ChatGPT 回填 | 本机 ChatGPT 回填 |
 | 自动生成 | API 地址 + 文字/视觉模型 + Key | API 地址 + 图片模型 + Key |
 | 混合创作 | API 或 ChatGPT | 独立选择 API 或 ChatGPT |
@@ -92,6 +93,12 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 - 批次是单进程本地调度，暂停/取消不强杀当前项；不提供分布式任务保证。
 - 无登录、租户隔离和生产级权限控制。默认只绑定 `127.0.0.1`，不要直接将当前版本开放到公网。
 - 气泡保护框依赖视觉判断，可能漏检；手动位置、蒙版接缝和特效遮挡仍需人工检查。
+
+## 官方 Codex 自动连接
+
+安装连接器并使用自己的ChatGPT登录后，可选择Codex自动接收文字与附图任务结果，减少手动复制回填；API与人工模式保留。设置页提供安装/登录助手、无模型调用的状态检查和独立能力验证。[安装及边界](docs/CODEX_CONNECTION.md)
+
+**本机实测：文字JSON、附图识别通过；Codex内置生图未通过。** 图片可继续独立使用已有API或人工回填。不会把安装成功当作图片能力通过，也不会静默切换或伪造结果。它调用云端模型并消耗账户额度，不是离线ChatGPT。
 
 ## 小说改编入口
 
@@ -127,7 +134,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 46 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 52 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 

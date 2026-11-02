@@ -52,7 +52,8 @@ def tracked(kind,enabled):
         @wraps(func)
         async def call(*args,**kwargs):
             if not enabled():return await func(*args,**kwargs)
-            receipt=await reserve(kind,getattr(args[0],'model',settings.IMAGE_EDIT_MODEL) if args else settings.IMAGE_EDIT_MODEL)
+            default_model=(settings.CODEX_MODEL or 'CLI default') if kind=='image_edit' and settings.IMAGE_EDIT_PROVIDER=='codex_cli' else settings.IMAGE_EDIT_MODEL
+            receipt=await reserve(kind,getattr(args[0],'model',default_model) if args else default_model)
             token=reported_usage.set(None)
             try:
                 result=await func(*args,**kwargs)

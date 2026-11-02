@@ -32,6 +32,7 @@ jobs:
       - run: npm run build
         working-directory: frontend
       - run: bash -n start.sh
+      - run: bash -n scripts/install_codex.sh
 
   windows-scripts:
     runs-on: windows-latest
@@ -40,7 +41,7 @@ jobs:
       - name: Validate PowerShell installers without changing system dependencies
         shell: powershell
         run: |
-          foreach ($file in @('install.ps1','start.ps1','scripts/open_browser.ps1')) {
+          foreach ($file in @('install.ps1','start.ps1','scripts/open_browser.ps1','scripts/install_codex.ps1')) {
             $tokens=$null; $errors=$null
             [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $pwd $file),[ref]$tokens,[ref]$errors) | Out-Null
             if ($errors.Count) { throw ($errors | Out-String) }

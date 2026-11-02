@@ -19,6 +19,7 @@ router = APIRouter()
 @router.get("/config")
 async def public_config():
     return {
+        "codex_model": settings.CODEX_MODEL,
         "max_model_requests": settings.MAX_MODEL_REQUESTS_PER_TASK,
         "provider": settings.AI_PROVIDER,
         "text_base_url": settings.LOCAL_GPT_BASE_URL,
@@ -33,7 +34,7 @@ async def public_config():
         "description": (
             "ChatGPT 协作模式：复制任务到本机 ChatGPT，再回填 JSON 或上传图片。"
             if settings.AI_PROVIDER == "chatgpt_desktop"
-            else "OpenAI 兼容 HTTP 服务"
+            else "官方 Codex CLI 自动连接（ChatGPT 登录）" if settings.AI_PROVIDER == "codex_cli" else "OpenAI 兼容 HTTP 服务"
         ),
         "text_model": settings.DEFAULT_TEXT_MODEL,
         "image_model": settings.DEFAULT_IMAGE_MODEL,
@@ -152,6 +153,7 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
     return {"status": "accepted"}
 
 class ConnectionUpdate(BaseModel):
+    codex_model: str | None = Field(default=None,max_length=200)
     max_model_requests: int | None = Field(default=None,ge=1,le=1000)
     image_provider: str | None = None
     text_provider: str | None = None
@@ -190,24 +192,29 @@ async def update_connection(data: ConnectionUpdate, request: Request):
         if not valid:
             raise HTTPException(422, 'API 地址必须是无密钥、无查询参数的 http/https 基础地址')
 
-    if any('\n' in value or '\r' in value for value in [data.image_base_url, data.image_model, data.api_key or '', data.text_base_url, data.text_model, data.vision_model, data.text_api_key or '']):
+    if any('\n' in value or '\r' in value for value in [data.image_base_url, data.image_model, data.api_key or '', data.text_base_url, data.text_model, data.vision_model, data.text_api_key or '', data.codex_model or '']):
         raise HTTPException(422, '配置不能包含换行')
     values = {}
     if data.image_provider is not None:
-        if data.image_provider not in {'chatgpt_desktop', 'openai'}:
+        if data.image_provider not in {'chatgpt_desktop', 'openai', 'codex_cli'}:
             raise HTTPException(422, '未知图片提供方')
         validate_address(data.image_base_url)
         key = None if data.clear_key else (data.api_key or settings.IMAGE_API_KEY)
-        values.update(IMAGE_PROVIDER=data.image_provider, IMAGE_API_BASE_URL=data.image_base_url.rstrip('/'),
-                      IMAGE_API_MODEL=data.image_model, IMAGE_API_KEY=key)
-        if data.use_for_repairs:
-            values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
-                          IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
+        if data.image_provider == "codex_cli":
+            values["IMAGE_PROVIDER"] = data.image_provider
+            if data.use_for_repairs:
+                values["IMAGE_EDIT_PROVIDER"] = data.image_provider
+        else:
+            values.update(IMAGE_PROVIDER=data.image_provider, IMAGE_API_BASE_URL=data.image_base_url.rstrip('/'),
+                          IMAGE_API_MODEL=data.image_model, IMAGE_API_KEY=key)
+            if data.use_for_repairs:
+                values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
+                              IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
     if data.text_provider is not None:
-        if data.text_provider not in {'chatgpt_desktop', 'local_http'}:
+        if data.text_provider not in {'chatgpt_desktop', 'local_http', 'codex_cli'}:
             raise HTTPException(422, '未知文字提供方')
         validate_address(data.text_base_url)
-        if not data.text_model.strip() or not data.vision_model.strip():
+        if data.text_provider == "local_http" and (not data.text_model.strip() or not data.vision_model.strip()):
             raise HTTPException(422, '请填写文字模型与视觉模型名；可填写相同的多模态模型')
         # Freeze legacy image fallback before changing AI_PROVIDER, so a text-only
         # switch cannot silently reroute images or their credentials.
@@ -216,10 +223,17 @@ async def update_connection(data: ConnectionUpdate, request: Request):
             if settings.image_provider == 'openai':
                 values.update(IMAGE_API_BASE_URL=settings.LOCAL_GPT_BASE_URL,
                               IMAGE_API_KEY=settings.LOCAL_GPT_API_KEY, IMAGE_API_MODEL=settings.DEFAULT_IMAGE_MODEL)
-        values.update(AI_PROVIDER=data.text_provider, LOCAL_GPT_BASE_URL=data.text_base_url.rstrip('/'),
-                      LOCAL_GPT_API_KEY=None if data.clear_text_key else (data.text_api_key or settings.LOCAL_GPT_API_KEY),
-                      DEFAULT_TEXT_MODEL=data.text_model.strip(), DEFAULT_INFERENCE_MODEL=data.text_model.strip(),
-                      DEFAULT_VISION_MODEL=data.vision_model.strip())
+        values.update(AI_PROVIDER=data.text_provider)
+        if data.text_provider != "codex_cli":
+            values.update(LOCAL_GPT_BASE_URL=data.text_base_url.rstrip('/'),
+                          LOCAL_GPT_API_KEY=None if data.clear_text_key else (data.text_api_key or settings.LOCAL_GPT_API_KEY),
+                          DEFAULT_TEXT_MODEL=data.text_model.strip(), DEFAULT_INFERENCE_MODEL=data.text_model.strip(),
+                          DEFAULT_VISION_MODEL=data.vision_model.strip())
+    if data.codex_model is not None:
+        import re
+        if data.codex_model.strip() and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,199}",data.codex_model.strip()):
+            raise HTTPException(422,"请输入模型标识，不接受命令参数或空格")
+        values["CODEX_MODEL"]=data.codex_model.strip()
     if data.max_model_requests is not None:
         values["MAX_MODEL_REQUESTS_PER_TASK"]=data.max_model_requests
     if not values:

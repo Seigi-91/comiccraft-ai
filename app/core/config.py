@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    AI_PROVIDER: Literal["chatgpt_desktop", "local_http"] = "chatgpt_desktop"
-    IMAGE_PROVIDER: Literal["chatgpt_desktop", "openai"] | None = None
+    AI_PROVIDER: Literal["chatgpt_desktop", "local_http", "codex_cli"] = "chatgpt_desktop"
+    IMAGE_PROVIDER: Literal["chatgpt_desktop", "openai", "codex_cli"] | None = None
     IMAGE_API_BASE_URL: str = "https://api.openai.com/v1"
     IMAGE_API_KEY: str | None = None
     IMAGE_API_MODEL: str = "gpt-image-1"
@@ -16,7 +16,10 @@ class Settings(BaseSettings):
     COMIC_FONT_PATH: str | None = None
     MAX_MODEL_REQUESTS_PER_TASK: int = Field(default=96, ge=1, le=1000)
     GPT_TIMEOUT: float = 180.0
-    IMAGE_EDIT_PROVIDER: Literal["chatgpt_desktop", "openai"] = "chatgpt_desktop"
+    CODEX_CLI_PATH: str | None = None
+    CODEX_MODEL: str = ""
+    CODEX_TIMEOUT: int = Field(default=600, ge=30, le=1800)
+    IMAGE_EDIT_PROVIDER: Literal["chatgpt_desktop", "openai", "codex_cli"] = "chatgpt_desktop"
     IMAGE_EDIT_BASE_URL: str | None = None
     IMAGE_EDIT_API_KEY: str | None = None
     IMAGE_EDIT_MODEL: str = "gpt-image-1"
@@ -58,7 +61,7 @@ class Settings(BaseSettings):
 
     @property
     def image_provider(self):
-        return self.IMAGE_PROVIDER or ("chatgpt_desktop" if self.AI_PROVIDER == "chatgpt_desktop" else "openai")
+        return self.IMAGE_PROVIDER or ("chatgpt_desktop" if self.AI_PROVIDER in {"chatgpt_desktop", "codex_cli"} else "openai")
 
 
 settings = Settings()

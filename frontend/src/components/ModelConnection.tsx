@@ -26,9 +26,9 @@ export default function ModelConnection() {
     <p className="text-sm text-gray-400 mb-4">文字与图片可以使用不同服务。这里切换图片生成方式，不会改变文字 agent 的连接。</p>
     <form onSubmit={save} className="space-y-4">
       <label className="block">图片生成方式<select aria-label="图片生成方式" className="block w-full bg-dark-900 border border-dark-600 rounded-lg p-3 mt-2" value={provider} onChange={e => setProvider(e.target.value)}>
-        <option value="chatgpt_desktop">本机 ChatGPT · 协作回填，无需 API Key</option><option value="openai">图像模型 API · 自动生成</option>
+        <option value="chatgpt_desktop">本机 ChatGPT · 协作回填，无需 API Key</option><option value="codex_cli">官方 Codex · 内置生图（需实测）</option><option value="openai">图像模型 API · 自动生成</option>
       </select></label>
-      {provider === 'chatgpt_desktop' ? <p className="text-sm text-gray-400">生成时在待办中复制提示词、下载参考图，交给你自己的 ChatGPT；将结果上传回填后继续创作。网站不会自动控制桌面客户端，也不读取登录凭据。</p> : <div className="space-y-4">
+      {provider === 'chatgpt_desktop' ? <p className="text-sm text-gray-400">生成时在待办中复制提示词、下载参考图，交给你自己的 ChatGPT；将结果上传回填后继续创作。网站不会自动控制桌面客户端，也不读取登录凭据。</p> : provider === 'codex_cli' ? <p className="text-sm text-gray-400">通过官方CLI调用内置生图，使用ChatGPT账户额度，不发送图片API Key。须先在“服务验证”实测图片、参考图及蒙版能力；CLI/账号未提供工具时明确失败，不会生成占位图或自动改用API。图像尺寸和风格是提示词约束，未保证底层参数。</p> : <div className="space-y-4">
         <label className="block">API 基础地址<input aria-label="API 基础地址" type="url" required value={base} onChange={e => setBase(e.target.value)} /></label>
         <label className="block">图像模型名称<input aria-label="图像模型名称" required value={model} onChange={e => setModel(e.target.value)} /></label>
         <label className="block">API Key<input aria-label="API Key" type="password" autoComplete="off" value={key} placeholder={config?.image_key_configured ? '已配置；留空保留原密钥' : '填写你自己的服务密钥'} onChange={e => setKey(e.target.value)} /></label>

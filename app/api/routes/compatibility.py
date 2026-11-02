@@ -21,6 +21,10 @@ probe_lock=asyncio.Lock()
 
 
 def connection(kind):
+    provider = settings.AI_PROVIDER if kind in {'text','vision'} else settings.IMAGE_EDIT_PROVIDER if kind=='mask' else settings.image_provider
+    if provider == 'codex_cli':
+        from app.tools.codex_connector import identity
+        return provider,identity(),settings.CODEX_MODEL or 'CLI default',None
     if kind in {'text','vision'}:
         return settings.AI_PROVIDER,settings.LOCAL_GPT_BASE_URL,settings.DEFAULT_VISION_MODEL if kind=='vision' else settings.DEFAULT_TEXT_MODEL,settings.LOCAL_GPT_API_KEY
     if kind=='mask':return settings.IMAGE_EDIT_PROVIDER,settings.IMAGE_EDIT_BASE_URL,settings.IMAGE_EDIT_MODEL,settings.IMAGE_EDIT_API_KEY
@@ -65,6 +69,8 @@ async def probe(data:Probe,request:Request,db=Depends(get_db)):
             status='passed';detail='真实接口返回了可解析的 JSON 或图片；不代表画质、语义正确性或未来可用性。'
         except httpx.HTTPStatusError as error:
             status='failed';detail=f'接口 HTTP {error.response.status_code}；请检查模型、权限、额度与协议。'
+        except ValueError as error:
+            status='failed';detail=str(error) if provider=='codex_cli' else '返回格式或能力校验失败，请检查服务模型与协议。'
         except Exception as error:
             status='failed';detail='验证失败（'+type(error).__name__+'）；请检查地址、模型能力、网络及响应格式。'
         finally:task_context.reset(token)

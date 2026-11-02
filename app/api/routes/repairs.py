@@ -15,7 +15,7 @@ router=APIRouter()
 
 @router.get('/config')
 async def config():
-    return {'configured':settings.IMAGE_EDIT_PROVIDER=='chatgpt_desktop' or bool(settings.IMAGE_EDIT_BASE_URL),'provider':settings.IMAGE_EDIT_PROVIDER,'model':settings.IMAGE_EDIT_MODEL,
+    return {'configured':settings.IMAGE_EDIT_PROVIDER in {'chatgpt_desktop','codex_cli'} or bool(settings.IMAGE_EDIT_BASE_URL),'provider':settings.IMAGE_EDIT_PROVIDER,'model':settings.IMAGE_EDIT_MODEL,
             'note':'仅配置状态，不代表服务已通过真实生图验证。未选区域由原图像素合成保护。'}
 
 
@@ -51,7 +51,7 @@ async def run_repair(repair_id):
 @router.post('/{chapter_id}/panels/{panel_index}')
 async def create(chapter_id: str,panel_index:int,payload:RepairRequest,background_tasks:BackgroundTasks,db=Depends(get_db)):
     chapter,tasks=await context(db,chapter_id);unlocked(tasks)
-    if settings.IMAGE_EDIT_PROVIDER != 'chatgpt_desktop' and not settings.IMAGE_EDIT_BASE_URL:
+    if settings.IMAGE_EDIT_PROVIDER not in {'chatgpt_desktop','codex_cli'} and not settings.IMAGE_EDIT_BASE_URL:
         raise HTTPException(503,'尚未配置图像编辑服务，请配置 IMAGE_EDIT_BASE_URL / IMAGE_EDIT_MODEL / IMAGE_EDIT_API_KEY')
     panel=(await db.execute(select(Panel).where(Panel.chapter_id==chapter_id,Panel.index==panel_index))).scalar_one_or_none()
     if not panel or panel.image_url!=payload.source_url:

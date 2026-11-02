@@ -42,7 +42,7 @@ Keys stay in the backend computer's `.env` and are not returned by the configura
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.3.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.4.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft.cmd`. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
 
 Or use Git on Windows:
 
@@ -121,3 +121,9 @@ Image consistency scores now require specific observations and bind to the final
 Open a project and choose **小说改编 · 导入原著**. Paste a novel or upload UTF-8/GB18030 TXT/Markdown, preview local segmentation and save the source. Choose an excerpt, fidelity mode, 1–24 panels and required facts. Creating its comic chapter makes no model call. Generate through the existing ChatGPT/API connection, review the editable adaptation outline, then explicitly continue to storyboards, dialogue and art.
 
 Original text and provenance stay separate from existing chapters. Bubble editing, masked repair, production tools and chapter rollback remain available. Each task retains its source/settings snapshot. Limits: 300,000 characters per import, 2MB files, 8,000 characters per excerpt and 200 excerpts. This is a per-excerpt workflow, not automatic whole-book adaptation or a guarantee of fidelity. [Detailed guide](docs/NOVEL_ADAPTATION.md).
+
+## Official Codex connector (v2.4)
+
+Install the connector helper from Settings, sign in through the official ChatGPT flow and select Codex for automatic text/vision execution. API and manual handoff modes remain available; their keys are not passed to CLI subprocesses. The connector checks status without model calls and exposes explicit capability tests. It does not automate the chat window or run an offline model.
+
+**Live local smoke test with CLI 0.166.0: text JSON and attached-image recognition passed; built-in image generation did not return a real image.** Keep image API/manual mode unless your own image/reference/mask tests pass. No placeholder or silent fallback is used. One CLI invocation may involve multiple model turns and consumes account limits. [Setup, exact scope and limits](docs/CODEX_CONNECTION.md).

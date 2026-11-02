@@ -8,7 +8,7 @@ from app.services.model_budget import tracked, report_usage
 
 class ImageGeneratorClient:
     def __init__(self, model=None):
-        self.model = model or (settings.IMAGE_API_MODEL if settings.IMAGE_PROVIDER else settings.DEFAULT_IMAGE_MODEL)
+        self.model = (settings.CODEX_MODEL or "CLI default") if settings.image_provider == "codex_cli" else (model or (settings.IMAGE_API_MODEL if settings.IMAGE_PROVIDER else settings.DEFAULT_IMAGE_MODEL))
 
     async def generate_image(
         self,
@@ -40,6 +40,9 @@ class ImageGeneratorClient:
         full_prompt = f"{prompt}\n画风：{style}。画幅 {width}×{height}。避免：{negative_prompt}。不要绘制文字或水印。"
         if settings.image_provider == "chatgpt_desktop":
             return request_chatgpt("image", full_prompt, reference_images)
+        if settings.image_provider == "codex_cli":
+            from app.tools.codex_connector import execute
+            return save_image_bytes(await execute(full_prompt, reference_images, image_output=True))
         from app.tools.media import local_image_path
         key = settings.IMAGE_API_KEY if settings.IMAGE_PROVIDER else settings.LOCAL_GPT_API_KEY
         base = settings.IMAGE_API_BASE_URL if settings.IMAGE_PROVIDER else settings.LOCAL_GPT_BASE_URL

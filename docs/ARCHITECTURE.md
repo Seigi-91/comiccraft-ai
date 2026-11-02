@@ -36,6 +36,7 @@ flowchart LR
 | `/api/studio` | 模型模式、Agent 规则、待办、上传和回填 |
 | `/api/editing/{chapter_id}` | 内容编辑、版本、气泡布局、视觉定位 |
 | `/api/repairs` | 局部精修配置、候选、回填与采用 |
+| `/api/codex` | 官方CLI安装/登录状态与安装助手下载 |
 | `/api/novels` | 小说原文/分段、改编章创建和来源快照 |
 | `/api/production` | 快照、记录、批次、实验与特效 |
 | `/health` | 后端健康状态 |
@@ -58,3 +59,8 @@ flowchart LR
 ## 小说改编拓展
 
 `NovelDocument`独立保存规范原文、分段偏移与哈希，`NovelAdaptation`通过唯一的原著/片段关联漫画章并冻结输入。`GenerateService`在首次生成时将其装入任务状态；剧情节点使用附改编方案的Schema，完成大纲后保存为人工待审状态，下一节点仍为原有分镜节点。显式继续才恢复图。分镜/台词接收来源与已审阅方案，图像沿用分镜结果。普通章没有来源时继续走原流程。详见 [小说改编](NOVEL_ADAPTATION.md)。
+
+
+## Codex自动适配
+
+文字/视觉`LLMClient`、图片`ImageGeneratorClient`与精修服务可独立选择`codex_cli`。连接器在隔离目录用参数数组和stdin执行官方CLI，禁用Shell/插件/应用/网页/子代理；仅明确启用的内置生图可生成候选文件。API密钥不转发，CLI自己管理ChatGPT登录。失败不走其他提供方。真实能力与计数边界见 [连接说明](CODEX_CONNECTION.md)。

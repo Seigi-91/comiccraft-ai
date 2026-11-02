@@ -31,6 +31,10 @@ from app.services.model_budget import tracked, report_usage
 
 @tracked("image_edit", lambda: settings.IMAGE_EDIT_PROVIDER != "chatgpt_desktop")
 async def edit_image(source_url, mask_url, instructions):
+    if settings.IMAGE_EDIT_PROVIDER == "codex_cli":
+        from app.tools.codex_connector import execute
+        raw=await execute("局部精修：第一张是原图，第二张是白色选区蒙版（白改黑保留）。保持原尺寸，修复白区，其余不变："+instructions,[source_url,mask_url],image_output=True)
+        return composite_candidate(source_url,mask_url,raw)
     if not settings.IMAGE_EDIT_BASE_URL:
         raise ValueError('图像编辑服务未配置；请设置 IMAGE_EDIT_BASE_URL、IMAGE_EDIT_MODEL 和密钥')
     with Image.open(local_image_path(source_url)) as im: source=im.convert('RGB')
