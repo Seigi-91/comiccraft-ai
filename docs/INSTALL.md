@@ -1,5 +1,8 @@
 # 一键安装与首次体验
 
+只想体验项目时，可以直接[阅读成稿](https://seigi-91.github.io/comiccraft-ai/web-novel.html)或[试改同一篇的气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)。从 `main` 下载的[源码 ZIP](https://github.com/Seigi-91/comiccraft-ai/archive/refs/heads/main.zip)省去宣传视频制作工程，保留启动文件和应用内可编辑示例。旧发行版安装器仍下载它所对应的固定版本。
+
+
 ## Windows：下载、解压、双击
 
 下载 [ComicCraft-AI-Windows-Installer.zip](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.5.1/ComicCraft-AI-Windows-Installer.zip)，先解压到本机文件夹，再双击 `Install-ComicCraft-Auto.cmd`（包含官方连接器和本人登录步骤）；只安装网站可使用 `Install-ComicCraft.cmd`。

@@ -1,8 +1,5 @@
 # ComicCraft AI · An editable comic creation workspace
 
-**[Read the new comic adaptation](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · [Edit a balloon from the chapter](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
-
-
 [简体中文](README.md) · **English**
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
@@ -10,9 +7,15 @@
 
 Turn a story into panels you can keep editing: scripts, character outfits, dialogue bubbles, masked repairs and chapter versions. Built with React, FastAPI, LangGraph, SQLite and Pillow.
 
-**[Try the bubble editor — no install or API key](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [Showcase](https://seigi-91.github.io/comiccraft-ai/) · [Video & editable project](https://github.com/Seigi-91/comiccraft-ai/releases) · [Roadmap](docs/ROADMAP.md)
+[Showcase](https://seigi-91.github.io/comiccraft-ai/) · [Windows installation](docs/INSTALL.md) · [User guide](docs/USER_GUIDE.md) · [Architecture](docs/ARCHITECTURE.md)
 
-![Rain Night, One Light — example comic](docs/images/comic.jpg)
+## Featured comic · We Need To Talk About Fifty-Five
+
+A Chinese adaptation of the opening installment of qntm’s SCP Wiki serial. The finished chapter uses uneven panel sizes, inset close-ups, and dialogue placed inside the panels.
+
+**[Read the full comic](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[Edit a balloon on artwork from this chapter](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)**
+
+[![Opening preview of We Need To Talk About Fifty-Five, click to read the complete comic](docs/assets/web-novel-preview.jpg)](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
 
 ## What makes this useful
 

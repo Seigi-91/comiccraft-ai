@@ -1,8 +1,5 @@
 # ComicCraft AI · 可编辑、可回退的漫画创作工作室
 
-**[阅读新漫画《我们得谈谈五十五号》](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · [试改本章气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
-
-
 **简体中文** · [English](README.en.md)
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
@@ -12,17 +9,15 @@
 
 **公开仓库提供源码、文档和成稿供浏览；完整创作网站需要在本机运行。** 默认使用官方 ChatGPT 自动连接器；也可以配置自己的模型 API。无需 API key 即可启动网站；模型创作需要你已有的 ChatGPT 或实际可用的模型服务。
 
-**[免安装气泡编辑体验](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [Windows 一键安装](docs/INSTALL.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
+[公开演示首页](https://seigi-91.github.io/comiccraft-ai/) · [Windows 安装](docs/INSTALL.md) · [操作手册](docs/USER_GUIDE.md) · [架构与接口](docs/ARCHITECTURE.md)
 
-## 看看成稿
+## 成稿预览 ·《我们得谈谈五十五号》
 
-示例《雨夜留灯》：少女在雨夜旧书店发现小猫，带它进门，留下一盏灯。
+改编自 qntm 在 SCP Wiki 连载的《反模因部不存在》开篇。完整成稿展示不等分主格、过渡窄格、嵌入特写和画内对白。
 
-![六格漫画预览](outputs/rain-night-light/雨夜留灯-气泡避让预览.jpg)
+**[阅读完整条漫](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[用本章原画试改气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)**
 
-[完整手部精修成稿 PNG](outputs/rain-night-light/雨夜留灯-手部精修成稿.png) · [手部精修前后对比](outputs/rain-night-light/雨夜留灯-手部精修前后对比.jpg)
-
-![创作工作区](docs/images/workspace.png)
+[![《我们得谈谈五十五号》开场预览，点击阅读完整版](docs/assets/web-novel-preview.jpg)](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
 
 ## 已实现
 

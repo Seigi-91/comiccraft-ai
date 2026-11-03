@@ -10,3 +10,7 @@ videos/**/assets/lib/*.js -whitespace
 # Launch scripts must remain usable on Unix checkouts.
 *.sh text eol=lf
 *.cmd text eol=crlf
+
+# Video editing source stays browsable on GitHub. Runtime source ZIPs omit it.
+/videos export-ignore
+/outputs/rain-night-light/雨夜留灯-* export-ignore
