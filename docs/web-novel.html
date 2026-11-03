@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ComicCraft AI 小说改编演示，阅读《我们得谈谈五十五号》中文条漫，并了解可审阅的漫画制作流程。">
+  <title>我们得谈谈五十五号 · ComicCraft AI</title>
+  <link rel="stylesheet" href="web-novel.css">
+</head>
+<body>
+  <a class="skip" href="#comic">跳到漫画</a>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="index.html">ComicCraft AI</a><nav aria-label="演示导航"><a href="#comic">漫画</a><a href="#workflow">工作流</a><a href="demo.html">气泡编辑</a></nav></div></header>
+  <main>
+    <section class="hero wrap" aria-labelledby="title">
+      <p class="eyebrow">小说改编演示 / CHAPTER 01</p>
+      <h1 id="title">我们得谈谈<br>五十五号</h1>
+      <p class="subtitle">《反模因部不存在》第一篇 · 中文条漫改编</p>
+      <div class="actions"><a class="button primary" href="#comic">开始阅读</a><a class="button" href="demo.html?sample=fifty-five">试改本章气泡</a></div>
+      <p class="source-line">原作 qntm · <a href="https://scp-wiki.wikidot.com/we-need-to-talk-about-fifty-five">SCP Wiki 原文</a></p>
+    </section>
+    <section class="wrap reader" id="comic" aria-labelledby="reader-title">
+      <div class="section-heading"><div><p class="eyebrow">READ THE COMIC</p><h2 id="reader-title">第一篇 · 漫画</h2></div><a href="assets/web-novel-chapter.png" download>下载条漫 PNG</a></div>
+      <figure><img src="assets/web-novel-chapter.png" alt="《我们得谈谈五十五号》第一篇中文漫画，按从上到下的顺序阅读" decoding="async"><figcaption>条漫按从上到下的顺序阅读。点击「下载条漫 PNG」可保存原图。</figcaption></figure>
+    </section>
+    <section class="wrap workflow" id="workflow" aria-labelledby="workflow-title">
+      <p class="eyebrow">FROM STORY TO COMIC</p><h2 id="workflow-title">从原著到可编辑成稿</h2>
+      <ol class="steps">
+        <li><span>01</span><h3>角色与故事节拍</h3><p>根据选定篇章提取人物、关系和事件，区分原文事实与漫画造型。</p></li>
+        <li><span>02</span><h3>镜头与视觉参考</h3><p>用建立镜头交代空间，交谈时保持视线关系，关键揭示和人物反应各有落点。</p></li>
+        <li><span>03</span><h3>绘图与连续性检查</h3><p>以人物、场景和道具作为视觉锚点。检查角色、动作及相邻镜头的衔接。</p></li>
+        <li><span>04</span><h3>对白与合成</h3><p>分别安排对白和旁白，按阅读顺序保留气泡间距，让图像和排字可以分别修订。</p></li>
+      </ol>
+      <p class="note">本篇由编辑整理原著情节和分镜，使用官方连接器绘制三页非对称分镜，安排嵌入小格突出局部线索，再在本机添加中文对白与旁白。下列入口分别展示成稿和可编辑的排字操作。浏览器气泡编辑器使用本章的一格原画，可直接体验移动、缩放、编辑对白和 PNG 导出。完整的小说改编、模型调用与版本保存需要运行本机应用。</p>
+      <div class="actions"><a class="button primary" href="demo.html?sample=fifty-five">打开本章交互演示</a><a class="button" href="https://github.com/Seigi-91/comiccraft-ai/blob/main/docs/NOVEL_ADAPTATION.md">查看改编指南</a><a class="button" href="https://github.com/Seigi-91/comiccraft-ai">查看源码</a></div>
+    </section>
+  </main>
+  <footer class="wrap"><p><strong>署名与许可</strong></p><p>原作 <a href="https://scp-wiki.wikidot.com/we-need-to-talk-about-fifty-five" lang="en">We Need To Talk About Fifty-Five</a>，作者 qntm，发布于 SCP Wiki。本演示节选原篇情节，重新编写中文台词与分镜，并制作新插画。原文及本漫画改编按 <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> 许可发布。ComicCraft AI 项目代码按 <a href="https://github.com/Seigi-91/comiccraft-ai/blob/main/LICENSE">MIT</a> 许可发布。</p><p><a href="index.html">返回项目首页</a></p></footer>
+</body>
+</html>

@@ -28,3 +28,7 @@ AI 漫画样例描述虚构人物。样例不构成对第三方商标、肖像�
 ## 可选官方Codex连接器
 
 安装助手按用户操作从官方npm包`@openai/codex@0.166.0`安装CLI，沿用其Apache-2.0许可与服务条款，不改变为本项目MIT。仓库及安装启动器不分发用户登录令牌或会员账户。连接器与官方产品之间的能力和实测边界见 [说明](docs/CODEX_CONNECTION.md)。
+
+## 《我们得谈谈五十五号》漫画演示
+
+[We Need To Talk About Fifty-Five](https://scp-wiki.wikidot.com/we-need-to-talk-about-fifty-five) 由 qntm 创作，发表于 SCP Wiki。演示对开篇作中文节编，重新分镜、绘图和排字。`docs/assets/web-novel-chapter.png` 与 `docs/assets/web-novel-edit-panel.png` 按 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 提供。项目代码沿用 MIT。

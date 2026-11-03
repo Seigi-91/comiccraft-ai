@@ -64,3 +64,9 @@
 5. 同一份原著后续片段复用已完成前章的角色设定与末镜说明。项目参考图可逐格重新选择。该记忆以完成稿为依据。
 
 角色参考先行和渐进式展示借鉴 [Story to Manga](https://github.com/victorhuangwq/story-to-manga#how-it-works)。分镜、资产和排字分离以及前章记忆借鉴 [MangaFlow 论文](https://arxiv.org/html/2605.28173v2)。这里采用现有 SQLite 与 LangGraph 实现。
+
+## 不等分分镜与画内排字
+
+先为每一段确定主镜头，再用窄格交代过渡或反应，用嵌入特写强调同一动作中的细节。草图标注子镜头区域、阅读顺序及对白留白。绘图阶段输出无字原画。排字阶段将对白和旁白合成到各自画格内，气泡分开，尾巴指向对应说话者。手机尺寸复核时检查脸、手、关键道具和子格边界。空间不足时缩短对白、调整机位或增加反应格。
+
+[公开演示](web-novel.html) 展示三段不等分版式，并提供本章原画的气泡编辑和 PNG 导出。排版规则见 [分镜 skill](../skills/storyboard-artist/SKILL.md) 与 [排版 skill](../skills/layout-artist/SKILL.md)。

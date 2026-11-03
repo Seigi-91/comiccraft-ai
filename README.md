@@ -1,5 +1,8 @@
 # ComicCraft AI · 可编辑、可回退的漫画创作工作室
 
+**[阅读新漫画《我们得谈谈五十五号》](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · [试改本章气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
+
+
 **简体中文** · [English](README.en.md)
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
@@ -74,27 +77,18 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 [完整模型连接说明](docs/MODEL_CONNECTIONS.md) · [能力与实际验证状态](docs/PROVIDERS.md)。免安装体验只使用预生成图片，不演示 AI 生成，刷新会重置修改；完整创作仍在本机应用中进行。
 
-## 自动创作如何工作
+## 技术架构
 
-配置并验证模型后开始生成，LangGraph 依次执行各角色，结果自动写回。小说大纲确认、图片质量修订仍可人工介入。旧回填待办可迁移至自动连接，已生成作品保留。
+| 层次 | 实现 |
+|---|---|
+| 交互与 API | React、TypeScript、Vite 提供工作台。FastAPI 和 Pydantic 处理接口与结构化输出校验 |
+| 编排与存储 | LangGraph 串联剧情、分镜、台词、绘图、视觉审核和排版。SQLAlchemy 与 SQLite 保存任务、版本、引用和生成记录 |
+| 模型连接 | 本机官方 Codex App Server 使用本人 ChatGPT 登录调用云端模型，也可接入兼容 API。文字与视觉、图片生成、局部编辑分别按能力配置 |
+| 创作知识 | 角色 skill 与本地词法检索共同进入提示词。英文词项与中文二字片段按角色过滤、加权排序，任务记录使用的知识卡及指纹 |
+| 增量修订 | 每格生成后保存进度。请求指纹包含提示词、参考图内容和模型连接，视觉复审按实际证据复用。定向重绘可保留范围外的原画 |
+| 图像处理与排字 | Pillow 负责独立气泡、尾巴、特效和条漫合成。局部精修只合入蒙版内像素，未选区保留原图像素 |
 
-## 自动接口与边界
-
-- 可配置 OpenAI 兼容文字/视觉/生图 HTTP 服务，以及独立 `/images/edits` 图像编辑服务；密钥只放本机 `.env`。
-- 图片 API 支持文生图与 multipart 参考图生成；服务须同时支持 `/images/generations` 和 `/images/edits`，不能把纯文字模型当作生图服务。
-- ChatGPT 模式中的尺寸和风格是提示词约束，**不是 seed、步数或去噪强度等底层推理参数**。
-- 没有完整向量 RAG；当前使用角色资料及最近三章大纲构造上下文。
-- 批次是单进程本地调度，暂停/取消不强杀当前项；不提供分布式任务保证。
-- 无登录、租户隔离和生产级权限控制。默认只绑定 `127.0.0.1`，不要直接将当前版本开放到公网。
-- 气泡保护框依赖视觉判断，可能漏检；手动位置、蒙版接缝和特效遮挡仍需人工检查。
-
-## 官方 ChatGPT 自动连接（Codex App Server）
-
-新用户可双击自动连接安装器，安装后完成本人ChatGPT登录，在设置向导中验证并启用；之后文字、视觉和图片自动返回网站，无需逐阶段粘贴JSON。API 仍可选；v2.5.1 起移除生成回填模式。[完整步骤与范围](docs/CODEX_CONNECTION.md)
-
-**v2.5本机真实向导：文字、附图识别、生图全部通过。** 修复了v2.4只等待固定图片文件名的问题，改为导入官方结构化生成附件；旧失败记录保留。每个新用户仍需使用自己的账户并验证权限和额度。已有人工待办支持“改用自动连接继续”。
-
-每格生成后立即保存，恢复时仅复用输入匹配的已完成格；审核按实际图片和参考依赖复用。[同类项目/论文调研](docs/AUTOMATION_RESEARCH_2026-11-02.md) · [效率回归与边界](benchmarks/AUTOMATION_EFFICIENCY.md)
+[架构与接口](docs/ARCHITECTURE.md) · [官方连接器](docs/CODEX_CONNECTION.md) · [知识库](knowledge/README.md) · [生成预算与恢复](docs/PRODUCTION_SAFETY.md)
 
 ## 小说改编入口
 
@@ -103,28 +97,9 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 3. 在「视觉参考与分镜草图」锁定角色、场景或道具参考，每格最多选三张。可调整动作、嵌入小格、对白及其位置，确认后才开始绘图。
 4. 成稿后可选多格定向修订。移动气泡时直接重新排版。同一小说后续章节可以带入已完成前章的角色设定和末镜资料。
 
-上述工作流已合入 `main`。下方 v2.5.1 安装包对应已发布版本。实测在《绿野仙踪》第一章仅替换了指定的两格，其余六格保留原图。单独移动气泡的保存耗时约 1.9 秒，模型调用记录未增加。详见[验证记录](benchmarks/VISUAL_WORKFLOW_VALIDATION.md)。
+上述工作流已合入 `main`。上方 v2.5.1 安装包对应已发布版本。实测在《绿野仙踪》第一章仅替换了指定的两格，其余六格保留原图。单独移动气泡的保存耗时约 1.9 秒，模型调用记录未增加。详见[验证记录](benchmarks/VISUAL_WORKFLOW_VALIDATION.md)。
 
 支持单次30万字符、2MB文本文件，长章分为最多8000字符的片段。当前按片段逐章改编，尚非整本长篇一键自动制作。[完整小说改编说明](docs/NOVEL_ADAPTATION.md)
-
-## v2.2：可追溯知识与 ChatGPT 对照实验
-
-六角色共 24 张知识卡：16 张有定位到章节的教学/从业者原则依据、2 张有同类项目工程先例、6 张明确属于项目规则。每张卡都有适用条件、局限、原创正反例、检查项与审阅状态。资料只支撑所列原则，不代表机构认可或生成效果已证实。
-
-- [资料调研与排除记录](knowledge/RESEARCH.md) · [完整知识卡目录](knowledge/CARD_CATALOG.md)
-- 检索按角色硬过滤、保留核心卡，再按中英关键词加权匹配专项卡；无关查询不凑满条目。每次生成冻结完整知识快照，同一任务恢复时沿用原快照。
-- [离线检索对照](benchmarks/KNOWLEDGE_EVALUATION.md)：维护者编写的 24 个相关查询，前三项命中率从 87.5% 到 100%；6 个无关查询不再填入无关专项卡。小样本、同团队编写，只是回归证据。
-- 设置页各 Agent 下可创建有/无额外知识的成对任务：冻结提示词与差异，复制到本机 ChatGPT 的两个新对话，回填真实 JSON，再逐项观察评分、完整后揭盲。[操作与盲评限制](benchmarks/CHATGPT_AB_PROTOCOL.md)。不自动调用 API；实验比较文字建议，漫画画质提升仍待实测。
-- 一致性评测的已知分数须附逐项观察，并绑定最终成稿指纹。历史无观察评分不再视为完整通过。
-- [同类项目代码调研与实际采纳边界](docs/UPSTREAM_RESEARCH_2026-11-02.md)：参考 OpenManga 的规则版本/差异、TT_AutoManga 的单项可审阅流程、comicsol 的证据化视觉检查；没有移植其完整运行系统。
-
-## 专业知识与可控生产
-
-六个 Agent 各有 4 张[专业知识卡](knowledge/README.md)，本地按角色与任务检索后接入实际提示词。分镜师可使用导演式叙事任务、景别、轴线/正反打、动作衔接和格间时间知识。它是原创应用笔记与来源链接，不是教材转载或模型微调；生成状态保存知识卡指纹。
-
-角色可审批锁定，解锁后的草稿不改变正在使用的审批版，重新审批后才用于新生成。生产工作台提供六维人工一致性评测，绑定图片及台词/特效状态。设置页可显式验证五类模型能力，并设置每任务 API 请求预留上限；调用记录保留服务返回的数值 usage，未知金额显示未知。批次仍是单实例调度，新增数据库租约与心跳用于防重复进入，不宣称跨系统恰好一次计费。
-
-[知识库](knowledge/README.md) · [质量、预算与恢复](docs/PRODUCTION_SAFETY.md) · [一致性基准](benchmarks/consistency-cases.json)
 
 ## 测试
 
@@ -150,7 +125,7 @@ npm.cmd --prefix frontend run build
 
 ## 许可
 
-项目原创代码与文档采用 [MIT](LICENSE)。上游技能、字体、音乐、JavaScript 等第三方资源保留各自许可，**不因根目录 MIT 而改换许可**。示例漫画为 AI 生成的虚构人物作品，仅作为效果示例提供；第三方素材详见 [许可清单](THIRD_PARTY_NOTICES.md)。
+项目原创代码与文档采用 [MIT](LICENSE)。上游技能、字体、音乐、JavaScript 等第三方资源保留各自许可，**不因根目录 MIT 而改换许可**。示例漫画为 AI 辅助创作，原著与素材的来源和许可见各作品说明；第三方素材详见 [许可清单](THIRD_PARTY_NOTICES.md)。
 
 ## 继续参与
 

@@ -1,5 +1,8 @@
 # ComicCraft AI · An editable comic creation workspace
 
+**[Read the new comic adaptation](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · [Edit a balloon from the chapter](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
+
+
 [简体中文](README.md) · **English**
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
@@ -70,11 +73,18 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 
 Install a Chinese-capable font, such as Noto Sans CJK, and set `COMIC_FONT_PATH` if needed. A fresh install starts with an empty database. Click the home screen’s sample-import button to load an editable six-panel example without model calls. Re-import opens it without overwriting edits. Environment diagnostics are available there too.
 
-## Professional knowledge and production controls
+## Architecture
 
-Each agent has four original knowledge cards (24 total), including directing/storyboard grammar, continuity, dialogue, anatomy checks and lettering. Role-filtered local lexical retrieval adds relevant cards to real prompts and records their IDs/hashes. This is not vector RAG, model training, or a redistribution of textbooks. [Knowledge guide](knowledge/README.md).
+| Layer | Implementation |
+|---|---|
+| Interface and API | React, TypeScript, and Vite power the workspace. FastAPI and Pydantic handle APIs and structured output validation |
+| Orchestration and storage | LangGraph coordinates story, storyboard, dialogue, illustration, visual review, and lettering. SQLAlchemy and SQLite store task state, assets, versions, and generation records |
+| Model connections | The local official Codex App Server calls cloud models using your own ChatGPT login. Compatible APIs can be configured for text and vision, image generation, and masked editing |
+| Creative knowledge | Role skills and local lexical retrieval add relevant guidance to prompts. Retrieval ranks English terms and Chinese character bigrams within each role and records card IDs and hashes |
+| Incremental revision | Each finished panel is checkpointed. Request fingerprints track prompts, reference content, and provider configuration. Review reuse depends on unchanged visual evidence |
+| Image processing and lettering | Pillow composes the artwork, editable speech balloons, and effects. Masked repair composites candidate pixels within the selected region and preserves original pixels outside it |
 
-Approve and lock character assets; draft edits stay separate until re-approved. The workbench includes a human six-axis consistency rubric bound to panel and lettering state. Explicit cost-consented probes test five provider capabilities. Persistent request caps and numerical usage records help bound API attempts; currency costs remain unknown. Database leases/heartbeats reduce duplicate runner entry in the supported single-instance deployment. They do not promise exactly-once provider billing.
+[Architecture](docs/ARCHITECTURE.md) · [Official connector](docs/CODEX_CONNECTION.md) · [Knowledge cards](knowledge/README.md) · [Budgets and recovery](docs/PRODUCTION_SAFETY.md)
 
 ## Limits and validation
 
@@ -102,19 +112,7 @@ If the workflow helps you, a voluntary GitHub Star makes it easier to find again
 
 ## License
 
-Original code/docs: [MIT](LICENSE). Third-party skills, fonts, music and components retain their own licenses; see [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md). Fictional AI-generated example images illustrate the workflow and are not a promise of exclusive rights or guaranteed model output.
-
-## v2.2: traceable knowledge and manual ChatGPT ablations
-
-The 24 role cards distinguish 16 educational/practitioner principles, 2 engineering precedents and 6 project policies. Each includes located evidence, applicability, limitations, original positive/negative examples and checks. See the [research ledger](knowledge/RESEARCH.md) and [card catalog](knowledge/CARD_CATALOG.md).
-
-Role-filtered weighted lexical retrieval preserves one core card and adds only relevant specialist cards. Each generation task freezes the complete corpus; resuming that task retains its snapshot. This is local retrieval, not vector RAG or model training.
-
-The [retrieval regression](benchmarks/KNOWLEDGE_EVALUATION.md) improved top-three hits from 21/24 to 24/24 on maintainer-written queries and removed irrelevant specialist filler on 6 negative queries. Small, non-independent cases do not establish comic quality gains.
-
-Each agent's settings page now provides paired manual ChatGPT tasks, frozen prompts and diffs, JSON reply validation, per-dimension observations and delayed condition reveal. Use two fresh chats with the same displayed model; identity remains operator-declared. Download a separate reviewer bundle for limited blinding. No model API is called. [Protocol and limits](benchmarks/CHATGPT_AB_PROTOCOL.md). Real generation-effect evaluation remains pending.
-
-Image consistency scores now require specific observations and bind to the final rendered image as well as panel/dialogue/effect state. Legacy numeric-only reviews are incomplete. [Peer research and adoption boundaries](docs/UPSTREAM_RESEARCH_2026-11-02.md).
+Original code/docs: [MIT](LICENSE). Third-party skills, fonts, music and components retain their own licenses; see [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md). See each demo’s attribution for source text and artwork details.
 
 ## Novel adaptation and storyboard review
 
@@ -126,11 +124,3 @@ Image consistency scores now require specific observations and bind to the final
 This workflow is available on `main`. The linked v2.5.1 installer downloads the tagged release. In the live *Wizard of Oz* trial, only the two selected panels changed. A subsequent lettering save took about 1.9 seconds and added no model calls. See the [validation record](benchmarks/VISUAL_WORKFLOW_VALIDATION.md).
 
 Original text and provenance stay separate from existing chapters. Bubble editing, masked repair, production tools and chapter rollback remain available. Each task retains its source/settings snapshot. Limits: 300,000 characters per import, 2MB files, 8,000 characters per excerpt and 200 excerpts. This is a per-excerpt workflow, not automatic whole-book adaptation or a guarantee of fidelity. [Detailed guide](docs/NOVEL_ADAPTATION.md).
-
-## Automatic ChatGPT connection (v2.5)
-
-Use `Install-ComicCraft-Auto.cmd`, complete your own official ChatGPT sign-in, then verify and enable text/vision/images in Settings. The official Codex App Server returns structured results and native image artifacts automatically; API providers remain available. Existing handoff jobs can explicitly continue with an automatic provider.
-
-**Live local setup: text, attached-image recognition and real image generation all passed.** This corrects v2.4's fixed-filename image check; the older failure record remains historical. Account access, limits and real artwork still need per-user checks. This is a cloud model connection, not an offline model or shared account.
-
-Panels are checkpointed as they complete. Resume reuses only matching inputs/references; passed visual reviews are reused only while all evidence remains unchanged. No blind parallelization of sequential reference-dependent panels. [Setup and exact limits](docs/CODEX_CONNECTION.md) · [Peer/primary research](docs/AUTOMATION_RESEARCH_2026-11-02.md) · [Synthetic efficiency regression](benchmarks/AUTOMATION_EFFICIENCY.md).
