@@ -116,9 +116,14 @@ Each agent's settings page now provides paired manual ChatGPT tasks, frozen prom
 
 Image consistency scores now require specific observations and bind to the final rendered image as well as panel/dialogue/effect state. Legacy numeric-only reviews are incomplete. [Peer research and adoption boundaries](docs/UPSTREAM_RESEARCH_2026-11-02.md).
 
-## Novel adaptation (v2.3)
+## Novel adaptation and storyboard review
 
-Open a project and choose **小说改编 · 导入原著**. Paste a novel or upload UTF-8/GB18030 TXT/Markdown, preview local segmentation and save the source. Choose an excerpt, fidelity mode, 1–24 panels and required facts. Creating its comic chapter makes no model call. Generate through the existing ChatGPT/API connection, review the editable adaptation outline, then explicitly continue to storyboards, dialogue and art.
+1. Open **小说改编 · 导入原著**, import TXT or Markdown, and select the excerpt, fidelity mode, panel count, and required facts. Import and chapter creation make no model calls.
+2. Generate source-grounded character cards and review the outline. The workflow then prepares the storyboard and dialogue and pauses before image generation.
+3. In **视觉参考与分镜草图**, lock character, scene, and prop references and attach up to three per panel. Review the action, inset shots, dialogue, and balloon positions, then confirm rendering.
+4. Revise selected panels or adjust lettering separately. Later chapters from the same imported novel can carry over character settings and the preceding completed chapter’s final shot.
+
+This workflow is available on `main`. The linked v2.5.1 installer downloads the tagged release. In the live *Wizard of Oz* trial, only the two selected panels changed. A subsequent lettering save took about 1.9 seconds and added no model calls. See the [validation record](benchmarks/VISUAL_WORKFLOW_VALIDATION.md).
 
 Original text and provenance stay separate from existing chapters. Bubble editing, masked repair, production tools and chapter rollback remain available. Each task retains its source/settings snapshot. Limits: 300,000 characters per import, 2MB files, 8,000 characters per excerpt and 200 excerpts. This is a per-excerpt workflow, not automatic whole-book adaptation or a guarantee of fidelity. [Detailed guide](docs/NOVEL_ADAPTATION.md).
 
