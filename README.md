@@ -1,6 +1,8 @@
 # ComicCraft AI · 可编辑、可回退的漫画创作工作室
 
-**[观看项目宣传片（MP4）](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo.mp4)** · [下载可编辑 HyperFrames 工程](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo-Editable.zip)
+[![ComicCraft AI video preview](docs/assets/comiccraft-promo-poster.jpg)](https://seigi-91.github.io/comiccraft-ai/#promo-video)
+
+**[在线播放宣传片](https://seigi-91.github.io/comiccraft-ai/#promo-video)** · [观看项目宣传片（MP4）](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo.mp4) · [下载可编辑 HyperFrames 工程](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo-Editable.zip)
 
 **简体中文** · [English](README.en.md)
 
