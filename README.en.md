@@ -1,5 +1,7 @@
 # ComicCraft AI · An editable comic creation workspace
 
+**[Watch the project demo (MP4)](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo.mp4)** · [Download the editable HyperFrames project](https://github.com/Seigi-91/comiccraft-ai/releases/download/demo-2026-11/ComicCraft-AI-Promo-Editable.zip)
+
 [简体中文](README.md) · **English**
 
 [![CI](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Seigi-91/comiccraft-ai/actions/workflows/ci.yml)
