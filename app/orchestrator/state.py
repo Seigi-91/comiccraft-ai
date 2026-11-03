@@ -2,6 +2,9 @@ from typing import Any, Dict, List, NotRequired, Optional, TypedDict
 
 
 class ComicState(TypedDict, total=False):
+    previous_novel_context: Dict[str, Any]
+    revision_targets: List[int]
+    visual_reference_bindings: Dict[str, List[Dict[str, Any]]]
     novel_adaptation: Optional[Dict[str, Any]]
     project_id: str
     user_id: str

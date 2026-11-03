@@ -83,7 +83,8 @@ def test_edit_restore_and_single_panel_revision():
         assert '猫咪换个动作' in j['prompt']
         replacement = image_upload(c)
         respond(c, cid, {"image_url": replacement})
-        for _ in urls: respond(c, cid, {"text": json.dumps({"passed": True, "issues": [], "score": 95})})
+        respond(c, cid, {"text": json.dumps({"passed": True, "issues": [], "score": 95})})
+        assert task(c, cid)['result']['state']['review_history'][-1]['panel_reviews'][0]['reused_review'] is True
         revised_panels=c.get(f"/api/projects/{p['id']}/chapters/{cid}").json()['panels']
         assert [x['image_url'] for x in revised_panels] == [urls[0], replacement]
         assert task(c,cid)['status']=='completed'

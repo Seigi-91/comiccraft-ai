@@ -14,13 +14,14 @@ class StyleReviewerAgent(VisionAgent):
             c["reference_image_url"] for c in characters or [] if c.get("reference_image_url")
         ]
         for position, panel in enumerate(panels):
-            references = [panel["image_url"], *identity_refs]
+            anchors = [anchor["image_url"] for anchor in panel.get("visual_references", [])]
+            references = [panel["image_url"], *anchors, *identity_refs]
             if position:
                 references.extend([panels[0]["image_url"], panels[position - 1]["image_url"]])
             references = list(dict.fromkeys(references))[:6]
             prompt = instructions("style_reviewer", panel.get("prompt", "")) + "\n分镜要求：" + panel.get("prompt", "")
             prompt += (
-                "\n第一张为待审面板，其余为角色表及已生成的开场/前一格参考。"
+                "\n第一张为待审面板，其余为锁定的角色、场景、道具参考及已生成的开场/前一格参考。"
                 "必须跨图对比脸型、发型、服装、道具、动物花纹、天气和场景结构。镜头变化不等于连续性错误。"
                 "实际附图路径顺序：" + str(references)
             )

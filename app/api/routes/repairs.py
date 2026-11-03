@@ -44,14 +44,21 @@ async def create(chapter_id: str,panel_index:int,payload:RepairRequest,backgroun
         raise HTTPException(503,'人工精修回填已停用，请在设置中配置并验证自动图像编辑连接')
     if settings.IMAGE_EDIT_PROVIDER not in {'chatgpt_desktop','codex_cli'} and not settings.IMAGE_EDIT_BASE_URL:
         raise HTTPException(503,'尚未配置图像编辑服务，请配置 IMAGE_EDIT_BASE_URL / IMAGE_EDIT_MODEL / IMAGE_EDIT_API_KEY')
-    panel=(await db.execute(select(Panel).where(Panel.chapter_id==chapter_id,Panel.index==panel_index))).scalar_one_or_none()
-    if not panel or panel.image_url!=payload.source_url:
-        raise HTTPException(409,'原图已变化，请重新打开精修器')
+    state = (tasks[0].result or {}).get('state', {}) if tasks else {}
+    draft_panels = state.get('panels') or []
+    if draft_panels:
+        draft = next((panel for panel in draft_panels if panel['index'] == panel_index), None)
+        source_url = draft.get('image_url') if draft else None
+    else:
+        panel = (await db.execute(select(Panel).where(Panel.chapter_id == chapter_id, Panel.index == panel_index))).scalar_one_or_none()
+        source_url = panel.image_url if panel else None
+    if not source_url or source_url != payload.source_url:
+        raise HTTPException(409, '原图已变化，请重新打开精修器')
     if any(not 3<=len(p)<=2000 for p in payload.polygons):
         raise HTTPException(422,'每个选区需3–2000个点')
-    try: mask_url=create_mask(panel.image_url,[[p.model_dump() for p in poly] for poly in payload.polygons])
+    try: mask_url=create_mask(source_url,[[p.model_dump() for p in poly] for poly in payload.polygons])
     except ValueError as error:raise HTTPException(422,str(error))
-    row=PanelRepair(id=str(uuid4()),chapter_id=chapter_id,panel_index=panel_index,source_url=panel.image_url,mask_url=mask_url,instructions=payload.instructions,status='pending')
+    row=PanelRepair(id=str(uuid4()),chapter_id=chapter_id,panel_index=panel_index,source_url=source_url,mask_url=mask_url,instructions=payload.instructions,status='pending')
     db.add(row);await db.commit()
     background_tasks.add_task(run_repair,row.id)
     return {'id':row.id}

@@ -9,6 +9,7 @@ from app.orchestrator.nodes import (
     human_intervention_node,
     review_panels_node,
 )
+from app.orchestrator.nodes.outline import generate_character_cards_node
 from app.orchestrator.routing import review_decision
 from app.orchestrator.state import ComicState
 from app.tools.desktop_bridge import stage_context
@@ -19,6 +20,7 @@ def create_comic_graph(session=None):
     workflow = StateGraph(ComicState)
     nodes = {
         "auto_place_bubbles": place_bubbles,
+        "generate_character_cards": generate_character_cards_node,
         "generate_outline": generate_outline_node,
         "generate_storyboard": generate_storyboard_node,
         "generate_dialogue": generate_dialogue_node,
@@ -30,6 +32,7 @@ def create_comic_graph(session=None):
     }
     sequence = {
         "auto_place_bubbles": "final_layout",
+        "generate_character_cards": "generate_outline",
         "generate_outline": "generate_storyboard",
         "generate_storyboard": "generate_dialogue",
         "generate_dialogue": "arbitrate_conflicts",

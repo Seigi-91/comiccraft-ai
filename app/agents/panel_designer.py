@@ -20,6 +20,8 @@ class PanelDesignerAgent(TextAgent):
         character_ids=None,
         previous=None,
         feedback=None,
+        visual_reference_bindings=None,
+        dialogue_positions=None,
     ):
         from app.tools.desktop_bridge import stage_context
 
@@ -31,10 +33,17 @@ class PanelDesignerAgent(TextAgent):
             if index in previous and reviews.get(index, {}).get("passed"):
                 results.append(previous[index])
                 continue
+            anchors = (visual_reference_bindings or {}).get(str(index), [])
+            positions = panel.get("character_positions") or []
+            visible = {p.get("character") for p in positions if isinstance(p, dict) and p.get("character")}
+            cast = [c for c in characters or [] if not visible or c["name"] in visible]
             # Include retry round in prompt to prevent replaying rejected cached art.
             data = {
                 "panel": panel,
-                "characters": characters or [],
+                "characters": cast,
+                "visual_references": anchors,
+                "reference_precedence": "角色参考锁定身份，场景参考锁定空间与结构，道具参考锁定外形。本格剧本决定动作、时间、天气、服装版本和道具状态；参考图的旧状态不得覆盖本格。" if anchors else None,
+                "lettering_space": (dialogue_positions or {}).get(index, []),
                 "style_refs": style_ref_urls or [],
                 "review": reviews.get(index),
                 "previous_image": previous.get(index, {}).get("image_url") if reviews.get(index) else None,
@@ -47,14 +56,15 @@ class PanelDesignerAgent(TextAgent):
             prompt = (
                 instructions("panel_designer", json.dumps(data, ensure_ascii=False)) + "\n输入：" + json.dumps(data, ensure_ascii=False)
             )
-            references = [
-                c["reference_image_url"] for c in characters or [] if c.get("reference_image_url")
-            ]
+            from app.services.production_records import asset_hash
+            if any(asset_hash(anchor["image_url"]) != anchor["sha256"] for anchor in anchors):
+                raise ValueError("已锁定的参考图已变化或无法读取，请重新选择参考版本")
+            references = [anchor["image_url"] for anchor in anchors]
+            references.extend(c["reference_image_url"] for c in cast if c.get("reference_image_url"))
             if results:
                 references.extend([results[0]["image_url"], results[-1]["image_url"]])
             references = list(dict.fromkeys(references))[:5]
             from app.api.routes.compatibility import fingerprint
-            from app.services.production_records import asset_hash
             signature=hashlib.sha256(json.dumps({"prompt":prompt,"references":[[u,asset_hash(u)] for u in references],"provider":fingerprint('image')},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
             candidate=previous.get(index,{})
             if not reviews.get(index) and candidate.get("status")=="generated" and candidate.get("request_signature")==signature and asset_hash(candidate.get("image_url")):
@@ -76,6 +86,7 @@ class PanelDesignerAgent(TextAgent):
                     "prompt": prompt,
                     "status": "generated",
                     "reference_images": references,
+                    "visual_references": anchors,
                     "shot": panel,
                 }
             )

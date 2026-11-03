@@ -22,8 +22,11 @@ class GenerateService:
         corpus_token=None
         from app.services.phase_progress import panel_progress
         async def checkpoint_panels(panels):
-            state["panels"]=panels
-            await self.task_repo.update(task_id,{"result":{"state":state}})
+            # A redraw reports a prefix while later panels still have saved artwork.
+            saved_by_index = {panel["index"]: panel for panel in state.get("panels", [])}
+            saved_by_index.update((panel["index"], panel) for panel in panels)
+            state["panels"] = [saved_by_index[index] for index in sorted(saved_by_index)]
+            await self.task_repo.update(task_id, {"result": {"state": state}})
         progress_token=panel_progress.set(checkpoint_panels)
         evidence=[]
         evidence_token=knowledge_trace.set(evidence)
@@ -55,11 +58,31 @@ class GenerateService:
                     "events": [],
                 }
             if not state.get("novel_adaptation") and not state.get("events"):
-                from app.services.novel_adaptation import chapter_source
+                from app.services.novel_adaptation import chapter_source, previous_adaptation_state
                 source = await chapter_source(self.session, chapter_id)
                 if source:
                     from copy import deepcopy
                     state["novel_adaptation"] = deepcopy(source)
+                    prior = await previous_adaptation_state(self.session, chapter_id)
+                    if prior:
+                        cast = {card['name']: card for card in prior.get('characters', [])}
+                        cast.update((card['name'], card) for card in state.get('characters', []))
+                        state['characters'] = list(cast.values())
+                        shots = (prior.get('storyboard') or {}).get('panels', [])
+                        if shots:
+                            ending = shots[-1]
+                            outline = prior.get('outline') or {}
+                            memory = {
+                                'title': outline.get('title'),
+                                'ending_action': ending.get('action'),
+                                'location': ending.get('background'),
+                                'character_positions': ending.get('character_positions'),
+                                'props': ending.get('props'),
+                                'references': (prior.get('visual_reference_bindings') or {}).get(str(ending['index']), []),
+                            }
+                            state['previous_novel_context'] = memory
+                            state['inspiration'] += '\n同一小说前章已完成的末镜（连续性资料）：' + json.dumps(memory, ensure_ascii=False)
+                    state["next_node"] = "generate_character_cards"
             if state.get('knowledge_snapshot_task_id')!=task_id:
                 from copy import deepcopy
                 state['knowledge_snapshot']=deepcopy(corpus())
@@ -81,6 +104,10 @@ class GenerateService:
                     from app.api.routes.editing import snapshot
                     await snapshot(self.session, chapter, [task], "小说改编方案待审阅")
                     await self.session.commit()
+                    return
+                if state.get("novel_adaptation") and "generate_dialogue" in event:
+                    await self.task_repo.update(task_id, {"status": TaskStatus.NEEDS_HUMAN,
+                        "result": {"state": state, "waiting_for": "storyboard_review"}})
                     return
                 await self.task_repo.update(task_id, {"result": {"state": state}})
                 phase = state.get("phase")

@@ -91,3 +91,36 @@ def test_candidate_resize_requires_explicit_opt_in():
     candidate=composite_candidate(source,mask,output.getvalue(),allow_resize=True)
     assert Image.open(local_image_path(candidate)).size==(128,128)
     assert Image.open(local_image_path(candidate)).getpixel((0,0))==(255,0,0)
+
+
+def test_repair_candidate_from_saved_draft_without_panel_row(monkeypatch):
+    from app.api.routes import repairs
+    from app.services.inpainting import composite_candidate
+
+    async def edit(source, mask, instructions):
+        return composite_candidate(source, mask, image_bytes('blue'))
+
+    monkeypatch.setattr(settings, 'IMAGE_EDIT_PROVIDER', 'codex_cli')
+    monkeypatch.setattr(repairs, 'edit_image', edit)
+    with TestClient(app) as client:
+        project = client.post('/api/projects', json={'name': 'Draft repair'}).json()
+        chapter = client.post(f"/api/projects/{project['id']}/chapters", json={'title': 'Draft'}).json()
+        source = save_image_bytes(image_bytes('red'))
+
+        async def save_draft():
+            async with AsyncSessionLocal() as db:
+                db.add(Task(id=str(uuid4()), chapter_id=chapter['id'], project_id=project['id'],
+                            type='generate_chapter', status=TaskStatus.FAILED,
+                            result={'state': {'panels': [{'index': 0, 'image_url': source, 'status': 'generated'}]}}))
+                await db.commit()
+
+        asyncio.run(save_draft())
+        root = f"/api/repairs/{chapter['id']}"
+        payload = {'source_url': source, 'instructions': 'Adjust lighting',
+                   'polygons': [[{'x': 30, 'y': 30}, {'x': 60, 'y': 30}, {'x': 60, 'y': 60}]]}
+        assert client.post(root + '/panels/0', json={**payload, 'source_url': '/media/stale.png'}).status_code == 409
+        response = client.post(root + '/panels/0', json=payload)
+        assert response.status_code == 200, response.text
+        record = client.get(root).json()[0]
+        assert record['status'] == 'ready' and record['candidate_url'] != source
+        assert client.post(root + '/' + record['id'] + '/accept', json={}).status_code == 409

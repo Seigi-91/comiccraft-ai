@@ -54,3 +54,18 @@ async def chapter_source(db, chapter_id):
 
 def source_hash(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+async def previous_adaptation_state(db, chapter_id):
+    """Reuse only a completed earlier segment from the same imported novel."""
+    from app.models.orm import Task, TaskStatus
+    current = (await db.execute(select(NovelAdaptation).where(NovelAdaptation.chapter_id == chapter_id))).scalar_one_or_none()
+    if not current:
+        return {}
+    stmt = (select(Task.result).join(NovelAdaptation, Task.chapter_id == NovelAdaptation.chapter_id)
+            .where(NovelAdaptation.document_id == current.document_id,
+                   NovelAdaptation.segment_index < current.segment_index,
+                   Task.status == TaskStatus.COMPLETED)
+            .order_by(NovelAdaptation.segment_index.desc(), Task.created_at.desc()).limit(1))
+    result = (await db.execute(stmt)).scalar_one_or_none() or {}
+    return result.get('state', {})

@@ -278,3 +278,14 @@ class KnowledgeTrial(Base):
     review: Mapped[dict] = mapped_column(JSON, default=dict)
     status: Mapped[str] = mapped_column(String, default='awaiting_replies')
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None))
+
+
+class VisualReference(Base):
+    __tablename__ = "visual_references"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    project_id: Mapped[str] = mapped_column(String, ForeignKey("projects.id"), index=True)
+    kind: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String)
+    description: Mapped[str] = mapped_column(Text)
+    image_url: Mapped[str] = mapped_column(String)
+    sha256: Mapped[str] = mapped_column(String)

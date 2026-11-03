@@ -155,6 +155,8 @@ async def restore(chapter_id: str, version_id: str, payload: Restore, db=Depends
 
 class Revise(BaseModel):
     instructions: str = Field(min_length=1, max_length=4000)
+    additional_panels: list[int] = Field(default_factory=list, max_length=23)
+    reference_ids: dict[str, list[str]] = Field(default_factory=dict, max_length=24)
 
 
 class BubbleEdit(BaseModel):
@@ -266,12 +268,26 @@ async def revise(chapter_id: str, panel_index: int, payload: Revise, background_
     panels = list((await db.execute(select(Panel).where(Panel.chapter_id == chapter_id).order_by(Panel.index))).scalars())
     if not board or panel_index not in {p.index for p in panels}:
         raise HTTPException(422, "该分镜尚无可修订图片或分镜脚本")
-    await snapshot(db, chapter, tasks, f"修订第 {panel_index + 1} 格前")
+    targets = {panel_index, *payload.additional_panels}
+    if not targets <= {p.index for p in panels}:
+        raise HTTPException(422, "修订范围包含不存在的分镜")
+    if payload.reference_ids:
+        from app.api.routes.assets import resolve_visual_bindings
+        selected = await resolve_visual_bindings(db, chapter.project_id, payload.reference_ids, targets)
+        state["visual_reference_bindings"] = {**state.get("visual_reference_bindings", {}), **selected}
+    await snapshot(db, chapter, tasks, "按格修订前")
+    saved_panels = {}
+    for previous_task in reversed(tasks):
+        for saved in ((previous_task.result or {}).get('state', {}).get('panels') or []):
+            key = (saved['index'], saved.get('image_url'))
+            saved_panels[key] = {**saved_panels.get(key, {}), **saved}
+    previous_reviews = state.get('review_history') or []
     state.update(storyboard=board, dialogues=state.get("dialogues") or chapter.dialogues,
                  outline=state.get("outline") or chapter.outline,
-                 panels=[{"index": p.index, "image_url": p.image_url, "status": p.status.value} for p in panels],
+                 panels=[{**saved_panels.get((p.index, p.image_url), {}), "index": p.index, "image_url": p.image_url, "status": p.status.value} for p in panels],
+                 revision_targets=sorted(targets),
                  next_node="generate_panels", phase="panel_generation", retry_count=0, human_intervene=False,
-                 review_history=[{"panel_reviews": [{"panel_index": p.index, "passed": p.index != panel_index, "issues": [] if p.index != panel_index else [{"type": "人工修订", "severity": "medium", "description": payload.instructions, "suggestion": payload.instructions}]} for p in panels]}])
+                 review_history=[*previous_reviews, {"panel_reviews": [{"panel_index": p.index, "passed": p.index not in targets, "issues": [] if p.index not in targets else [{"type": "人工修订", "severity": "medium", "description": payload.instructions, "suggestion": payload.instructions}]} for p in panels]}])
     from app.db.repositories import CharacterProfileRepository
     from app.services.character_details import creative_character
     profiles = await CharacterProfileRepository(db).list(chapter.project_id)
