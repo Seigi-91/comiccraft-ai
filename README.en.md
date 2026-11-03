@@ -9,6 +9,18 @@ Turn a story into panels you can keep editing: scripts, character outfits, dialo
 
 [Showcase](https://seigi-91.github.io/comiccraft-ai/) · [Windows installation](docs/INSTALL.md) · [User guide](docs/USER_GUIDE.md) · [Architecture](docs/ARCHITECTURE.md)
 
+## Feature walkthrough
+
+Screenshots from the running application. Open an image at full size, or try the interactive editor from the featured chapter.
+
+[Full showcase](https://seigi-91.github.io/comiccraft-ai/#workspace-preview) · [Try the balloon editor](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
+
+| Creation | Planning and production |
+|---|---|
+| **Novel import and adaptation**<br>[![Novel import and adaptation](docs/images/feature-novel.jpg)](docs/images/feature-novel.jpg)<br>Import a source, preview excerpts, and set the chapter’s panel count and required facts. | **Visual references and storyboard draft**<br>[![Visual references and storyboard draft](docs/images/feature-planning.jpg)](docs/images/feature-planning.jpg)<br>Assign references per panel and preview the action, inset shots, and balloon positions. |
+| **In-panel balloon editing**<br>[![In-panel balloon editing](docs/images/feature-bubbles.jpg)](docs/images/feature-bubbles.jpg)<br>Move, resize, and edit speech balloons, adjust the tails, then recompose the comic. | **Masked panel repair**<br>[![Masked panel repair](docs/images/feature-repair.jpg)](docs/images/feature-repair.jpg)<br>Mark a region and compare the repair candidate against the original before adopting it. |
+| **Production workbench**<br>[![Production workbench](docs/images/feature-production.jpg)](docs/images/feature-production.jpg)<br>Inspect panel generation records, batch jobs, parameter experiments, and effects layers. | **Creative team and model settings**<br>[![Creative team and model settings](docs/images/feature-studio.jpg)](docs/images/feature-studio.jpg)<br>Inspect agent roles and knowledge cards, and manage text, vision, and image connections. |
+
 ## Featured comic · We Need To Talk About Fifty-Five
 
 A Chinese adaptation of the opening installment of qntm’s SCP Wiki serial. The finished chapter uses uneven panel sizes, inset close-ups, and dialogue placed inside the panels.

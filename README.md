@@ -11,6 +11,18 @@
 
 [公开演示首页](https://seigi-91.github.io/comiccraft-ai/) · [Windows 安装](docs/INSTALL.md) · [操作手册](docs/USER_GUIDE.md) · [架构与接口](docs/ARCHITECTURE.md)
 
+## 功能演示
+
+以下截图采自运行中的完整应用。点击可查看原图，也可以在浏览器里直接试改示例漫画的气泡。
+
+[公开功能展台](https://seigi-91.github.io/comiccraft-ai/#workspace-preview) · [在线试改气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)
+
+| 创作与编辑 | 分镜与生产 |
+|---|---|
+| **小说导入与改编**<br>[![小说导入与改编](docs/images/feature-novel.jpg)](docs/images/feature-novel.jpg)<br>导入原著、预览分段，并为改编章节设定格数和保留事实。 | **视觉参考与分镜草图**<br>[![视觉参考与分镜草图](docs/images/feature-planning.jpg)](docs/images/feature-planning.jpg)<br>按格选用角色、场景和道具参考，预览动作、嵌入小格和对白留白。 |
+| **画内气泡编辑**<br>[![画内气泡编辑](docs/images/feature-bubbles.jpg)](docs/images/feature-bubbles.jpg)<br>在原画上移动气泡、改字、缩放并调整尾巴，再重新合成成稿。 | **圈选局部精修**<br>[![圈选局部精修](docs/images/feature-repair.jpg)](docs/images/feature-repair.jpg)<br>圈定需要修改的区域，比较候选与原图后决定是否采用。 |
+| **素材生产工作台**<br>[![素材生产工作台](docs/images/feature-production.jpg)](docs/images/feature-production.jpg)<br>查看逐格生成记录、批量任务、参数实验与特效层。 | **创作团队与模型设置**<br>[![创作团队与模型设置](docs/images/feature-studio.jpg)](docs/images/feature-studio.jpg)<br>查看角色分工与知识卡，分别管理文字、视觉和图片连接。 |
+
 ## 成稿预览 ·《我们得谈谈五十五号》
 
 改编自 qntm 在 SCP Wiki 连载的《反模因部不存在》开篇。完整成稿展示不等分主格、过渡窄格、嵌入特写和画内对白。
@@ -35,8 +47,6 @@
 | 像素保护 | 精修候选只采用蒙版内像素，未选原始分镜像素保持不变 |
 | 生产工作台 | 每格设定快照与请求记录、章节批次、实验候选对比、非破坏特效层 |
 | 版本管理 | 修改前备份整个章节，恢复台词、图片、气泡和特效状态 |
-
-![素材生产工作台](docs/images/production.png)
 
 ## Windows 一键安装
 
