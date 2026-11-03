@@ -90,6 +90,12 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 [架构与接口](docs/ARCHITECTURE.md) · [官方连接器](docs/CODEX_CONNECTION.md) · [知识库](knowledge/README.md) · [生成预算与恢复](docs/PRODUCTION_SAFETY.md)
 
+## 创作规则与知识库
+
+角色 skills 负责各阶段的必做检查，知识库按角色和当前任务检索适用案例。小说先提取角色和原著事实，再安排完整的因果节拍。分镜可用不等分主格、窄过渡格和嵌入特写，生图前预留说话人各自的气泡空间。绘图保留角色身份和场景结构，动作、服装与道具状态以当前镜头为准。复审区分影响剧情的错误和可由编辑确认的小偏差，排字保持在画格内。
+
+[角色 skills](skills/) · [知识卡与来源](knowledge/README.md) · [工作流验证](benchmarks/VISUAL_WORKFLOW_VALIDATION.md)
+
 ## 小说改编入口
 
 1. 打开「小说改编 · 导入原著」，保存原文并选择片段、改编方式、1–24 格和必须保留的事实。导入和建章不会调用模型。

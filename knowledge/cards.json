@@ -203,6 +203,18 @@
       "redistribution": "仅链接、原创摘要与定位，不分发原文/插图/字体",
       "retrieval_method": "fixed_commit_raw_text",
       "availability_note": "核对范围不等于保证链接实时可访问；部分教育页面直接HTTP可能受限，保留正文访问边界。"
+    },
+    "cohn-comic-structure": {
+      "title": "Neil Cohn — The architecture of visual narrative comprehension (2014)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4076615/",
+      "use": "主画面与嵌入格的布局和注意力组织",
+      "publisher": "Frontiers in Psychology",
+      "checked_at": "2026-11-03",
+      "kind": "primary_research",
+      "access_status": "verified_text",
+      "scope": "核对 External compositional structure 和 Attentional framing structure 的概念及嵌入格说明。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "项目布局实践与数值约束均为本地应用规则。"
     }
   },
   "cards": [
@@ -393,17 +405,19 @@
         "世界观",
         "连续性",
         "前章",
-        "伏笔"
+        "伏笔",
+        "跨章记忆与剧情连续"
       ],
-      "content": "维护谁知道什么、谁持有什么、地点和时间的简表。区分读者知道与人物知道，防止角色无故获得信息。前章事件只能从提供的资料引用；未提供原文时不要宣称完整检索。伏笔回收须对应已出现的物或动作，超自然变化要有故事规则依据。",
+      "content": "维护谁知道什么、谁持有什么、地点和时间的简表。区分读者知道与人物知道，防止角色无故获得信息。前章事件只能从提供的资料引用；未提供原文时不要宣称完整检索。伏笔回收须对应已出现的物或动作，超自然变化要有故事规则依据。\n从同一原著的已完成前章继承已确认的角色、末镜地点与道具状态。区分原文事实、漫画补设与角色所知。转场时保留至少一个因果锚点。",
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [],
       "basis": "project_rule",
       "project_rules": [
-        "只把输入中确认的事实写入角色/时间线；人物所知与读者所知分开。"
+        "只把输入中确认的事实写入角色/时间线；人物所知与读者所知分开。",
+        "从同一原著的已完成前章继承已确认的角色、末镜地点与道具状态。区分原文事实、漫画补设与角色所知。转场时保留至少一个因果锚点。"
       ],
       "applicability": [
         "跨章出现物品归属或知情范围矛盾。"
@@ -412,15 +426,16 @@
         "闪回、误导叙述和超自然知识须由作者明确设定。"
       ],
       "examples": {
-        "positive": "信封先由小雨拿着，交给店主后才改为店主持有。",
-        "negative": "人物尚未看信就准确复述信的内容，且无设定解释。",
-        "explanation": "记录已发生的转移和信息获取，减少无理由跳变。"
+        "positive": "先交代怀疑的触发证据，再给人物反应与行动。",
+        "negative": "从看见警报直接切到角色逃走，省掉决定行动所需的线索。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "story bible",
         "timeline",
         "知情范围",
-        "事实表"
+        "事实表",
+        "story section memory"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -429,7 +444,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },
@@ -443,16 +458,18 @@
         "景别",
         "建立镜头",
         "近景",
-        "远景"
+        "远景",
+        "不等分构图与嵌入小格"
       ],
-      "content": "先写这一格让读者知道或感受到什么，再决定景别与机位。远景建立地理，中景交代动作关系，近景强调反应或关键物件。景别变化应跟随信息变化，不为变化而变化。用 action、shot_type、perspective 和 composition 表达可执行画面；镜头运动在静态漫画中改写为前后格变化，不要求一格同时完成推拉摇移。",
+      "content": "先写这一格让读者知道或感受到什么，再决定景别与机位。远景建立地理，中景交代动作关系，近景强调反应或关键物件。景别变化应跟随信息变化，不为变化而变化。用 action、shot_type、perspective 和 composition 表达可执行画面；镜头运动在静态漫画中改写为前后格变化，不要求一格同时完成推拉摇移。\n镜头功能决定画框大小。主格交代空间和主要动作，窄格接转身或移手，嵌入小格放大同一动作的证据。先确认进入、离开和对白顺序，再指定子镜头边界。",
       "sources": [
         "adobe-board",
-        "yale-camera"
+        "yale-camera",
+        "cohn-comic-structure"
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [
         {
           "id": "board-intent-e1",
@@ -469,11 +486,20 @@
           "claim": "取景和机位角度是画面选择的一部分，其含义取决于语境。",
           "relationship": "supports_principle",
           "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "board-intent-e3",
+          "source_id": "cohn-comic-structure",
+          "locator": "Key Concepts 2–3 and Attentional framing structure",
+          "claim": "漫画的物理布局可以在主画面内嵌入从属格，并用取景聚焦某个局部信息。",
+          "relationship": "supports_principle",
+          "scope_limit": "支持嵌入格与局部聚焦。具体比例、文字留白及手机验收是本项目规则。"
         }
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "静态一格锁定一个时刻；电影运镜转译成漫画前后格，是项目适配方法。"
+        "静态一格锁定一个时刻；电影运镜转译成漫画前后格，是项目适配方法。",
+        "镜头功能决定画框大小。主格交代空间和主要动作，窄格接转身或移手，嵌入小格放大同一动作的证据。先确认进入、离开和对白顺序，再指定子镜头边界。"
       ],
       "applicability": [
         "需要从故事说明转成可画的镜头。"
@@ -482,15 +508,16 @@
         "不把低机位一律理解成强者；具体含义需看上下文。"
       ],
       "examples": {
-        "positive": "远景交代门、窗和长椅的位置，再用近景展示手伸向小猫。",
-        "negative": "只写电影感拉近旋转，既不说明画面内容，也不交代空间。",
-        "explanation": "先决定读者此刻需要的信息，再选择景别与构图。"
+        "positive": "主格画交接药片，小格放大药片；读者先看交接，再看证据。",
+        "negative": "四个等大的子画面都争当主角，读者要猜先看谁。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "shot purpose",
         "coverage",
         "镜头任务",
-        "建立空间"
+        "建立空间",
+        "inset panel"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -499,7 +526,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },
@@ -819,15 +846,16 @@
         "排字",
         "字号",
         "阅读顺序",
-        "标点"
+        "标点",
+        "画内对白与说话人分隔"
       ],
-      "content": "输出说话人、分镜索引、气泡类型与简短文本，别把绘图指令写成台词。长句先编辑措辞，再考虑缩小字号；避免一格过多说话人。英文单词和中文标点在换行后仍须可读；中文习惯不直接照搬美漫字形规则。排版约束优先于华丽修辞。",
+      "content": "输出说话人、分镜索引、气泡类型与简短文本，别把绘图指令写成台词。长句先编辑措辞，再考虑缩小字号；避免一格过多说话人。英文单词和中文标点在换行后仍须可读；中文习惯不直接照搬美漫字形规则。排版约束优先于华丽修辞。\n一条气泡只属于一位说话者，接话用独立气泡。位于整格百分比坐标的气泡须落在所属子镜头留白，尾巴指向对应角色。旁白用无尾框。",
       "sources": [
         "blambot-script"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [
         {
           "id": "dialogue-lettering-e1",
@@ -840,7 +868,8 @@
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "本项目每泡60字上限、固定JSON字段及不让模型画字，属于工程约束。"
+        "本项目每泡60字上限、固定JSON字段及不让模型画字，属于工程约束。",
+        "一条气泡只属于一位说话者，接话用独立气泡。位于整格百分比坐标的气泡须落在所属子镜头留白，尾巴指向对应角色。旁白用无尾框。"
       ],
       "applicability": [
         "脚本无法明确对应人物和气泡。"
@@ -849,15 +878,16 @@
         "美漫文档格式不直接等于中文排版标准；60字并非行业通则。"
       ],
       "examples": {
-        "positive": "为每条台词标明格号、说话人、类型和文本，保持顺序。",
-        "negative": "把关门和镜头推近混在台词文字中，排字时被一起印出。",
-        "explanation": "对话内容和画面指令必须在结构上区分。"
+        "positive": "问者与答者各占一个留白，按阅读方向依次出现。",
+        "negative": "把两人的发言合并成一个气泡，尾巴又越过子格。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "lettering script",
         "speaker",
         "caption",
-        "排字脚本"
+        "排字脚本",
+        "in-panel balloon"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -866,7 +896,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },
@@ -928,17 +958,19 @@
         "角色表",
         "身份",
         "服装",
-        "参考图"
+        "参考图",
+        "视觉参考与当前状态"
       ],
-      "content": "把身份不变量与表演变量分开：脸型、发长、体态、标志物固定；表情、姿态和镜头角度按剧情变化。服装使用当前批准版本，参考图旧衣不覆盖新衣。将角色表与上一格标明各自用途，不要求照抄参考图构图。多角度仍可能漂移，不能把提示词当作身份保证。",
+      "content": "把身份不变量与表演变量分开：脸型、发长、体态、标志物固定；表情、姿态和镜头角度按剧情变化。服装使用当前批准版本，参考图旧衣不覆盖新衣。将角色表与上一格标明各自用途，不要求照抄参考图构图。多角度仍可能漂移，不能把提示词当作身份保证。\n角色参考锁定身份，场景参考锁定空间，道具参考锁定形制；当格剧本决定当前服装、动作、开关状态和时刻。按格选取有关参考，别把参考的旧状态复制进新镜头。",
       "sources": [],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [],
       "basis": "project_rule",
       "project_rules": [
-        "身份不变量、表演变量、批准服装与参考图用途分离，是项目连续性协议。"
+        "身份不变量、表演变量、批准服装与参考图用途分离，是项目连续性协议。",
+        "角色参考锁定身份，场景参考锁定空间，道具参考锁定形制；当格剧本决定当前服装、动作、开关状态和时刻。按格选取有关参考，别把参考的旧状态复制进新镜头。"
       ],
       "applicability": [
         "换角度或换装后角色身份漂移。"
@@ -947,15 +979,16 @@
         "提示词和参考图不能保证模型层的一致性，须看实际成图。"
       ],
       "examples": {
-        "positive": "换新雨衣时仍保留批准的脸型、发长和体态，并附审批版参考图。",
-        "negative": "参考图穿旧衣就无视当前服装设定，或为了保持一致性复制同一姿势。",
-        "explanation": "固定身份并不等于冻结镜头与表情。"
+        "positive": "沿用木屋活门位置；升空时窗外是风暴而非静止草地。",
+        "negative": "参考图在地面，救援镜头仍照抄平直地平线。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "identity lock",
         "outfit",
         "canonical reference",
-        "身份不变量"
+        "身份不变量",
+        "reference precedence"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -964,7 +997,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },
@@ -1291,17 +1324,19 @@
         "六格",
         "身份",
         "服装",
-        "空间"
+        "空间",
+        "按依赖复审与实测证据"
       ],
-      "content": "同一案例记录模型、提示词、参考图、尺寸、日期与已知成本，才可比较修订效果。按身份、服装、手部、道具、空间、遮挡分别打分；未知不当作合格。人工评价是独立环节，模型自评分不能替代用户接受度。不得把预生成示例说成当前模型刚生成的成果。",
+      "content": "同一案例记录模型、提示词、参考图、尺寸、日期与已知成本，才可比较修订效果。按身份、服装、手部、道具、空间、遮挡分别打分；未知不当作合格。人工评价是独立环节，模型自评分不能替代用户接受度。不得把预生成示例说成当前模型刚生成的成果。\n区分重绘范围、复审范围和单独排字。证据未变才复用通过审核。记录模型调用、实际换图与未改图哈希；不同任务范围不作效率对照。",
       "sources": [],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [],
       "basis": "project_rule",
       "project_rules": [
-        "固定案例/参考/模型条件，分项评分，并保留未知项和失败候选，是本项目评测协议。"
+        "固定案例/参考/模型条件，分项评分，并保留未知项和失败候选，是本项目评测协议。",
+        "区分重绘范围、复审范围和单独排字。证据未变才复用通过审核。记录模型调用、实际换图与未改图哈希；不同任务范围不作效率对照。"
       ],
       "applicability": [
         "需要比较加入知识前后的收益。"
@@ -1310,15 +1345,16 @@
         "小样本、同一评审者与聊天产品版本变化都限制结论外推。"
       ],
       "examples": {
-        "positive": "同一输入生成两组，隐藏条件后按同一量表记录观察和差异。",
-        "negative": "一组挑最好作品，另一组取第一次失败，就声称全面提升。",
-        "explanation": "比较条件与选择偏差要公开；检索命中不等于生成质量提升。"
+        "positive": "同一初稿同一修改要求比较全章复审与按证据复审。",
+        "negative": "用八格初次生成与两格修订的调用数直接算提速。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "ablation",
         "blind comparison",
         "evaluation",
-        "对照评测"
+        "对照评测",
+        "incremental review"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -1327,7 +1363,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },
@@ -1401,15 +1437,16 @@
         "人脸",
         "手部",
         "道具",
-        "保护框"
+        "保护框",
+        "画内留白与手机阅读"
       ],
-      "content": "先从实际图片识别人脸、手、关键道具和叙事焦点，再寻找负空间。气泡按目标阅读方向组织，尾尖指向说话人而非挡住其脸；旁白通常不需要对白尾巴。模型给出的保护框可能漏检，程序负责边界与交叠校验。找不到空间时请求精简台词或人工调整，不编造“已避让”。",
+      "content": "先从实际图片识别人脸、手、关键道具和叙事焦点，再寻找负空间。气泡按目标阅读方向组织，尾尖指向说话人而非挡住其脸；旁白通常不需要对白尾巴。模型给出的保护框可能漏检，程序负责边界与交叠校验。找不到空间时请求精简台词或人工调整，不编造“已避让”。\n先保留脸、手和关键线索，再为每位说话者划分留白。检查气泡边界、尾巴和嵌入格不冲突。放不下就缩句、移动或拆节拍。",
       "sources": [
         "to-comix"
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-03",
       "evidence": [
         {
           "id": "layout-safe-e1",
@@ -1422,7 +1459,8 @@
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "本项目用视觉保护框和程序交叠检查辅助放置，模型框可能漏检。"
+        "本项目用视觉保护框和程序交叠检查辅助放置，模型框可能漏检。",
+        "先保留脸、手和关键线索，再为每位说话者划分留白。检查气泡边界、尾巴和嵌入格不冲突。放不下就缩句、移动或拆节拍。"
       ],
       "applicability": [
         "气泡挡脸、挡手或压住关键道具。"
@@ -1431,15 +1469,16 @@
         "该出版方允许某些气泡跨格；本项目目前要求边界内，不把工程限制归给来源。"
       ],
       "examples": {
-        "positive": "在空白墙面放泡，保留脸和持物手，并检查阅读顺序。",
-        "negative": "默认把气泡放底端，遮住救猫的关键动作。",
-        "explanation": "画面负空间比固定底端位置更适合按格决定。"
+        "positive": "药片小格保持静默，解释放在主格空墙。",
+        "negative": "在药片上堆两句解释，缩小后证据和文字都看不清。",
+        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
       },
       "aliases": [
         "balloon placement",
         "face occlusion",
         "safe area",
-        "气泡避让"
+        "气泡避让",
+        "balloon safe area"
       ],
       "checks": [
         "说明此方法对当前任务的作用，并核对可见/已知证据。",
@@ -1448,7 +1487,7 @@
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-03",
         "effect_status": "not_evaluated"
       }
     },

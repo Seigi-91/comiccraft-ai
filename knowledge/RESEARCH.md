@@ -58,3 +58,7 @@
 ## 尚未满足的部分
 
 当前完成资料可核查、应用可审阅与评测机制建设。没有真实ChatGPT成对输出与独立评审时，不能将“工程测试通过”改写成“知识提高漫画质量”。需要多人外部评审、更大独立案例、图像级实验和不同创作流派复核，才可扩展效果结论。
+
+## 2026-11-03 增补核查
+
+[Neil Cohn, The architecture of visual narrative comprehension (2014)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4076615/) 的 Key Concepts 2–3 及 *Attentional framing structure* 支持「主格内可嵌入从属画格，以取景聚焦局部线索」，已纳入 `board-intent-e3`。文章并未规定条漫必须使用某种比例、边距或气泡坐标。项目把上述原则应用到不等分版式、嵌入特写和手机宽度检查。跨章状态、参考图优先级和依赖复审是项目应用规则，质量变化仍须用配对案例检验。

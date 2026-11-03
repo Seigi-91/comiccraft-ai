@@ -114,6 +114,12 @@ If the workflow helps you, a voluntary GitHub Star makes it easier to find again
 
 Original code/docs: [MIT](LICENSE). Third-party skills, fonts, music and components retain their own licenses; see [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md). See each demo’s attribution for source text and artwork details.
 
+## Creative skills and knowledge
+
+Role skills define the handoff and checks for each stage. Local retrieval adds relevant cases and source-backed guidance. The workflow separates source facts from visual adaptation choices, preserves narrative beats, supports asymmetric panels and inset shots, and reserves in-panel space for separate speech balloons. Reference images guide identity and spatial structure while the current shot controls action and state. Review distinguishes continuity errors from editorial choices.
+
+[Role skills](skills/) · [Knowledge and sources](knowledge/README.md) · [Workflow validation](benchmarks/VISUAL_WORKFLOW_VALIDATION.md)
+
 ## Novel adaptation and storyboard review
 
 1. Open **小说改编 · 导入原著**, import TXT or Markdown, and select the excerpt, fidelity mode, panel count, and required facts. Import and chapter creation make no model calls.

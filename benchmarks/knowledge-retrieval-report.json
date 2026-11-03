@@ -1,7 +1,7 @@
 {
   "scope": "maintainer-authored retrieval checks only; not generated-comic quality",
   "dataset_sha256": "af73885da0fb377164a9931a2bebc3d47d58e75d5c1ded4cc30ee612f75bb067",
-  "corpus_sha256": "a0973eeb79fa2cf3362bfa02c049d158be24eb4f8003327b76478e28cb0bce49",
+  "corpus_sha256": "d56612232cc80cee88740c0c9dcf279189bd551550771e532ce07e00b571b306",
   "baseline_commit": "242c9ba05ec19b17be4b172352003b3e6473886e",
   "variants": {
     "v1_frozen": {
@@ -673,7 +673,7 @@
           "retrieved": [
             "dialogue-purpose",
             "dialogue-silence",
-            "dialogue-continuity"
+            "dialogue-lettering"
           ],
           "hit": true,
           "irrelevant_supplement": null
@@ -1157,7 +1157,8 @@
           ],
           "retrieved": [
             "dialogue-purpose",
-            "dialogue-silence"
+            "dialogue-silence",
+            "dialogue-lettering"
           ],
           "hit": true,
           "irrelevant_supplement": null
