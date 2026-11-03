@@ -32,7 +32,7 @@ async def public_config():
         "edit_provider": settings.IMAGE_EDIT_PROVIDER,
         "requires_manual_handoff": settings.AI_PROVIDER == "chatgpt_desktop" or settings.image_provider == "chatgpt_desktop",
         "description": (
-            "ChatGPT 协作模式：复制任务到本机 ChatGPT，再回填 JSON 或上传图片。"
+            "旧配置需要迁移：请验证并启用官方连接器或模型 API。"
             if settings.AI_PROVIDER == "chatgpt_desktop"
             else "官方 Codex CLI 自动连接（ChatGPT 登录）" if settings.AI_PROVIDER == "codex_cli" else "OpenAI 兼容 HTTP 服务"
         ),
@@ -196,8 +196,8 @@ async def update_connection(data: ConnectionUpdate, request: Request):
         raise HTTPException(422, '配置不能包含换行')
     values = {}
     if data.image_provider is not None:
-        if data.image_provider not in {'chatgpt_desktop', 'openai', 'codex_cli'}:
-            raise HTTPException(422, '未知图片提供方')
+        if data.image_provider not in {'openai', 'codex_cli'}:
+            raise HTTPException(422, '请选择官方连接器或图片 API；人工回填已停用')
         validate_address(data.image_base_url)
         key = None if data.clear_key else (data.api_key or settings.IMAGE_API_KEY)
         if data.image_provider == "codex_cli":
@@ -211,8 +211,8 @@ async def update_connection(data: ConnectionUpdate, request: Request):
                 values.update(IMAGE_EDIT_PROVIDER=data.image_provider, IMAGE_EDIT_BASE_URL=values['IMAGE_API_BASE_URL'],
                               IMAGE_EDIT_API_KEY=key, IMAGE_EDIT_MODEL=data.image_model)
     if data.text_provider is not None:
-        if data.text_provider not in {'chatgpt_desktop', 'local_http', 'codex_cli'}:
-            raise HTTPException(422, '未知文字提供方')
+        if data.text_provider not in {'local_http', 'codex_cli'}:
+            raise HTTPException(422, '请选择官方连接器或文字 API；人工回填已停用')
         validate_address(data.text_base_url)
         if data.text_provider == "local_http" and (not data.text_model.strip() or not data.vision_model.strip()):
             raise HTTPException(422, '请填写文字模型与视觉模型名；可填写相同的多模态模型')

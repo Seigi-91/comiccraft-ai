@@ -18,7 +18,7 @@ Turn a story into panels you can keep editing: scripts, character outfits, dialo
 - Move/resize bubbles, edit their text, drag tail tips, and switch speech/thought/narration.
 - Select a damaged region for repair, compare the result and explicitly adopt it. Compositing retains original source-panel pixels outside the mask.
 - Keep character profiles and outfits, attach references, inspect per-panel request snapshots and restore chapter versions.
-- Configure text/vision and image providers independently. Use your own API services, ChatGPT handoff, or a combination.
+- Configure text/vision and image providers independently. Use your own API services, the official Codex connector, or a combination.
 
 These features support control and review; they do not guarantee visual consistency or make the project unique among comic tools.
 
@@ -28,7 +28,7 @@ Open **Creative Team & Settings** (the application UI currently uses Chinese lab
 
 | Setup | Text & vision panel | Image panel | What you do |
 |---|---|---|---|
-| ChatGPT handoff | ChatGPT | ChatGPT | Copy tasks/references to your own ChatGPT, paste JSON or upload images, then resume |
+| Official Codex connector | Codex | Codex | Sign in to ChatGPT, verify capabilities, and enable automatic calls |
 | Automated providers | API | API | Supply separate base URLs, model names and your own keys |
 | Mixed | Either | Either | Use an API for writing and ChatGPT for images, or the reverse |
 
@@ -36,13 +36,13 @@ Text/vision uses OpenAI-compatible `/chat/completions`; visual review needs an i
 
 Keys stay in the backend computer's `.env` and are not returned by the configuration endpoint. Settings writes are restricted to local access. You can keep an existing key by leaving its field empty, or explicitly clear it. Saving settings does **not** send a paid test or verify your provider's quota.
 
-**ChatGPT handoff is manual collaboration, not a desktop-control API.** This project does not extract session credentials or provide model access/credits. The GitHub Pages demo uses pre-generated artwork and makes no AI calls. The complete app runs locally.
+**Manual generation handoffs are retired in v2.5.1.** Existing tasks can migrate to an automatic provider; editorial approval is still available. This project does not extract session credentials or provide model access/credits. The GitHub Pages demo uses pre-generated artwork and makes no AI calls. The complete app runs locally.
 
 ## Run locally
 
 Requirements: Python 3.11+, Node.js 20+, Git. No GPU is required by the orchestration/editor itself; external or locally hosted models have their own requirements.
 
-Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.5.0/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft-Auto.cmd` for the official connector setup, or `Install-ComicCraft.cmd` for the website only. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
+Windows one-click bootstrap: download the [installer ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.5.1/ComicCraft-AI-Windows-Installer.zip), extract it, then run `Install-ComicCraft-Auto.cmd` for the official connector setup, or `Install-ComicCraft.cmd` for the website only. It downloads tagged source and can install missing Python/Node through winget. Internet and any OS permission prompts still apply. It preserves existing local work. [Details and limitations](docs/INSTALL.md).
 
 Or use Git on Windows:
 
@@ -124,7 +124,7 @@ Original text and provenance stay separate from existing chapters. Bubble editin
 
 ## Automatic ChatGPT connection (v2.5)
 
-Use `Install-ComicCraft-Auto.cmd`, complete your own official ChatGPT sign-in, then verify and enable text/vision/images in Settings. The official Codex App Server returns structured results and native image artifacts automatically; API and manual modes remain available. Existing handoff jobs can explicitly continue with an automatic provider.
+Use `Install-ComicCraft-Auto.cmd`, complete your own official ChatGPT sign-in, then verify and enable text/vision/images in Settings. The official Codex App Server returns structured results and native image artifacts automatically; API providers remain available. Existing handoff jobs can explicitly continue with an automatic provider.
 
 **Live local setup: text, attached-image recognition and real image generation all passed.** This corrects v2.4's fixed-filename image check; the older failure record remains historical. Account access, limits and real artwork still need per-user checks. This is a cloud model connection, not an offline model or shared account.
 

@@ -45,7 +45,7 @@ async def probe(data:Probe,request:Request,db=Depends(get_db)):
     require_local_settings(request)
     if not data.acknowledge_cost:raise HTTPException(422,'请先确认：这会向配置的服务发送一次可能付费的真实请求。')
     provider,base,model,key=connection(data.kind)
-    if provider=='chatgpt_desktop':return {'status':'handoff','detail':'当前使用 ChatGPT 人工回填，不发送模型接口请求。','model_requests':0}
+    if provider=='chatgpt_desktop':return {'status':'handoff','detail':'旧人工回填连接已停用，请切换到官方连接器或模型 API。','model_requests':0}
     if probe_lock.locked():raise HTTPException(409,'已有验证正在执行，请稍后再试。')
     async with probe_lock:
         from app.tools.llm_client import LLMClient,VisionLLMClient

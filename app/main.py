@@ -53,7 +53,7 @@ async def lifespan(app):
         client.close()
 
 
-app = FastAPI(title="ComicCraft AI", version="2.5.0", lifespan=lifespan)
+app = FastAPI(title="ComicCraft AI", version="2.5.1", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

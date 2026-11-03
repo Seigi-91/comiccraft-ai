@@ -27,6 +27,8 @@ def test_local_config_persistence_and_key_redaction(monkeypatch, tmp_path):
         assert c.put('/api/studio/config', json=payload, headers={'Origin':'https://evil.example'}).status_code == 403
         assert c.put('/api/studio/config', json={**payload,'image_base_url':'file:///tmp'}).status_code == 422
         r = c.put('/api/studio/config', json={'image_provider':'chatgpt_desktop','clear_key':True})
+        assert r.status_code == 422
+        r = c.put('/api/studio/config', json={'image_provider':'openai','clear_key':True})
         assert r.status_code == 200 and not r.json()['image_key_configured']
 
 
@@ -82,6 +84,8 @@ def test_text_connection_independent_and_persisted(monkeypatch, tmp_path):
         assert c.put('/api/studio/config',json={**payload,'text_model':''}).status_code==422
         assert c.put('/api/studio/config',json=payload,headers={'Origin':'https://evil.example'}).status_code==403
         r=c.put('/api/studio/config',json={**payload,'text_provider':'chatgpt_desktop','clear_text_key':True})
+        assert r.status_code==422
+        r=c.put('/api/studio/config',json={**payload,'clear_text_key':True})
         assert r.status_code==200 and r.json()['text_key_configured'] is False
 
 
@@ -95,7 +99,7 @@ def test_legacy_http_images_preserved_when_text_switches(monkeypatch, tmp_path):
     monkeypatch.setattr(settings,'LOCAL_GPT_BASE_URL','https://old.example/v1')
     monkeypatch.setattr(settings,'LOCAL_GPT_API_KEY','old-image-key')
     with TestClient(app) as c:
-        r=c.put('/api/studio/config',json={'text_provider':'chatgpt_desktop','text_model':'writer','vision_model':'vision'})
+        r=c.put('/api/studio/config',json={'text_provider':'codex_cli','text_model':'writer','vision_model':'vision'})
         assert r.status_code==200
         assert settings.IMAGE_PROVIDER=='openai'
         assert settings.IMAGE_API_BASE_URL=='https://old.example/v1' and settings.IMAGE_API_KEY=='old-image-key'

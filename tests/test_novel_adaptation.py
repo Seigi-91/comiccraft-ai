@@ -8,6 +8,10 @@ from app.services.novel_adaptation import normalize, split_novel, SEGMENT_SIZE
 from tests.test_studio_workflow import pending, respond, task, image_upload
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def create_source(c, text="第一章 灯下\n阿青把铜钥匙交给林舟。\n第二章 门外\n林舟没有开门。", count=1):
     pid=c.post('/api/projects',json={'name':'小说改编测试','inspiration':'保持水彩画风'}).json()['id']
     doc=c.post('/api/novels/projects/'+pid,json={'title':'钥匙','text':text}).json()

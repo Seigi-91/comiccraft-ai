@@ -9,6 +9,10 @@ from app.orchestrator.routing import review_decision
 from app.tools.llm_client import parse_json
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def task(client, chapter_id):
     return client.get(f"/api/studio/chapters/{chapter_id}/task").json()
 

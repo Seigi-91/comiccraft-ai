@@ -10,6 +10,10 @@ BOARD = {"panels": [{"index": i, "shot_type": "中景", "perspective": "平视",
 DIALOGUE = {"bubbles": [{"panel_index": 0, "text": "别怕", "character": "小雨", "bubble_type": "speech", "position": {"x": 10, "y": 10}}]}
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def test_edit_restore_and_single_panel_revision():
     with TestClient(app) as c:
         p = c.post('/api/projects', json={"name": "编辑测试"}).json()

@@ -25,21 +25,27 @@ async def seed(cid,pid,url):
         await db.commit()
 
 
-def test_desktop_repair_mask_compare_accept_and_restore():
+def test_automatic_repair_mask_compare_accept_and_restore(monkeypatch):
+    from app.api.routes import repairs
+    from app.services.inpainting import composite_candidate
+    async def fake_edit(source, mask, instructions):
+        return composite_candidate(source, mask, image_bytes('blue'))
+    monkeypatch.setattr(repairs,'edit_image',fake_edit)
     with TestClient(app) as c:
         p=c.post('/api/projects',json={'name':'局部精修测试'}).json()
         ch=c.post(f"/api/projects/{p['id']}/chapters",json={'title':'第一格'}).json();cid=ch['id']
         url=save_image_bytes(image_bytes('red'));asyncio.run(seed(cid,p['id'],url))
         root='/api/repairs/'+cid
         polygons=[[{'x':30,'y':30},{'x':60,'y':30},{'x':60,'y':60},{'x':30,'y':60}]]
+        payload={'instructions':'修正手指','source_url':url,'polygons':polygons}
+        assert c.get('/api/repairs/config').json()['configured'] is False
+        assert c.post(root+'/panels/0',json=payload).status_code==503
+        monkeypatch.setattr(settings,'IMAGE_EDIT_PROVIDER','codex_cli')
         invalid=c.post(root+'/panels/0',json={'instructions':'修手','source_url':url,'polygons':[[{'x':0,'y':0},{'x':100,'y':0},{'x':100,'y':100},{'x':0,'y':100}]]})
         assert invalid.status_code==422
         r=c.post(root+'/panels/0',json={'instructions':'修正手指','source_url':url,'polygons':polygons});assert r.status_code==200,r.text
-        repair=c.get(root).json()[0];assert repair['status']=='waiting'
-        assert repair['job']['images']==[url,repair['mask_url']]
-        candidate_input=save_image_bytes(image_bytes('blue'))
-        r=c.post(root+'/'+repair['id']+'/reply',json={'image_url':candidate_input});assert r.status_code==200,r.text
-        candidate=Image.open(local_image_path(r.json()['candidate_url'])).convert('RGB')
+        repair=c.get(root).json()[0];assert repair['status']=='ready'
+        candidate=Image.open(local_image_path(repair['candidate_url'])).convert('RGB')
         original=Image.open(local_image_path(url)).convert('RGB');mask=Image.open(local_image_path(repair['mask_url'])).convert('L')
         diff=ImageChops.difference(candidate,original)
         assert Image.composite(diff,Image.new('RGB',diff.size),ImageChops.invert(mask)).getbbox() is None

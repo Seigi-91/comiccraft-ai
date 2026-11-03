@@ -46,3 +46,27 @@ def forbid_unmocked_native_model_calls(monkeypatch):
             raise AssertionError("Unit tests must mock provider HTTP transport")
         return await original_send(self, *args, **kwargs)
     monkeypatch.setattr(httpx.AsyncClient, "send", guarded_send)
+
+
+@pytest.fixture
+def legacy_handoff_fixture(monkeypatch):
+    """Emulate v2.5 handoffs to exercise archived workflows without model quota."""
+    import hashlib
+    import json
+    from app.tools import desktop_bridge, image_gen, llm_client
+
+    def simulated_request(kind, prompt, images=None):
+        task_id, stage = desktop_bridge.task_context.get(), desktop_bridge.stage_context.get()
+        identity = json.dumps([task_id, stage, kind, prompt, images or []], ensure_ascii=False)
+        job_id = hashlib.sha256(identity.encode()).hexdigest()[:32]
+        try:
+            desktop_bridge.read_job(job_id)
+        except FileNotFoundError:
+            desktop_bridge.save_job({
+                "id": job_id, "task_id": task_id, "stage": stage, "kind": kind,
+                "prompt": prompt, "images": images or [], "status": "pending", "created_at": "2026-11-02T00:00:00Z",
+            })
+        return desktop_bridge.request_chatgpt(kind, prompt, images)
+
+    monkeypatch.setattr(llm_client, "request_chatgpt", simulated_request)
+    monkeypatch.setattr(image_gen, "request_chatgpt", simulated_request)

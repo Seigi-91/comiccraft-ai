@@ -97,7 +97,7 @@ def test_review_cache_invalidates_changed_image_and_identity(monkeypatch):
     asyncio.run(run())
 
 
-def test_old_manual_handoff_can_continue_automatically_without_fake_reply(monkeypatch):
+def test_old_manual_handoff_can_continue_automatically_without_fake_reply(monkeypatch, legacy_handoff_fixture):
     from tests.test_studio_workflow import pending,task
     from app.tools.llm_client import LLMClient
     from app.tools.desktop_bridge import read_job
@@ -222,3 +222,14 @@ def test_unit_suite_cannot_spend_native_account_quota():
         async with httpx.AsyncClient() as c:await c.get('https://unit-test.invalid')
     with pytest.raises(AssertionError,match='must mock'):
         asyncio.run(request())
+
+
+def test_retired_provider_does_not_create_new_handoff():
+    from app.tools.desktop_bridge import list_jobs
+    with TestClient(app) as c:
+        pid=c.post('/api/projects',json={'name':'Retired provider regression'}).json()['id']
+        cid=c.post('/api/projects/'+pid+'/chapters',json={'title':'Test'}).json()['id']
+        created=c.post('/api/tasks/generate-chapter',json={'project_id':pid,'chapter_id':cid}).json()
+        latest=c.get('/api/studio/chapters/'+cid+'/task').json()
+        assert latest['status']=='failed' and '人工回填模式已停用' in latest['error_message']
+        assert not list_jobs(created['id'])

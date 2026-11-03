@@ -10,6 +10,10 @@ from app.services.knowledge_evaluation import evaluate_retrieval,digest
 from app.core.paths import ROOT
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def test_evidence_metadata_and_restricted_source_rejection(tmp_path):
     data=deepcopy(knowledge.corpus())
     assert len(data['cards'])==24

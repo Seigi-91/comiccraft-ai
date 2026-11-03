@@ -9,7 +9,7 @@
 | 文生图 | POST `/images/generations`，JSON | IMAGE_PROVIDER、IMAGE_API_* | 模拟返回真实格式 PNG 后写入本地；非真实模型创作 |
 | 参考图生成 | POST `/images/edits`，multipart `image[]` | 同图片配置 | 模拟请求验证附件和模型路由；服务须接受多图字段 |
 | 局部精修 | POST `/images/edits`，原图 + alpha 蒙版 | IMAGE_EDIT_* | 原有模拟接口与蒙版外像素保护测试；未验证真实服务画质 |
-| ChatGPT 回填 | 无自动模型 HTTP 请求 | provider=chatgpt_desktop | 项目已有手动回填作品与流程测试；需自行使用 ChatGPT |
+| 旧 ChatGPT 回填 | 历史数据 | 不可用于新任务 | 已有待办可改用自动连接继续 |
 
 普通生图接受 `data[0].b64_json` 或 URL；蒙版接口目前要求 base64。服务不支持尺寸、无额度、缺视觉能力或使用其他 JSON 结构时可能失败，不静默降级或返回占位图。
 

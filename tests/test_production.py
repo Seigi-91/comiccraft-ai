@@ -7,6 +7,10 @@ from tests.test_studio_workflow import task,image_upload,respond,plan_to_image
 from app.tools.media import save_image_bytes,local_image_path
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def project(c):return c.post('/api/projects',json={'name':'素材生产测试'}).json()['id']
 def chapter(c,pid,title='测试章节'):return c.post(f'/api/projects/{pid}/chapters',json={'title':title}).json()['id']
 def seeded(c):

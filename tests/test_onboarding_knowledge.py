@@ -6,6 +6,10 @@ from app.agents.knowledge import retrieve,role_cards
 from app.agents.skills import ROLES,instructions
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def test_knowledge_role_routing_and_sources():
     for role in ROLES:
         cards=role_cards(role)

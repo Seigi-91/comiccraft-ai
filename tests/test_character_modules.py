@@ -3,6 +3,10 @@ from app.main import app
 from tests.test_studio_workflow import pending
 
 
+import pytest
+pytestmark = pytest.mark.usefixtures("legacy_handoff_fixture")
+
+
 def test_modules_outfits_and_generation_context():
     with TestClient(app) as c:
         p=c.post('/api/projects',json={'name':'服装测试'}).json()

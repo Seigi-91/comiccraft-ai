@@ -7,7 +7,7 @@
 
 从创作灵感、角色档案和分镜，到连贯漫画、可编辑气泡与局部精修。基于 **React + FastAPI + LangGraph + SQLite + Pillow**，面向本机创作和可审阅的人机协作。
 
-**公开仓库提供源码、文档和成稿供浏览；完整创作网站需要在本机运行。** 默认使用 ChatGPT 协作回填，不是自动控制桌面客户端，也不是免费代理模型 API。无需 API key 即可启动网站；模型创作需要你已有的 ChatGPT 或实际可用的模型服务。
+**公开仓库提供源码、文档和成稿供浏览；完整创作网站需要在本机运行。** 默认使用官方 ChatGPT 自动连接器；也可以配置自己的模型 API。无需 API key 即可启动网站；模型创作需要你已有的 ChatGPT 或实际可用的模型服务。
 
 **[免安装气泡编辑体验](https://seigi-91.github.io/comiccraft-ai/demo.html)** · [在线静态展示](https://seigi-91.github.io/comiccraft-ai/) · [功能与完整操作手册](docs/USER_GUIDE.md) · [Windows 一键安装](docs/INSTALL.md) · [安装与配置](docs/SETUP.md) · [架构与接口](docs/ARCHITECTURE.md) · [演示与下载](https://github.com/Seigi-91/comiccraft-ai/releases)
 
@@ -32,7 +32,7 @@
 | 人物连续性 | 向生图与审核传递角色表、开场/前格参考；失败格修订 |
 | 漫画气泡 | 画面中拖动、缩放、改字、字号、尾尖方向长度、增删、类型切换 |
 | 视觉排版 | 查看实际分镜，识别脸、手、道具保护框，检查气泡越界与交叠 |
-| 局部精修 | 圈选多块蒙版、ChatGPT 回填或编辑 API、对比滑块、确认采用 |
+| 局部精修 | 圈选多块蒙版、自动图像编辑、对比滑块、确认采用 |
 | 像素保护 | 精修候选只采用蒙版内像素，未选原始分镜像素保持不变 |
 | 生产工作台 | 每格设定快照与请求记录、章节批次、实验候选对比、非破坏特效层 |
 | 版本管理 | 修改前备份整个章节，恢复台词、图片、气泡和特效状态 |
@@ -41,7 +41,7 @@
 
 ## Windows 一键安装
 
-下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.5.0/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft-Auto.cmd`，安装官方连接器并完成本人登录；只安装网站可使用 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
+下载 [Windows 安装启动器 ZIP](https://github.com/Seigi-91/comiccraft-ai/releases/download/v2.5.1/ComicCraft-AI-Windows-Installer.zip)，解压后双击 `Install-ComicCraft-Auto.cmd`，安装官方连接器并完成本人登录；只安装网站可使用 `Install-ComicCraft.cmd`。需要网络；缺少 Python/Node 时通过 winget 安装，有系统权限要求时仍需自行确认。完整流程、升级与验证边界见 [INSTALL](docs/INSTALL.md)。
 
 启动后首页可一键导入《雨夜留灯》完整可编辑示例，**不调用模型**；重复导入会打开旧示例，不覆盖修改。首页还提供环境诊断。
 
@@ -65,8 +65,7 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 | 使用方式 | 文字/视觉设置 | 图片设置 |
 |---|---|---|
-| 官方 Codex 自动连接 | ChatGPT 登录的官方 CLI | 内置生图需实测，或独立选 API / 人工回填 |
-| 全程人工协作 | 本机 ChatGPT 回填 | 本机 ChatGPT 回填 |
+| 官方 Codex 自动连接 | ChatGPT 登录的官方 CLI | 内置生图需实测，或独立选 API |
 | 自动生成 | API 地址 + 文字/视觉模型 + Key | API 地址 + 图片模型 + Key |
 | 混合创作 | API 或 ChatGPT | 独立选择 API 或 ChatGPT |
 
@@ -74,15 +73,9 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 [完整模型连接说明](docs/MODEL_CONNECTIONS.md) · [能力与实际验证状态](docs/PROVIDERS.md)。免安装体验只使用预生成图片，不演示 AI 生成，刷新会重置修改；完整创作仍在本机应用中进行。
 
-## ChatGPT 协作如何工作
+## 自动创作如何工作
 
-1. 创建项目、角色和章节，点击生成。
-2. 网站给出当前 Agent 的完整任务，复制到 ChatGPT；**同时附上任务要求的参考图片**。
-3. 将文字 JSON 粘回网站，或上传真实生成的图片。
-4. 网站验证结果，LangGraph 继续下一阶段；审核未通过时重绘失败格。
-5. 全部通过后本机合成 PNG，台词由排版器绘制，不依赖生图模型画字。
-
-本仓库漫画样例由创作会话中的图像工具生成，再通过同一回填流程导入。该工具没有作为网站后台接口开放。生成质量与角色一致性需要实际查看，不能只依据模型评分。
+配置并验证模型后开始生成，LangGraph 依次执行各角色，结果自动写回。小说大纲确认、图片质量修订仍可人工介入。旧回填待办可迁移至自动连接，已生成作品保留。
 
 ## 自动接口与边界
 
@@ -96,7 +89,7 @@ powershell -ExecutionPolicy Bypass -File .\start.ps1
 
 ## 官方 ChatGPT 自动连接（Codex App Server）
 
-新用户可双击自动连接安装器，安装后完成本人ChatGPT登录，在设置向导中验证并启用；之后文字、视觉和图片自动返回网站，无需逐阶段粘贴JSON。API与人工模式保留。[完整步骤与范围](docs/CODEX_CONNECTION.md)
+新用户可双击自动连接安装器，安装后完成本人ChatGPT登录，在设置向导中验证并启用；之后文字、视觉和图片自动返回网站，无需逐阶段粘贴JSON。API 仍可选；v2.5.1 起移除生成回填模式。[完整步骤与范围](docs/CODEX_CONNECTION.md)
 
 **v2.5本机真实向导：文字、附图识别、生图全部通过。** 修复了v2.4只等待固定图片文件名的问题，改为导入官方结构化生成附件；旧失败记录保留。每个新用户仍需使用自己的账户并验证权限和额度。已有人工待办支持“改用自动连接继续”。
 
@@ -136,7 +129,7 @@ npm.cmd --prefix frontend ci
 npm.cmd --prefix frontend run build
 ```
 
-当前包含 62 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
+当前包含 63 项后端测试；GitHub Actions 分别运行 Python 测试及前端构建。测试使用隔离数据库、确定性回填与模拟 HTTP，不声称验证了真实付费模型的质量。
 
 ## 目录与文档
 

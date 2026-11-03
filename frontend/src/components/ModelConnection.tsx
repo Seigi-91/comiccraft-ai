@@ -4,7 +4,7 @@ import axios from 'axios'
 type Config = { image_provider: string; image_base_url: string; image_api_model: string; image_key_configured: boolean }
 export default function ModelConnection() {
   const [config, setConfig] = useState<Config>()
-  const [provider, setProvider] = useState('chatgpt_desktop')
+  const [provider, setProvider] = useState('codex_cli')
   const [base, setBase] = useState('https://api.openai.com/v1')
   const [model, setModel] = useState('gpt-image-1')
   const [key, setKey] = useState('')
@@ -12,7 +12,7 @@ export default function ModelConnection() {
   const [repairs, setRepairs] = useState(true)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
-  const apply = (c: Config) => { setConfig(c); setProvider(c.image_provider); setBase(c.image_base_url); setModel(c.image_api_model) }
+  const apply = (c: Config) => { setConfig(c); setProvider(c.image_provider === 'chatgpt_desktop' ? 'codex_cli' : c.image_provider); setBase(c.image_base_url); setModel(c.image_api_model) }
   useEffect(() => {const refresh=()=>axios.get('/api/studio/config').then(r=>apply(r.data)).catch(()=>{});window.addEventListener('comiccraft-config-saved',refresh);return()=>window.removeEventListener('comiccraft-config-saved',refresh)},[])
   useEffect(() => { axios.get('/api/studio/config').then(r => apply(r.data)).catch(() => setMessage('无法读取模型配置')) }, [])
   async function save(e: React.FormEvent) {
@@ -27,9 +27,9 @@ export default function ModelConnection() {
     <p className="text-sm text-gray-400 mb-4">文字与图片可以使用不同服务。这里切换图片生成方式，不会改变文字 agent 的连接。</p>
     <form onSubmit={save} className="space-y-4">
       <label className="block">图片生成方式<select aria-label="图片生成方式" className="block w-full bg-dark-900 border border-dark-600 rounded-lg p-3 mt-2" value={provider} onChange={e => setProvider(e.target.value)}>
-        <option value="chatgpt_desktop">本机 ChatGPT · 协作回填，无需 API Key</option><option value="codex_cli">官方 Codex · 内置生图（需实测）</option><option value="openai">图像模型 API · 自动生成</option>
+        <option value="codex_cli">官方 Codex · 内置生图（需实测）</option><option value="openai">图像模型 API · 自动生成</option>
       </select></label>
-      {provider === 'chatgpt_desktop' ? <p className="text-sm text-gray-400">生成时在待办中复制提示词、下载参考图，交给你自己的 ChatGPT；将结果上传回填后继续创作。网站不会自动控制桌面客户端，也不读取登录凭据。</p> : provider === 'codex_cli' ? <p className="text-sm text-gray-400">通过官方CLI调用内置生图，使用ChatGPT账户额度，不发送图片API Key。须先在“服务验证”实测图片、参考图及蒙版能力；CLI/账号未提供工具时明确失败，不会生成占位图或自动改用API。图像尺寸和风格是提示词约束，未保证底层参数。</p> : <div className="space-y-4">
+      {provider === 'codex_cli' ? <p className="text-sm text-gray-400">通过官方CLI调用内置生图，使用ChatGPT账户额度，不发送图片API Key。须先在“服务验证”实测图片、参考图及蒙版能力；CLI/账号未提供工具时明确失败，不会生成占位图或自动改用API。图像尺寸和风格是提示词约束，未保证底层参数。</p> : <div className="space-y-4">
         <label className="block">API 基础地址<input aria-label="API 基础地址" type="url" required value={base} onChange={e => setBase(e.target.value)} /></label>
         <label className="block">图像模型名称<input aria-label="图像模型名称" required value={model} onChange={e => setModel(e.target.value)} /></label>
         <label className="block">API Key<input aria-label="API Key" type="password" autoComplete="off" value={key} placeholder={config?.image_key_configured ? '已配置；留空保留原密钥' : '填写你自己的服务密钥'} onChange={e => setKey(e.target.value)} /></label>

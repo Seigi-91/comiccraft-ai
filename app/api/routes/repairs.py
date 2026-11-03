@@ -15,7 +15,7 @@ router=APIRouter()
 
 @router.get('/config')
 async def config():
-    return {'configured':settings.IMAGE_EDIT_PROVIDER in {'chatgpt_desktop','codex_cli'} or bool(settings.IMAGE_EDIT_BASE_URL),'provider':settings.IMAGE_EDIT_PROVIDER,'model':settings.IMAGE_EDIT_MODEL,
+    return {'configured':settings.IMAGE_EDIT_PROVIDER == 'codex_cli' or (settings.IMAGE_EDIT_PROVIDER == 'openai' and bool(settings.IMAGE_EDIT_BASE_URL)),'provider':settings.IMAGE_EDIT_PROVIDER,'model':settings.IMAGE_EDIT_MODEL,
             'note':'仅配置状态，不代表服务已通过真实生图验证。未选区域由原图像素合成保护。'}
 
 
@@ -29,17 +29,6 @@ async def run_repair(repair_id):
     async with AsyncSessionLocal() as db:
         row=await db.get(PanelRepair,repair_id)
         try:
-            if settings.IMAGE_EDIT_PROVIDER == 'chatgpt_desktop':
-                from app.tools.desktop_bridge import task_context,stage_context,request_chatgpt,PendingChatGPT
-                task_token=task_context.set(row.id);stage_token=stage_context.set('local_inpaint')
-                try:
-                    request_chatgpt('image','局部精修：第一张为原图，第二张为蒙版（白色=修改区域，黑色=保护区域）。仅修改白色区域。保持原图尺寸、角色身份、画风和构图，不加文字。要求：'+row.instructions,[row.source_url,row.mask_url])
-                except PendingChatGPT as pending:
-                    row.job_id=pending.job['id'];row.status='waiting'
-                    await db.commit()
-                    return
-                finally:
-                    task_context.reset(task_token);stage_context.reset(stage_token)
             row.candidate_url=await edit_image(row.source_url,row.mask_url,row.instructions)
             row.status='ready'
         except Exception as error:
@@ -51,6 +40,8 @@ async def run_repair(repair_id):
 @router.post('/{chapter_id}/panels/{panel_index}')
 async def create(chapter_id: str,panel_index:int,payload:RepairRequest,background_tasks:BackgroundTasks,db=Depends(get_db)):
     chapter,tasks=await context(db,chapter_id);unlocked(tasks)
+    if settings.IMAGE_EDIT_PROVIDER == 'chatgpt_desktop':
+        raise HTTPException(503,'人工精修回填已停用，请在设置中配置并验证自动图像编辑连接')
     if settings.IMAGE_EDIT_PROVIDER not in {'chatgpt_desktop','codex_cli'} and not settings.IMAGE_EDIT_BASE_URL:
         raise HTTPException(503,'尚未配置图像编辑服务，请配置 IMAGE_EDIT_BASE_URL / IMAGE_EDIT_MODEL / IMAGE_EDIT_API_KEY')
     panel=(await db.execute(select(Panel).where(Panel.chapter_id==chapter_id,Panel.index==panel_index))).scalar_one_or_none()

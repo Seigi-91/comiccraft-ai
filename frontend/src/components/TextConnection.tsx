@@ -5,7 +5,7 @@ type TextConfig = { codex_model:string; provider: string; text_base_url: string;
 export default function TextConnection({ onSaved }: { onSaved?: () => void }) {
   const [config, setConfig] = useState<TextConfig>()
   const [codexModel,setCodexModel]=useState('')
-  const [provider, setProvider] = useState('chatgpt_desktop')
+  const [provider, setProvider] = useState('codex_cli')
   const [base, setBase] = useState('https://api.openai.com/v1')
   const [model, setModel] = useState('')
   const [vision, setVision] = useState('')
@@ -13,7 +13,7 @@ export default function TextConnection({ onSaved }: { onSaved?: () => void }) {
   const [clear, setClear] = useState(false)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
-  const apply = (c: TextConfig) => { setConfig(c); setCodexModel(c.codex_model); setProvider(c.provider); setBase(c.text_base_url); setModel(c.text_model); setVision(c.vision_model) }
+  const apply = (c: TextConfig) => { setConfig(c); setCodexModel(c.codex_model); setProvider(c.provider === 'chatgpt_desktop' ? 'codex_cli' : c.provider); setBase(c.text_base_url); setModel(c.text_model); setVision(c.vision_model) }
   useEffect(() => {const refresh=()=>axios.get('/api/studio/config').then(r=>apply(r.data)).catch(()=>{});window.addEventListener('comiccraft-config-saved',refresh);return()=>window.removeEventListener('comiccraft-config-saved',refresh)},[])
   useEffect(() => { axios.get('/api/studio/config').then(r => apply(r.data)).catch(() => setMessage('无法读取文字模型配置')) }, [])
   async function save(e: React.FormEvent) {
@@ -28,9 +28,9 @@ export default function TextConnection({ onSaved }: { onSaved?: () => void }) {
     <p className="text-sm text-gray-400 mb-4">控制大纲、分镜、台词、视觉审核与气泡定位，和图片生成连接分别保存。</p>
     <form onSubmit={save} className="space-y-4">
       <label className="block">文字生成方式<select aria-label="文字生成方式" className="block w-full bg-dark-900 border border-dark-600 rounded-lg p-3 mt-2" value={provider} onChange={e => setProvider(e.target.value)}>
-        <option value="chatgpt_desktop">本机 ChatGPT · 协作回填</option><option value="codex_cli">官方 Codex · ChatGPT 登录自动生成</option><option value="local_http">文字模型 API · 自动生成</option>
+        <option value="codex_cli">官方 Codex · ChatGPT 登录自动生成</option><option value="local_http">文字模型 API · 自动生成</option>
       </select></label>
-      {provider === 'chatgpt_desktop' ? <p className="text-sm text-gray-400">将待办提示词及参考图交给自己的 ChatGPT，再回填 JSON。切换不会删除已经生成的内容。</p> : provider === 'codex_cli' ? <div className="space-y-3"><p className="text-sm text-gray-400">使用官方CLI保存的ChatGPT登录，不需要API Key。文字与附图请求自动返回；消耗账户额度，图片生成仍需独立选择和验证。</p><label className="block">Codex模型（留空使用CLI默认）<input aria-label="Codex模型" maxLength={200} value={codexModel} onChange={e=>setCodexModel(e.target.value)}/></label><p className="text-xs text-gray-400">此模型同时用于Codex文字、视觉和图片任务的规划。原API设置保留，选择API后可继续使用。</p></div> : <div className="space-y-4">
+      {provider === 'codex_cli' ? <div className="space-y-3"><p className="text-sm text-gray-400">使用官方CLI保存的ChatGPT登录，不需要API Key。文字与附图请求自动返回；消耗账户额度，图片生成仍需独立选择和验证。</p><label className="block">Codex模型（留空使用CLI默认）<input aria-label="Codex模型" maxLength={200} value={codexModel} onChange={e=>setCodexModel(e.target.value)}/></label><p className="text-xs text-gray-400">此模型同时用于Codex文字、视觉和图片任务的规划。原API设置保留，选择API后可继续使用。</p></div> : <div className="space-y-4">
         <label className="block">文字 API 基础地址<input aria-label="文字 API 基础地址" type="url" required value={base} onChange={e => setBase(e.target.value)} /></label>
         <label className="block">文字模型名称<input aria-label="文字模型名称" required value={model} onChange={e => setModel(e.target.value)} /></label>
         <label className="block">视觉模型名称<input aria-label="视觉模型名称" required value={vision} onChange={e => setVision(e.target.value)} /></label>

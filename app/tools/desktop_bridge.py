@@ -1,10 +1,9 @@
-"""Durable handoff. Never use private ChatGPT endpoints or desktop tokens."""
+"""Read archived handoffs for migration; never create new handoffs."""
 
 import hashlib
 import json
 import re
 from contextvars import ContextVar
-from datetime import datetime, timezone
 from app.core.paths import JOBS
 
 task_context = ContextVar("comic_task", default="standalone")
@@ -37,17 +36,7 @@ def request_chatgpt(kind, prompt, images=None):
     try:
         job = read_job(job_id)
     except FileNotFoundError:
-        job = {
-            "id": job_id,
-            "task_id": task_id,
-            "stage": stage,
-            "kind": kind,
-            "prompt": prompt,
-            "images": images or [],
-            "status": "pending",
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        }
-        save_job(job)
+        raise ValueError("人工回填模式已停用，请在设置中验证并启用官方 ChatGPT 连接器或模型 API")
     if job["status"] == "completed":
         return job["response"]
     raise PendingChatGPT(job)
