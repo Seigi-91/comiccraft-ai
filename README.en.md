@@ -13,7 +13,7 @@ Turn a story into panels you can keep editing: scripts, character outfits, dialo
 
 A Chinese adaptation of the opening installment of qntm’s SCP Wiki serial. The finished chapter uses uneven panel sizes, inset close-ups, and dialogue placed inside the panels.
 
-**[Read the full comic](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[Edit a balloon on artwork from this chapter](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)**
+**[Read the full comic](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[Edit a balloon on artwork from this chapter](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)** · [View full application screenshots](https://seigi-91.github.io/comiccraft-ai/#workspace-preview)
 
 [![Opening preview of We Need To Talk About Fifty-Five, click to read the complete comic](docs/assets/web-novel-preview.jpg)](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
 

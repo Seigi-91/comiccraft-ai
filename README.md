@@ -15,7 +15,7 @@
 
 改编自 qntm 在 SCP Wiki 连载的《反模因部不存在》开篇。完整成稿展示不等分主格、过渡窄格、嵌入特写和画内对白。
 
-**[阅读完整条漫](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[用本章原画试改气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)**
+**[阅读完整条漫](https://seigi-91.github.io/comiccraft-ai/web-novel.html)** · **[用本章原画试改气泡](https://seigi-91.github.io/comiccraft-ai/demo.html?sample=fifty-five)** · [查看完整应用界面截图](https://seigi-91.github.io/comiccraft-ai/#workspace-preview)
 
 [![《我们得谈谈五十五号》开场预览，点击阅读完整版](docs/assets/web-novel-preview.jpg)](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
 
