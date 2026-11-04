@@ -215,6 +215,42 @@
       "scope": "核对 External compositional structure 和 Attentional framing structure 的概念及嵌入格说明。",
       "retrieval_method": "public_web_reader_designated_sections",
       "availability_note": "项目布局实践与数值约束均为本地应用规则。"
+    },
+    "foulsham-cohn-zoom": {
+      "title": "Tom Foulsham and Neil Cohn — Zooming in on visual narrative comprehension (2021)",
+      "url": "https://link.springer.com/article/10.3758/s13421-020-01101-w",
+      "use": "区分有叙事作用的局部取景、无关裁切和完整场景提供的空间语境",
+      "publisher": "Memory & Cognition / Springer Nature",
+      "checked_at": "2026-11-04",
+      "kind": "primary_research",
+      "access_status": "verified_text",
+      "scope": "核对实验1、2的理解评分与讨论。原研究替换序列中的画格，未比较 AI 子镜头成稿。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "仅链接、原创归纳与证据定位。"
+    },
+    "cohn-comic-pov": {
+      "title": "Neil Cohn, Irmak Hacımusaoğlu and Bien Klomberg — The framing of subjectivity (2023)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10259188/",
+      "use": "严格主观视点、过肩观察和相邻画面的视线提示",
+      "publisher": "Journal of Graphic Novels and Comics",
+      "checked_at": "2026-11-04",
+      "kind": "primary_research",
+      "access_status": "verified_text",
+      "scope": "核对引言中的主观视点定义、画内及并置线索，以及讨论对过肩视角的说明。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "语料研究不提供项目布局、使用频率或质量保证。"
+    },
+    "klomberg-mental-events": {
+      "title": "Bien Klomberg et al. — Processing Incongruity for Mental Events in Comics (2025 issue)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11716651/",
+      "use": "识别主时间线和回忆等辅助情境之间的切换",
+      "publisher": "Metaphor and Symbol / Taylor & Francis",
+      "checked_at": "2026-11-04",
+      "kind": "primary_research",
+      "access_status": "verified_text",
+      "scope": "核对摘要、总讨论与实验2、3的结果图注；研究考察辅助情境中的角色识别及画面形态呼应。",
+      "retrieval_method": "public_web_reader_designated_sections",
+      "availability_note": "研究不验证本项目使用的回忆标记或画框样式。"
     }
   },
   "cards": [
@@ -459,17 +495,21 @@
         "建立镜头",
         "近景",
         "远景",
-        "不等分构图与嵌入小格"
+        "不等分构图与嵌入小格",
+        "子镜头选择",
+        "局部特写",
+        "反应镜头"
       ],
-      "content": "先写这一格让读者知道或感受到什么，再决定景别与机位。远景建立地理，中景交代动作关系，近景强调反应或关键物件。景别变化应跟随信息变化，不为变化而变化。用 action、shot_type、perspective 和 composition 表达可执行画面；镜头运动在静态漫画中改写为前后格变化，不要求一格同时完成推拉摇移。\n镜头功能决定画框大小。主格交代空间和主要动作，窄格接转身或移手，嵌入小格放大同一动作的证据。先确认进入、离开和对白顺序，再指定子镜头边界。",
+      "content": "先定主格的叙事任务，再定景别、机位和阅读顺序。远景建立地理，中景交代动作，近景突出证据或反应。主格保留空间和主要动作，小格只补足当前节拍中需要单独看清的信息。\n用读者的疑问选子镜头。要看清哪个细节用 detail，想知道角色亲眼看到什么用 pov，要读出表情或姿态变化用 reaction，同一动作有相邻阶段用 action_progression，短暂进入角色回忆用 memory，短暂并置另一条相关行动用 parallel。新增因果节拍或持续换时空时单独分格。短促且有清楚提示的回忆或并行行动才适合嵌入。",
       "sources": [
         "adobe-board",
         "yale-camera",
-        "cohn-comic-structure"
+        "cohn-comic-structure",
+        "foulsham-cohn-zoom"
       ],
       "core": true,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-03",
+      "reviewed_at": "2026-11-04",
       "evidence": [
         {
           "id": "board-intent-e1",
@@ -494,39 +534,53 @@
           "claim": "漫画的物理布局可以在主画面内嵌入从属格，并用取景聚焦某个局部信息。",
           "relationship": "supports_principle",
           "scope_limit": "支持嵌入格与局部聚焦。具体比例、文字留白及手机验收是本项目规则。"
+        },
+        {
+          "id": "board-intent-e4",
+          "source_id": "foulsham-cohn-zoom",
+          "locator": "Experiment 1: Comprehension ratings and Discussion / Experiment 2: Comprehension ratings and Discussion",
+          "claim": "两项实验中，聚焦读者注视信息的裁切比低注视裁切更易理解。完整画面保留的背景仍能提供语境。",
+          "relationship": "supports_principle",
+          "scope_limit": "实验比较序列中的替换画格，未检验同时展示主格和子镜头的效果。"
         }
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "静态一格锁定一个时刻；电影运镜转译成漫画前后格，是项目适配方法。",
-        "镜头功能决定画框大小。主格交代空间和主要动作，窄格接转身或移手，嵌入小格放大同一动作的证据。先确认进入、离开和对白顺序，再指定子镜头边界。"
+        "每个镜头画一个可辨瞬间。一个主格可以统领同一节拍的相邻瞬间。每个小格有清楚边界，尺寸服从叙事主次，先规划阅读路径和对白留白。",
+        "detail 放大可在主格定位的同一物件或局部。reaction 画同一刺激引起的可见微反应，保留刺激与反应的读序。反应引出新决定时，把决定作为下一格。",
+        "先试单镜头。若删掉某个子镜头后信息与节奏都无损，则省略它。"
       ],
       "applicability": [
-        "需要从故事说明转成可画的镜头。"
+        "需要从故事说明转成可画的镜头，或判断主格该不该加嵌入小格。"
       ],
       "limitations": [
-        "不把低机位一律理解成强者；具体含义需看上下文。"
+        "无关裁切、反复展示同一表情或无法找到清楚读序时，优先保留完整画面。",
+        "六类字段是项目创作分类，来源不规定类型数量和画框比例。"
       ],
       "examples": {
-        "positive": "主格画交接药片，小格放大药片；读者先看交接，再看证据。",
-        "negative": "四个等大的子画面都争当主角，读者要猜先看谁。",
-        "explanation": "先按本卡判断具体场合，再检查可观察的画面或生成记录。"
+        "positive": "主格画诊室交接药瓶，detail 小格放大瓶口破封，reaction 窄格在其后画接药人手指停住。人物作出停药决定留到下一格。",
+        "negative": "把递药、回家、次晨调查和结案放进四个等大小格，留给读者猜时间和因果。",
+        "explanation": "主格让人认出人与物的关系，小格补出证据和当下反应。独立决定有自己的叙事空间。"
       },
       "aliases": [
         "shot purpose",
         "coverage",
         "镜头任务",
         "建立空间",
-        "inset panel"
+        "inset panel",
+        "refiner",
+        "detail inset",
+        "reaction shot",
+        "主格子镜头"
       ],
       "checks": [
-        "说明此方法对当前任务的作用，并核对可见/已知证据。",
-        "不满足适用条件时说明例外或保留未知，不强制套用。"
+        "主格是否给出空间和动作，子镜头是否贡献可见的新信息，读序是否清楚？",
+        "若改变因果节拍或无法标明时空关系，是否已拆为独立格？"
       ],
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-03",
+        "checked_at": "2026-11-04",
         "effect_status": "not_evaluated"
       }
     },
@@ -541,15 +595,17 @@
         "对话",
         "视线",
         "左右",
-        "多人"
+        "多人",
+        "主观镜头"
       ],
-      "content": "对话或对峙先建立两人的空间轴线，给出人物在画面的左右位置与朝向。相邻正反打维持可理解的视线关系，不能让双方都朝同一方向却看似对视。跨轴可用中性机位、建立镜头或清楚的动作重新定向；轴线是帮助理解的惯例，不是不可违背的法则。多人场景先说明关系，再细分反应。",
+      "content": "对话或对峙先建立人物的左右位置与朝向，正反打维持视线关系。跨轴时可用中性机位、建立镜头或清楚的动作重新定向。\npov 让读者看到视点人物当时看到的内容。主格交代谁在看、从哪里看、看向哪边，小格接其眼高、朝向和视野。近景描述取景范围，主观镜头描述观看者，二者可以同时出现。过肩观察仍保留人物背部，可用于建立视线，严格 POV 则对应角色眼前所见。",
       "sources": [
-        "yale-editing"
+        "yale-editing",
+        "cohn-comic-pov"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-04",
       "evidence": [
         {
           "id": "board-axis-e1",
@@ -558,38 +614,52 @@
           "claim": "连续性剪辑通过方向和视线关系帮助观众理解空间；重新建立空间可以处理跨轴。",
           "relationship": "supports_principle",
           "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "board-axis-e2",
+          "source_id": "cohn-comic-pov",
+          "locator": "Introduction (subjectivity, juxtaposition and Figure 1) / Discussion (over-the-shoulder focalisation)",
+          "claim": "严格 POV 模拟角色所见，可用取景形状、观察者身体局部或与视线画面的并置提示。过肩视角也是引导角色视点的方式。",
+          "relationship": "supports_principle",
+          "scope_limit": "研究支持视点区分，未验证子镜头尺寸、排序或使用频率。"
         }
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "漫画采用同类空间检查；轴线是可选择的清晰性工具，不是禁止越界的法律。"
+        "先建立观察者再展示其所见。视点转换须可识别，小格保留人物或场景锚点。"
       ],
       "applicability": [
-        "两人对话、对峙或多人视线关系容易混淆。"
+        "两人对话、对峙或多人视线关系容易混淆。",
+        "想用角色所见揭示同一节拍的信息。"
       ],
       "limitations": [
-        "有意迷失方向的表达可以违背惯例，但要说明创作意图。"
+        "有意迷失方向可以违背惯例，先说明创作意图并规划何时重建空间。",
+        "若角色无法看到该信息，使用外部观察或另起镜头。"
       ],
       "examples": {
-        "positive": "先画甲左乙右；正反打保持对视，需要跨轴时补空间建立格。",
-        "negative": "双方都向画面右侧看，却被脚本说成面对面对话。",
-        "explanation": "位置和视线必须共同构成可理解的关系。"
+        "positive": "主格画孩子蹲下望向门缝，pov 小格从相同高度透过门缝看到发亮的钥匙。",
+        "negative": "把从屋内天花板看门缝后方的俯视特写标成孩子的主观镜头。",
+        "explanation": "观察者的位置、朝向与可见范围让读者确认是谁看到了什么。"
       },
       "aliases": [
         "shot reverse shot",
         "eyeline",
         "screen direction",
         "正反打",
-        "越轴"
+        "越轴",
+        "pov",
+        "point of view",
+        "主观视点",
+        "过肩视角"
       ],
       "checks": [
-        "说明此方法对当前任务的作用，并核对可见/已知证据。",
-        "不满足适用条件时说明例外或保留未知，不强制套用。"
+        "主格能辨认视点人物和视线目标，小格能否从其眼高、位置和朝向看到？",
+        "正反打是否保持或重新交代人物位置和视线？"
       ],
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-04",
         "effect_status": "not_evaluated"
       }
     },
@@ -603,15 +673,16 @@
         "手部",
         "道具",
         "匹配剪辑",
-        "持物"
+        "持物",
+        "动作推进"
       ],
-      "content": "将复杂动作拆成准备、接触、结果；静态一格锁定一个清楚瞬间。写明哪只手持物、物件朝向、视线目标和动作起止，后格沿用或明确转移。小道具成为转折时可用特写，但随后要交代它与人物的位置关系。不要同时要求手推门、抱猫、撑伞和拿信却只画两只手。",
+      "content": "将复杂动作拆成准备、接触、结果，每个镜头画一个可辨瞬间。action_progression 只在一个动作的相邻阶段之间推进，把接触或结果放进后读的窄格。detail 放大的是同一瞬间的证据。写明哪只手持物、物件朝向、运动方向和接触点，后镜沿用或明确转移。新的目标、行动或结果开启新因果节拍时拆成独立格。",
       "sources": [
         "yale-editing"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-04",
       "evidence": [
         {
           "id": "board-action-e1",
@@ -624,7 +695,7 @@
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "哪只手、接触点、承重和道具去向是本项目静态格执行检查项。"
+        "哪只手、接触点、承重和道具去向是静态格执行检查项。细分镜头沿同一方向安排，不跳过读者无法推断的接触或移交。"
       ],
       "applicability": [
         "复杂交接、开门、抱猫或手持道具的连续动作。"
@@ -633,25 +704,27 @@
         "动作省略可以成立，只要读者仍能推断；不要求逐帧描绘。"
       ],
       "examples": {
-        "positive": "前格右手握门把，后格右手将门推开，左臂一直托住猫。",
-        "negative": "前格左手拿信，后格无过渡变到右手，同时多出一只撑伞手。",
-        "explanation": "把动作拆成可验证的关键时刻，而非只增加解剖形容词。"
+        "positive": "主格画右手扣上门把，窄格画同一只手将门把拧到底，左臂一直托住猫。",
+        "negative": "主格刚用左手拿信，子镜头突然换右手，同时已走到院外撑伞。",
+        "explanation": "画面顺序必须对应同一动作的进展，时空与持物变化需要看得见的过渡。"
       },
       "aliases": [
         "match on action",
         "contact",
         "handedness",
         "持物",
-        "左右手"
+        "左右手",
+        "action_progression",
+        "动作阶段"
       ],
       "checks": [
-        "说明此方法对当前任务的作用，并核对可见/已知证据。",
-        "不满足适用条件时说明例外或保留未知，不强制套用。"
+        "每镜头能否指出确切动作阶段和接触点？持物者、方向和状态是否衔接？",
+        "若子镜头已开始新的因果节拍，是否独立成格？"
       ],
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-04",
         "effect_status": "not_evaluated"
       }
     },
@@ -665,15 +738,18 @@
         "时间",
         "蒙太奇",
         "省略",
-        "反应"
+        "反应",
+        "短回忆",
+        "并行行动"
       ],
-      "content": "格间省略需要留足让读者推断的线索。动作变化大的两格之间可插入反应或环境格；连续静止近景适合停顿，不能让所有场景都停滞。并置可创造含义，但并非每个故事都要交叉剪辑。竖屏阅读的留白有停顿作用；提示词里明确时间是否连续，防止光线和天气无故跳变。",
+      "content": "格间省略需要留足让读者推断的线索。动作变化大的两格之间可插入反应或环境格。主线有新时空或因果推进时用独立格。只有短暂从属当前节拍，并且读者能明确分辨离开与返回时，才在主格嵌入短回忆或短并行镜头。\nmemory 先用人物、物件或触感触发回忆，以重复物件加画框、色调或画内时间标记区分过去，随后用主格锚点接回现在。parallel 并置另一处相关行动，用时间标记、共同事件或相呼应的构图说明两线关系。原作只支持对照时，保留对照关系，不标成同时。",
       "sources": [
-        "yale-editing"
+        "yale-editing",
+        "klomberg-mental-events"
       ],
       "core": false,
       "authorship": "project-original",
-      "reviewed_at": "2026-11-02",
+      "reviewed_at": "2026-11-04",
       "evidence": [
         {
           "id": "board-time-e1",
@@ -682,38 +758,52 @@
           "claim": "交叉剪辑可把不同地点的行动组织成关联。",
           "relationship": "supports_principle",
           "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "board-time-e2",
+          "source_id": "klomberg-mental-events",
+          "locator": "Abstract / General discussion (Experiments 1–3)",
+          "claim": "读者能够区分主叙事与角色回忆等辅助情境，但切换需要额外更新。实验中的画面形态呼应可辅助识别某些切换。",
+          "relationship": "supports_principle",
+          "scope_limit": "实验检验特定的辅助情境与角色指代。画框、色调、文字标识和何时拆格是项目规则。"
         }
       ],
       "basis": "source_and_project",
       "project_rules": [
-        "漫画格间省略、留白与反应格的节奏由项目适配，来源没有规定像素格距或固定节拍。"
+        "回忆写明触发者、过去线索和返回锚点。并行写明第二行动的位置、时间或对照关系，以及它如何补足主节拍。",
+        "独立场景、连续多步行动或改变因果链的段落使用独立格。画内标记由排版阶段放置，预留可读空间。"
       ],
       "applicability": [
-        "多处事件交替，或需要控制动作与停顿。"
+        "需要控制格间停顿、短回忆或短暂并置另一行动。"
       ],
       "limitations": [
-        "非同时发生的并置也可使用，但不要错误标成同一时刻。"
+        "模糊边框或旧色单独出现容易被当成装饰。把标记与原文支持的时空或身份锚点一起使用。"
       ],
       "examples": {
-        "positive": "交替画窗内等候和门外返回，用同一雨势建立时间关联。",
-        "negative": "两个地点反复切换，却没有时间或叙事联系。",
-        "explanation": "切换应创造关系；并置本身不能自动形成可读的故事。"
+        "positive": "手触旧钥匙触发 memory 小格。钥匙磨痕呼应过去，画内短标记交代三年前，主格手势接回现在。parallel 小格可用同一通电话连接屋内等待者和街口来电者。",
+        "negative": "没有时间提示就画角色童年，又在后面两处插入无关行动，让它们都像正在同一房间发生。",
+        "explanation": "切换要说明两幅画面怎样相关。读者应能分辨回忆、此刻及并行行动，并沿清晰路径返回主线。"
       },
       "aliases": [
         "ellipsis",
         "crosscutting",
         "parallel editing",
         "格间省略",
-        "停顿"
+        "停顿",
+        "memory",
+        "parallel",
+        "flashback",
+        "回忆插格",
+        "平行蒙太奇"
       ],
       "checks": [
-        "说明此方法对当前任务的作用，并核对可见/已知证据。",
-        "不满足适用条件时说明例外或保留未知，不强制套用。"
+        "能否说清当前与回忆或并行画面的时空、关系和返回点？",
+        "若去掉小格，主线是否仍成立？有独立因果任务的段落是否已拆格？"
       ],
       "review": {
         "status": "maintainer_researched",
         "reviewer_kind": "maintainer_assisted_not_external_expert",
-        "checked_at": "2026-11-02",
+        "checked_at": "2026-11-04",
         "effect_status": "not_evaluated"
       }
     },

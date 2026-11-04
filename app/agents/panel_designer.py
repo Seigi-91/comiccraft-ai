@@ -55,9 +55,13 @@ class PanelDesignerAgent(TextAgent):
                  for key in ("x", "y", "width", "height")}
                 for other in slots.values() if slot and other.get("inset_of") == index
             ]
+            composition = panel.get("composition") or {}
+            from app.services.subshots import subshot_directive
+            multishot = subshot_directive(composition) if composition.get("subshot_strategy") else None
             # Include retry round in prompt to prevent replaying rejected cached art.
             data = {
                 "panel": panel,
+                **({"subshot_directive": multishot} if multishot else {}),
                 "characters": cast,
                 "scene_memory": scene,
                 "current_scene_state": panel.get("scene_state"),

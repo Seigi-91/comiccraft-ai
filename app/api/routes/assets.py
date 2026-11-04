@@ -197,20 +197,11 @@ async def save_shot_plan(chapter_id: str, data: ShotPlanEdit, db=Depends(get_db)
     board = data.storyboard.model_dump()
     if [p['index'] for p in board['panels']] != [p['index'] for p in state['storyboard']['panels']]:
         raise HTTPException(422, '草图调整须保留当前分镜索引与数量')
-    for panel in board['panels']:
-        subshots = panel['composition'].get('subshots') or []
-        if not isinstance(subshots, list) or len(subshots) > 4:
-            raise HTTPException(422, '每格最多四个子镜头')
-        for shot in subshots:
-            region = shot.get('region') if isinstance(shot, dict) else None
-            if not isinstance(region, dict):
-                raise HTTPException(422, '子镜头需要填写位置和大小')
-            x, y, width, height = (region.get(key) for key in ('x', 'y', 'width', 'height'))
-            if not all(type(value) in (int, float) and 0 <= value <= 100 for value in (x, y, width, height)) or not width or not height or x + width > 100 or y + height > 100:
-                raise HTTPException(422, '子镜头须位于画框内，且宽高大于零')
     from app.services.comic_plan import effective_references, validate_pages, validate_scenes
     indices = {panel['index'] for panel in board['panels']}
+    from app.services.subshots import validate_storyboard_subshots
     try:
+        validate_storyboard_subshots(board)
         validate_scenes(board)
         if board.get('pages') is not None:
             validate_pages(board['pages'], indices)

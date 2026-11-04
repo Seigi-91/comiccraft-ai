@@ -32,3 +32,8 @@ AI 漫画样例描述虚构人物。样例不构成对第三方商标、肖像�
 ## 《我们得谈谈五十五号》漫画演示
 
 [We Need To Talk About Fifty-Five](https://scp-wiki.wikidot.com/we-need-to-talk-about-fifty-five) 由 qntm 创作，发表于 SCP Wiki。演示对开篇作中文节编，重新分镜、绘图和排字。`docs/assets/web-novel-chapter.png`、`docs/assets/web-novel-edit-panel.png`、`docs/assets/web-novel-preview.jpg` 和重排样张 `docs/images/fifty-five-paged-preview.jpg` 按 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 提供。项目代码沿用 MIT。
+
+
+## 《最后一次离别》格内多镜头示例
+
+改编自 whenwerewe 在 SCP Wiki 发布的 [Story of Your Life, and Another](https://scp-wiki.wikidot.com/thesignpainter) 末段。本示例包含中文节编、分镜、AI 绘图及排字。漫画与示例分镜 `docs/assets/subshot-story.jpg`、`docs/assets/subshot-storyboard.json` 按 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) 提供。

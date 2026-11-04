@@ -25,6 +25,12 @@ class StyleReviewerAgent(VisionAgent):
                 "必须跨图对比脸型、发型、服装、道具、动物花纹、天气和场景结构。镜头变化不等于连续性错误。"
                 "实际附图路径顺序：" + str(references)
             )
+            if ((panel.get("shot") or {}).get("composition") or {}).get("subshot_strategy"):
+                prompt += (
+                    "\n检查实图是否有一个占主导的外格、指定数量和边界的小镜头、明确阅读顺序和时空或视线提示。"
+                    "在主画面中出现未要求的分身、近似等分拼图、时间层被画成同一现场或遮挡剧情关键点，"
+                    "应指出具体位置并判为严重问题。区分分开的回忆视点与误画成同场的重复人物。"
+                )
             from app.api.routes.compatibility import fingerprint
             from app.services.production_records import asset_hash
             reference_hashes=[asset_hash(u) for u in references]

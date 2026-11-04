@@ -33,3 +33,7 @@ description: 把单格分镜和角色圣经转换为 ChatGPT 图片生成任务�
 `inset_keep_clear` 是合页时独立插格会占据的范围，那里只画可遮挡背景。对应插格的原画由自己的分镜绘制。`composition.subshots` 是当前这张原画内部需要画出的子镜头。
 
 共享 `scene_memory` 提供空间与参考，本格 `current_scene_state` 决定动作、服装和道具归属。换场后先建立新场景的空间关系。
+
+## 格内镜头执行
+
+存在 subshot_directive 时按 technique、cue 和 insets_in_reading_order 构图。主画面保留在同一外框内，子镜头各有明确小边界。回忆或异地同步用色温、边框或既定地标区分时空。连续动作的多个瞬间只在各自小格出现。成图前检查主体、脸、手和关键道具没有被小格盖住。文字留给排版器。

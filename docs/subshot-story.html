@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ComicCraft AI 格内多镜头示例。通过同期细节、短回忆和独立换场，改编 SCP Wiki 网络短篇的结尾。">
+  <title>最后一次离别 · ComicCraft AI</title>
+  <link rel="stylesheet" href="web-novel.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner"><a class="brand" href="index.html">ComicCraft AI</a><nav aria-label="演示导航"><a href="#comic">阅读漫画</a><a href="#techniques">分镜手法</a></nav></div>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <p class="eyebrow">网络短篇改编 · 格内多镜头</p>
+      <h1>最后一次离别</h1>
+      <p class="subtitle">改编自 whenwerewe 的《Story of Your Life, and Another》末段。</p>
+    </section>
+    <section id="comic" class="wrap reader" aria-labelledby="comic-title">
+      <div class="section-heading"><h2 id="comic-title">阅读漫画</h2><a href="assets/subshot-story.jpg" download>下载整页</a></div>
+      <figure>
+        <img src="assets/subshot-story.jpg" width="1000" height="1530" alt="旅人乘车穿越不同世界，右下小格放大他握住座沿的手。第二格暖色小格回想站台离别。多年后，老去的旅人在老宅里望向门边的阴影。">
+        <figcaption>绘图由 GPT 图像工具生成，分镜位置经人工核对，旁白由 ComicCraft AI 排版器合成。</figcaption>
+      </figure>
+    </section>
+    <section id="techniques" class="wrap workflow" aria-labelledby="techniques-title">
+      <h2 id="techniques-title">三个场合，三种处理</h2>
+      <ol>
+        <li>列车格保留连续主画面。右下只放大手、袖口和座沿，让读者察觉紧张。</li>
+        <li>站台记忆用小尺寸暖色镜头和双边框，冷色车厢继续承载现实中的旅人。</li>
+        <li>晚年老宅进入新的时间和空间，给它独立外格，让结尾的停顿成立。</li>
+      </ol>
+      <p><a href="assets/subshot-storyboard.json">查看合成用分镜和对白 JSON</a></p>
+    </section>
+  </main>
+  <footer class="wrap">
+    <p>原作 whenwerewe · <a href="https://scp-wiki.wikidot.com/thesignpainter">Story of Your Life, and Another</a> · SCP Wiki。此作对末段作中文节编、分镜、绘图和排字，依 <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> 发布。</p>
+  </footer>
+</body>
+</html>

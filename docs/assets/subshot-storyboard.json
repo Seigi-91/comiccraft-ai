@@ -1,0 +1,175 @@
+{
+  "title": "最后一次离别",
+  "source": "https://scp-wiki.wikidot.com/thesignpainter",
+  "author": "whenwerewe",
+  "license": "CC BY-SA 3.0",
+  "storyboard": {
+    "panels": [
+      {
+        "index": 0,
+        "shot_type": "中景",
+        "perspective": "平视",
+        "composition": {
+          "subshot_strategy": "detail",
+          "subshot_cue": "同一只手、同色袖口和同一段座沿",
+          "subshots": [
+            {
+              "shot_type": "特写",
+              "content": "攥住座沿的手",
+              "region": {
+                "x": 74.2,
+                "y": 69,
+                "width": 23.9,
+                "height": 26.7
+              }
+            }
+          ],
+          "lettering_keep_clear": [
+            {
+              "x": 18,
+              "y": 18,
+              "width": 17,
+              "height": 31
+            },
+            {
+              "x": 53,
+              "y": 71,
+              "width": 11,
+              "height": 14
+            }
+          ]
+        },
+        "action": "列车行进，旅人握紧座沿望向飞逝的灯带",
+        "dialogue_ref": null,
+        "scene_id": null,
+        "scene_state": null
+      },
+      {
+        "index": 1,
+        "shot_type": "近景",
+        "perspective": "平视",
+        "composition": {
+          "subshot_strategy": "memory",
+          "subshot_cue": "冷蓝车厢与暖褐双框小格区分现时和回忆",
+          "subshots": [
+            {
+              "shot_type": "中景",
+              "content": "爱人留在站台，伸手看旅人离开",
+              "region": {
+                "x": 64.7,
+                "y": 24.1,
+                "width": 32,
+                "height": 38.5
+              }
+            }
+          ],
+          "lettering_keep_clear": [
+            {
+              "x": 21,
+              "y": 12,
+              "width": 23,
+              "height": 53
+            }
+          ]
+        },
+        "action": "现实中的旅人继续坐在车内，想起登车前站台告别的一瞬",
+        "dialogue_ref": null,
+        "scene_id": null,
+        "scene_state": null
+      },
+      {
+        "index": 2,
+        "shot_type": "全景",
+        "perspective": "侧面",
+        "composition": {
+          "page_role": "anchor",
+          "lettering_keep_clear": [
+            {
+              "x": 15,
+              "y": 10,
+              "width": 15,
+              "height": 33
+            },
+            {
+              "x": 75,
+              "y": 12,
+              "width": 20,
+              "height": 67
+            }
+          ]
+        },
+        "action": "多年后，老去的旅人在积尘的宅邸望向不确定的门口阴影",
+        "dialogue_ref": null,
+        "scene_id": null,
+        "scene_state": null
+      }
+    ],
+    "layout_type": "分页",
+    "pages": [
+      {
+        "height": 1530,
+        "regions": [
+          {
+            "panel_index": 0,
+            "x": 3.4,
+            "y": 3.1372549019607843,
+            "width": 93.2,
+            "height": 30.45751633986928,
+            "inset_of": null
+          },
+          {
+            "panel_index": 1,
+            "x": 3.4,
+            "y": 34.77124183006536,
+            "width": 93.2,
+            "height": 30.45751633986928,
+            "inset_of": null
+          },
+          {
+            "panel_index": 2,
+            "x": 3.4,
+            "y": 66.40522875816993,
+            "width": 93.2,
+            "height": 30.45751633986928,
+            "inset_of": null
+          }
+        ]
+      }
+    ],
+    "scenes": []
+  },
+  "dialogues": {
+    "bubbles": [
+      {
+        "panel_index": 0,
+        "bubble_type": "narration",
+        "font_size": 27,
+        "text": "列车穿过不同世界。窗外只剩飞掠的灯。",
+        "position": {
+          "x": 72,
+          "y": 14
+        }
+      },
+      {
+        "panel_index": 1,
+        "bubble_type": "narration",
+        "font_size": 27,
+        "text": "我想起那座站台。那天，是我先离开的。",
+        "position": {
+          "x": 23,
+          "y": 85
+        }
+      },
+      {
+        "panel_index": 2,
+        "bubble_type": "narration",
+        "font_size": 27,
+        "text": "多年后，我仍不知门边的影子是不是你。",
+        "position": {
+          "x": 57,
+          "y": 14
+        }
+      }
+    ]
+  }
+}

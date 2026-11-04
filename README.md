@@ -43,6 +43,8 @@
 
 原作 qntm，发表于 SCP Wiki。样张采用 CC BY-SA 3.0。[原作](https://scp-wiki.wikidot.com/we-need-to-talk-about-fifty-five) · [验证说明](benchmarks/VISUAL_WORKFLOW_VALIDATION.md)
 
+**格内多镜头示例** · 《最后一次离别》用同期细节和短回忆两个小镜头，晚年换场保留独立外格。[阅读漫画](https://seigi-91.github.io/comiccraft-ai/subshot-story.html) · [验证记录](benchmarks/SUBSHOT_VALIDATION.md)
+
 ## 已实现
 
 | 能力 | 内容 |

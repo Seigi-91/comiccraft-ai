@@ -104,6 +104,7 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
             schema = {
                 "generate_outline": StorySchema,
                 "generate_storyboard": StoryboardSchema,
+                "repair_storyboard_subshots": StoryboardSchema,
                 "generate_dialogue": DialogueSchema,
                 "review_panels": ReviewResult,
             }.get(job["stage"])
@@ -121,7 +122,7 @@ async def reply(job_id: str, data: JobReply, background_tasks: BackgroundTasks, 
             if schema:
                 result = schema.model_validate(result).model_dump(exclude_none=True)
             state = (task.result or {}).get("state", {})
-            if job["stage"] == "generate_storyboard":
+            if job["stage"] in ("generate_storyboard", "repair_storyboard_subshots"):
                 panels = result["panels"]
                 novel_source = state.get("novel_adaptation")
                 if novel_source and len(panels) != novel_source["settings"]["panel_count"]:

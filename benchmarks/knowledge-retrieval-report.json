@@ -1,7 +1,7 @@
 {
   "scope": "maintainer-authored retrieval checks only; not generated-comic quality",
   "dataset_sha256": "af73885da0fb377164a9931a2bebc3d47d58e75d5c1ded4cc30ee612f75bb067",
-  "corpus_sha256": "d56612232cc80cee88740c0c9dcf279189bd551550771e532ce07e00b571b306",
+  "corpus_sha256": "6ecb1be14a8c9df2f288826f61c26e28359aec8a1c18ce0cd1aaefcebf18e220",
   "baseline_commit": "242c9ba05ec19b17be4b172352003b3e6473886e",
   "variants": {
     "v1_frozen": {
@@ -641,7 +641,7 @@
           "retrieved": [
             "board-intent",
             "board-time",
-            "board-action"
+            "board-axis"
           ],
           "hit": true,
           "irrelevant_supplement": null
@@ -1127,7 +1127,8 @@
           ],
           "retrieved": [
             "board-intent",
-            "board-time"
+            "board-time",
+            "board-axis"
           ],
           "hit": true,
           "irrelevant_supplement": null

@@ -116,6 +116,10 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
         invalid_board['panels'][0]['composition']['subshots']=[{'region':{'x':90,'y':5,'width':20,'height':20}}]
         assert c.put(url,json={**payload,'storyboard':invalid_board}).status_code==422
         payload['storyboard']['panels'][0]['composition']['subshots']=[{'content':'钥匙特写','region':{'x':65,'y':8,'width':28,'height':26}}]
+        composition=payload['storyboard']['panels'][0]['composition']
+        composition['subshot_strategy']='memory'
+        assert c.put(url,json=payload).status_code==422
+        composition['subshot_strategy']='detail'
         payload['dialogues']=plan['dialogues']
         payload['dialogues']['bubbles'][0]['position']['x']=30
         saved=c.put(url,json=payload)
@@ -126,6 +130,7 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
         c.post('/api/tasks/'+draft['id']+'/resume')
         _,j=pending(c,cid);assert j['kind']=='image' and ref_url in j['images']
         assert '门廊的固定光源' in j['prompt'] and '钥匙在阿青手中' in j['prompt']
+        assert 'subshot_directive' in j['prompt'] and '同一时刻的关键细节' in j['prompt']
         respond(c,cid,{'image_url':image_upload(c)})
         respond(c,cid,{'text':'{"passed":true,"score":95,"issues":[]}'})
         finished=task(c,cid);assert finished['status']=='completed',finished

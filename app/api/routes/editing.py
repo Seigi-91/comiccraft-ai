@@ -76,7 +76,9 @@ async def edit(chapter_id: str, payload: Edit, db=Depends(get_db)):
         if not 1 <= len(panels) <= 24 or [p["index"] for p in panels] != list(range(len(panels))):
             raise HTTPException(422, "分镜必须为 1–24 格，索引连续")
         from app.services.comic_plan import auto_pages, effective_references, validate_pages, validate_scenes
+        from app.services.subshots import validate_storyboard_subshots
         try:
+            validate_storyboard_subshots(content)
             validate_scenes(content)
             if content.get("pages") is None and (state.get("storyboard") or chapter.storyboard or {}).get("pages"):
                 content.update(pages=auto_pages(panels), layout_type="分页")
