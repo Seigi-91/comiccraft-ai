@@ -152,9 +152,11 @@ async def adopt_experiment(task_id:str,payload:AdoptExperiment,db=Depends(get_db
     if not target or target.image_url!=data['snapshot']['source_url']:raise HTTPException(409,'源分镜已变化，不能覆盖新稿')
     if any(p.status.value!='passed' for p in panels):raise HTTPException(409,'请先完成全部分镜审核')
     state=deepcopy((tasks[0].result or {}).get('state',{})) if tasks else {}
-    url=task.result['candidate_url'];new_panels=[{'index':p.index,'image_url':url if p==target else p.image_url,'status':'passed'} for p in panels]
+    url=task.result['candidate_url']
+    prior = {(p['index'], p.get('image_url')): p for p in state.get('panels', [])}
+    new_panels=[{**prior.get((p.index, p.image_url), {}), 'index':p.index,'image_url':url if p==target else p.image_url,'status':'passed'} for p in panels]
     from app.agents.layout_artist import LayoutArtistAgent
-    final=await LayoutArtistAgent().compose_final(new_panels,state.get('dialogues') or chapter.dialogues or {},effects=state.get('effects',{}))
+    final=await LayoutArtistAgent().compose_final(new_panels,state.get('dialogues') or chapter.dialogues or {},effects=state.get('effects',{}), storyboard=state.get('storyboard') or chapter.storyboard)
     await snapshot(db,chapter,tasks,'采用实验候选前')
     target.image_url=url;target.review_result={'type':'user_adopted_experiment','experiment_task_id':task_id}
     state.update(panels=new_panels,final_comic=final,phase='completed',next_node='done',adopted_experiment=task_id)

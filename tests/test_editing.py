@@ -53,7 +53,7 @@ def test_edit_restore_and_single_panel_revision():
         assert task(c,cid)['result']['state']['bubble_placement_report'][0]['regions'][0]['kind']=='face'
         repack=c.post(base+'/recompose')
         assert repack.status_code==200,repack.text
-        assert repack.json()['height']==732
+        assert repack.json()['height']==1200 and repack.json()['layout_type']=='分页'
         editable=c.get(base+'/bubble-layout').json()
         bubble=editable['dialogues']['bubbles'][0]
         bubble.update(text='回家吧',tail={'x':85,'y':75},bubble_type='thought',position={'x':30,'y':22.5},size={'width':60,'height':45},font_size=20)
@@ -74,6 +74,18 @@ def test_edit_restore_and_single_panel_revision():
         invalid=c.put(base+'/bubble-layout',json={'dialogues':editable['dialogues'],'expected_version':newest})
         assert invalid.status_code==422,invalid.text
         assert task(c,cid)['result']['final_comic']['final_image_url']==saved.json()['final_image_url']
+        version_id=c.get(base+'/versions').json()[0]['id']
+        wrong_page={'regions':[{'panel_index':0,'x':0,'y':0,'width':70,'height':50},
+                               {'panel_index':1,'x':25,'y':25,'width':50,'height':50}]}
+        invalid_page=c.put(base+'/page-layout',json={'expected_version':version_id,'pages':[wrong_page]})
+        assert invalid_page.status_code==422
+        strip=c.put(base+'/page-layout',json={'expected_version':version_id,'pages':None})
+        assert strip.status_code==200 and strip.json()['height']==732
+        assert c.put(base+'/page-layout',json={'expected_version':version_id,'automatic':True}).status_code==409
+        version_id=c.get(base+'/versions').json()[0]['id']
+        auto_page=c.put(base+'/page-layout',json={'expected_version':version_id,'automatic':True})
+        assert auto_page.status_code==200 and auto_page.json()['height']==1200
+        assert [x['image_url'] for x in c.get(f"/api/projects/{p['id']}/chapters/{cid}").json()['panels']]==urls
         complete = c.get(base+'/versions').json()[0]
         assert complete['snapshot']['task_result']['final_comic']
         r = c.post(base+'/panels/1/revise', json={"instructions": "猫咪换个动作"})
@@ -110,3 +122,51 @@ def test_edit_restore_and_single_panel_revision():
 def test_version_is_scoped_to_chapter():
     with TestClient(app) as c:
         assert c.get('/api/editing/missing/versions').status_code == 404
+
+def test_paged_cover_fills_slot_and_preserves_original_bubble_coordinates():
+    from io import BytesIO
+    from PIL import Image, ImageColor
+    from app.agents.layout_artist import LayoutArtistAgent
+    from app.tools.media import local_image_path, save_image_bytes
+
+    source = BytesIO()
+    Image.new("RGB", (400, 400), "#295775").save(source, "PNG")
+    url = save_image_bytes(source.getvalue())
+    panel = {"index": 0, "status": "passed", "image_url": url}
+    board = {"panels": [{"index": 0, "composition": {"focal_point": {"x": 50, "y": 60}}}],
+             "pages": [{"regions": [{"panel_index": 0, "x": 10, "y": 10, "width": 80, "height": 40}]}]}
+    bubble = {"panel_index": 0, "text": "Wait", "position": {"x": 42, "y": 55},
+              "size": {"width": 26, "height": 12}, "tail": {"x": 65, "y": 75}}
+    rendered = LayoutArtistAgent()._render([panel], {"bubbles": [bubble]}, storyboard=board)
+    with Image.open(local_image_path(rendered["final_image_url"])) as page:
+        assert page.getpixel((105, 125)) == ImageColor.getrgb("#295775")
+        assert page.getpixel((895, 595)) == ImageColor.getrgb("#295775")
+    geometry = rendered["bubble_geometry"][0]
+    assert all(geometry[key] == bubble[key] for key in ("position", "size", "tail"))
+    with Image.open(local_image_path(url)) as original:
+        assert original.size == (400, 400)
+
+
+def test_auto_page_gives_clue_less_space_and_can_preserve_protected_art():
+    from PIL import Image
+    from app.services.comic_plan import auto_pages, needs_page_rebalance, validate_pages
+    from app.services.page_framing import frame_page_art
+
+    shots = [
+        {"index": index, "shot_type": "中景", "composition": {"page_role": role}}
+        for index, role in enumerate(("anchor", "detail", "context", "anchor"))
+    ]
+    pages = auto_pages(shots)
+    validate_pages(pages, range(4))
+    assert len(pages) == 1 and pages[0]["height"] == 1440
+    anchor, clue, context, payoff = pages[0]["regions"]
+    assert anchor["width"] == payoff["width"] > context["width"] > clue["width"]
+    assert clue["y"] == context["y"]
+    equal_tiles = [{"regions": [{"panel_index": i, "x": 3+(i%2)*48, "y": 3+(i//2)*48,
+                                  "width": 46, "height": 46} for i in range(4)]}]
+    assert needs_page_rebalance(equal_tiles, shots)
+    assert not needs_page_rebalance(pages, shots)
+    art = Image.new("RGB", (400, 400), "#295775")
+    keep_whole = {"crop_safe_area": {"x": 0, "y": 0, "width": 100, "height": 100}}
+    _, _, _, visible = frame_page_art(art, (800, 480), keep_whole, [])
+    assert visible == (160, 0, 640, 480)

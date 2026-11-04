@@ -67,6 +67,9 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
     with TestClient(app) as c:
         pid,doc,base,cid=create_source(c)
         source=c.get('/api/novels/chapters/'+cid+'/source').json()
+        ref_url=image_upload(c)
+        asset=c.post('/api/assets/projects/'+pid+'/visual-references',json={'kind':'prop','name':'铜钥匙','image_url':ref_url})
+        assert asset.status_code==201,asset.text
         c.post('/api/tasks/generate-chapter',json={'project_id':pid,'chapter_id':cid})
         _, card_job=pending(c,cid)
         assert card_job['stage']=='generate_character_cards'
@@ -92,6 +95,8 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
         _,j=pending(c,cid)
         assert j['stage']=='generate_storyboard' and '用近景突出钥匙交接' in j['prompt'] and '铜钥匙交给林舟' in j['prompt']
         board={'panels':[{'index':0,'shot_type':'近景','perspective':'平视','composition':{},'action':'阿青递出铜钥匙'}],'layout_type':'条漫'}
+        board['scenes']=[{'id':'door','name':'门前','props':['铜钥匙'],'stable_context':'门廊的固定光源'}]
+        board['panels'][0].update(scene_id='door',scene_state='钥匙在阿青手中')
         invalid={**board,'panels':board['panels']+[dict(board['panels'][0],index=1)]}
         assert c.post('/api/studio/jobs/'+j['id']+'/reply',json={'text':json.dumps(invalid,ensure_ascii=False)}).status_code==422
         respond(c,cid,{'text':json.dumps(board,ensure_ascii=False)})
@@ -99,11 +104,11 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
         respond(c,cid,{'text':json.dumps({'bubbles':[{'panel_index':0,'text':'收好。','character':'阿青','bubble_type':'speech','position':{'x':15,'y':10}}]},ensure_ascii=False)})
         draft=task(c,cid)
         assert draft['result']['waiting_for']=='storyboard_review'
-        ref_url=image_upload(c)
-        asset=c.post('/api/assets/projects/'+pid+'/visual-references',json={'kind':'prop','name':'铜钥匙','image_url':ref_url})
-        assert asset.status_code==201,asset.text
         url='/api/assets/chapters/'+cid+'/shot-plan'
         plan=c.get(url).json()
+        assert plan['storyboard']['pages'][0]['regions'][0]['panel_index']==0
+        assert plan['bindings']=={'0':[asset.json()['id']]}
+        assert plan['overrides']==[]
         payload={'task_id':draft['id'],'expected_revision':plan['revision'],'storyboard':plan['storyboard'],'bindings':{'0':[asset.json()['id']]}}
         assert c.put(url,json={**payload,'bindings':{'0':['wrong-project-reference']}}).status_code==422
         from copy import deepcopy
@@ -120,6 +125,7 @@ def test_novel_review_edit_resume_comic_and_restore_preserve_source():
         assert c.get(url).json()['dialogues']['bubbles'][0]['position']['x']==30
         c.post('/api/tasks/'+draft['id']+'/resume')
         _,j=pending(c,cid);assert j['kind']=='image' and ref_url in j['images']
+        assert '门廊的固定光源' in j['prompt'] and '钥匙在阿青手中' in j['prompt']
         respond(c,cid,{'image_url':image_upload(c)})
         respond(c,cid,{'text':'{"passed":true,"score":95,"issues":[]}'})
         finished=task(c,cid);assert finished['status']=='completed',finished

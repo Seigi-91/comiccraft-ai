@@ -28,6 +28,10 @@ class PanelDesignerAgent(TextAgent):
         previous = {p["index"]: p for p in previous or []}
         reviews = {r["panel_index"]: r for r in (feedback or {}).get("panel_reviews", [])}
         results = []
+        scenes = {scene["id"]: scene for scene in storyboard.get("scenes", [])}
+        from app.services.comic_plan import PAGE_SIZE
+        slots = {region["panel_index"]: {**region, "page_height": page.get("height", PAGE_SIZE[1])}
+                 for page in storyboard.get("pages") or [] for region in page["regions"]}
         for panel in storyboard["panels"]:
             index = panel["index"]
             if index in previous and reviews.get(index, {}).get("passed"):
@@ -37,10 +41,29 @@ class PanelDesignerAgent(TextAgent):
             positions = panel.get("character_positions") or []
             visible = {p.get("character") for p in positions if isinstance(p, dict) and p.get("character")}
             cast = [c for c in characters or [] if not visible or c["name"] in visible]
+            scene = scenes.get(panel.get("scene_id"))
+            preceding = [
+                item for item in results
+                if (item.get("shot") or {}).get("scene_id") == panel.get("scene_id")
+            ]
+            previous_shot = preceding[-1] if results and preceding and preceding[-1] == results[-1] else None
+            slot = slots.get(index)
+            aspect = round(slot["width"] * PAGE_SIZE[0] / (slot["height"] * slot["page_height"]), 3) if slot else None
+            insets = [
+                {key: round((other[key] - slot[key] if key in ("x", "y") else other[key])
+                            * 100 / slot["width" if key in ("x", "width") else "height"], 2)
+                 for key in ("x", "y", "width", "height")}
+                for other in slots.values() if slot and other.get("inset_of") == index
+            ]
             # Include retry round in prompt to prevent replaying rejected cached art.
             data = {
                 "panel": panel,
                 "characters": cast,
+                "scene_memory": scene,
+                "current_scene_state": panel.get("scene_state"),
+                "page_aspect_ratio": aspect,
+                "inset_keep_clear": insets,
+                "page_framing": "按目标宽高构图，主体、子镜头与对白留白均须完整入镜。inset_keep_clear 是主格内需留空的百分比区域。" if slot else None,
                 "visual_references": anchors,
                 "reference_precedence": "角色参考锁定身份，场景参考锁定空间与结构，道具参考锁定外形。本格剧本决定动作、时间、天气、服装版本和道具状态；参考图的旧状态不得覆盖本格。" if anchors else None,
                 "lettering_space": (dialogue_positions or {}).get(index, []),
@@ -48,8 +71,8 @@ class PanelDesignerAgent(TextAgent):
                 "review": reviews.get(index),
                 "previous_image": previous.get(index, {}).get("image_url") if reviews.get(index) else None,
                 "continuity": {
-                    "previous_shot": results[-1].get("shot") if results else None,
-                    "previous_image": results[-1]["image_url"] if results else None,
+                    "previous_shot": previous_shot.get("shot") if previous_shot else None,
+                    "previous_image": previous_shot["image_url"] if previous_shot else None,
                     "instruction": "角色表锁定身份；前一格用于场景和动作衔接，不复制构图。保持道具、服装、天气和行动方向。",
                 },
             }
@@ -61,11 +84,19 @@ class PanelDesignerAgent(TextAgent):
                 raise ValueError("已锁定的参考图已变化或无法读取，请重新选择参考版本")
             references = [anchor["image_url"] for anchor in anchors]
             references.extend(c["reference_image_url"] for c in cast if c.get("reference_image_url"))
-            if results:
-                references.extend([results[0]["image_url"], results[-1]["image_url"]])
+            continuity = [preceding[0], previous_shot] if previous_shot else []
+            references.extend(item["image_url"] for item in continuity)
             references = list(dict.fromkeys(references))[:5]
+            dependencies = sorted({item["index"] for item in continuity if item["image_url"] in references})
+            from app.core.config import settings
+            width = height = 1024
+            if aspect and (settings.image_provider == "codex_cli" or (settings.IMAGE_PROVIDER and settings.IMAGE_API_MODEL.startswith("gpt-image"))):
+                if aspect > 1.2:
+                    width = 1536
+                elif aspect < 0.83:
+                    height = 1536
             from app.api.routes.compatibility import fingerprint
-            signature=hashlib.sha256(json.dumps({"prompt":prompt,"references":[[u,asset_hash(u)] for u in references],"provider":fingerprint('image')},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+            signature=hashlib.sha256(json.dumps({"prompt":prompt,"size":[width,height],"references":[[u,asset_hash(u)] for u in references],"provider":fingerprint('image')},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
             candidate=previous.get(index,{})
             if not reviews.get(index) and candidate.get("status")=="generated" and candidate.get("request_signature")==signature and asset_hash(candidate.get("image_url")):
                 results.append({**candidate,"reused_on_resume":True})
@@ -74,7 +105,7 @@ class PanelDesignerAgent(TextAgent):
                 continue
             token = stage_context.set(f"panel_designer:{index}")
             try:
-                image_url = await self.image_gen.generate_image(prompt, reference_images=references, generation_context=data)
+                image_url = await self.image_gen.generate_image(prompt, width=width, height=height, reference_images=references, generation_context=data)
             finally:
                 stage_context.reset(token)
             results.append(
@@ -86,6 +117,7 @@ class PanelDesignerAgent(TextAgent):
                     "prompt": prompt,
                     "status": "generated",
                     "reference_images": references,
+                    "continuity_source_indices": dependencies,
                     "visual_references": anchors,
                     "shot": panel,
                 }

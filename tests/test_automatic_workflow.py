@@ -59,7 +59,7 @@ def test_interrupted_panels_checkpoint_and_reuse_only_matching_requests(monkeypa
     from app.services.phase_progress import panel_progress
     calls=[];snapshots=[];fail=[True]
     agent=PanelDesignerAgent()
-    async def generate(prompt,reference_images=None,generation_context=None):
+    async def generate(prompt,reference_images=None,generation_context=None,**kwargs):
         index=generation_context['panel']['index'];calls.append(index)
         if index==2 and fail[0]:fail[0]=False;raise ValueError('synthetic interruption')
         return save_image_bytes(png(['red','green','blue'][index]))

@@ -8,6 +8,7 @@ async def final_layout_node(state):
         panels=state.get("panels", []),
         dialogues=state.get("dialogues", {}),
         effects=state.get("effects", {}),
+        storyboard=state.get("storyboard"),
     )
 
     return {

@@ -105,6 +105,28 @@ class NovelStorySchema(StorySchema):
     adaptation: AdaptationPlan
 
 
+class PageRegion(BaseModel):
+    panel_index: int
+    x: float = Field(ge=0, le=100)
+    y: float = Field(ge=0, le=100)
+    width: float = Field(ge=20, le=100)
+    height: float = Field(ge=16, le=100)
+    inset_of: int | None = None
+
+
+class ComicPage(BaseModel):
+    height: int = Field(default=1200, ge=900, le=1600)
+    regions: list[PageRegion] = Field(min_length=1, max_length=6)
+
+
+class StoryScene(BaseModel):
+    id: str = Field(min_length=1, max_length=80)
+    name: str = Field(min_length=1, max_length=100)
+    stable_context: str = Field(default="", max_length=800)
+    characters: list[str] = Field(default_factory=list, max_length=16)
+    props: list[str] = Field(default_factory=list, max_length=16)
+
+
 class StoryboardPanel(BaseModel):
     model_config = {"extra": "allow"}
     index: int
@@ -113,11 +135,15 @@ class StoryboardPanel(BaseModel):
     composition: Dict[str, Any]
     action: str
     dialogue_ref: Optional[str] = None
+    scene_id: str | None = None
+    scene_state: str | None = Field(default=None, max_length=500)
 
 
 class StoryboardSchema(BaseModel):
     panels: List[StoryboardPanel]
     layout_type: str
+    pages: list[ComicPage] | None = Field(default=None, max_length=24)
+    scenes: list[StoryScene] = Field(default_factory=list, max_length=24)
 
 
 class BubblePosition(BaseModel):

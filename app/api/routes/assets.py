@@ -89,6 +89,11 @@ def reference_data(row):
     return {key: getattr(row, key) for key in ('id', 'kind', 'name', 'description', 'image_url', 'sha256')}
 
 
+async def approved_reference_library(db, project_id):
+    rows = (await db.execute(select(VisualReference).where(VisualReference.project_id == project_id))).scalars()
+    return [reference_data(row) for row in rows if asset_hash(row.image_url) == row.sha256]
+
+
 @router.get('/projects/{project_id}/visual-references')
 async def list_visual_references(project_id: str, db=Depends(get_db)):
     rows = (await db.execute(select(VisualReference).where(VisualReference.project_id == project_id))).scalars()
@@ -149,17 +154,25 @@ async def resolve_visual_bindings(db, project_id, bindings, indices):
 
 @router.get('/chapters/{chapter_id}/shot-plan')
 async def shot_plan(chapter_id: str, db=Depends(get_db)):
-    from app.api.routes.editing import context
+    from app.api.routes.editing import context, latest_version
     chapter, tasks = await context(db, chapter_id)
+    version = await latest_version(db, chapter_id)
     task = tasks[0] if tasks else None
     result = (task.result or {}) if task else {}
     state = result.get('state', {})
+    from app.services.comic_plan import effective_references
+    board = state.get('storyboard') or chapter.storyboard
+    inherited = effective_references(board, state.get('scene_reference_library', []), {}) if board else {}
     return {'task_id': task.id if task else None, 'revision': result.get('plan_revision'),
+            'expected_version': version.id if version else None,
             'waiting': result.get('waiting_for') == 'storyboard_review' and task.status == TaskStatus.NEEDS_HUMAN,
             'storyboard': state.get('storyboard') or chapter.storyboard,
             'previous_novel_context': state.get('previous_novel_context'),
             'dialogues': state.get('dialogues') or chapter.dialogues,
-            'bindings': {k: [a['id'] for a in v] for k, v in state.get('visual_reference_bindings', {}).items()}}
+            'bindings': {k: [a['id'] for a in v] for k, v in state.get('visual_reference_bindings', {}).items()},
+            'overrides': list(state.get('visual_reference_overrides', state.get('visual_reference_bindings', {}) if not state.get('scene_reference_library') else {})),
+            'inherited': {k: [a['id'] for a in v] for k, v in inherited.items()},
+            'dependencies': {str(panel['index']): panel.get('continuity_source_indices', []) for panel in state.get('panels', [])}}
 
 
 class ShotPlanEdit(BaseModel):
@@ -195,7 +208,19 @@ async def save_shot_plan(chapter_id: str, data: ShotPlanEdit, db=Depends(get_db)
             x, y, width, height = (region.get(key) for key in ('x', 'y', 'width', 'height'))
             if not all(type(value) in (int, float) and 0 <= value <= 100 for value in (x, y, width, height)) or not width or not height or x + width > 100 or y + height > 100:
                 raise HTTPException(422, '子镜头须位于画框内，且宽高大于零')
-    state['visual_reference_bindings'] = await resolve_visual_bindings(db, chapter.project_id, data.bindings, {p['index'] for p in board['panels']})
+    from app.services.comic_plan import effective_references, validate_pages, validate_scenes
+    indices = {panel['index'] for panel in board['panels']}
+    try:
+        validate_scenes(board)
+        if board.get('pages') is not None:
+            validate_pages(board['pages'], indices)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+    overrides = await resolve_visual_bindings(db, chapter.project_id, data.bindings, indices)
+    library = await approved_reference_library(db, chapter.project_id)
+    state['scene_reference_library'] = library
+    state['visual_reference_overrides'] = overrides
+    state['visual_reference_bindings'] = effective_references(board, library, overrides)
     if data.dialogues is not None:
         indices = {panel['index'] for panel in board['panels']}
         if any(bubble.panel_index not in indices or len(bubble.text) > 60 for bubble in data.dialogues.bubbles):

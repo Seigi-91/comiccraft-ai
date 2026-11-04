@@ -23,7 +23,7 @@ Screenshots from the running application. Open an image at full size, or try the
 
 | Creation | Planning and production |
 |---|---|
-| **Novel import and adaptation**<br>[![Novel import and adaptation](docs/images/feature-novel.jpg)](docs/images/feature-novel.jpg)<br>Import a source, preview excerpts, and set the chapter’s panel count and required facts. | **Visual references and storyboard draft**<br>[![Visual references and storyboard draft](docs/images/feature-planning.jpg)](docs/images/feature-planning.jpg)<br>Assign references per panel and preview the action, inset shots, and balloon positions. |
+| **Novel import and adaptation**<br>[![Novel import and adaptation](docs/images/feature-novel.jpg)](docs/images/feature-novel.jpg)<br>Import a source, preview excerpts, and set the chapter’s panel count and required facts. | **Visual references and storyboard draft**<br>[![Visual references and storyboard draft](docs/images/feature-planning.jpg)](docs/images/feature-planning.jpg)<br>Assign references per panel and preview the action, page regions, inset shots, and balloon positions. |
 | **In-panel balloon editing**<br>[![In-panel balloon editing](docs/images/feature-bubbles.jpg)](docs/images/feature-bubbles.jpg)<br>Move, resize, and edit speech balloons, adjust the tails, then recompose the comic. | **Masked panel repair**<br>[![Masked panel repair](docs/images/feature-repair.jpg)](docs/images/feature-repair.jpg)<br>Mark a region and compare the repair candidate against the original before adopting it. |
 | **Production workbench**<br>[![Production workbench](docs/images/feature-production.jpg)](docs/images/feature-production.jpg)<br>Inspect panel generation records, batch jobs, parameter experiments, and effects layers. | **Creative team and model settings**<br>[![Creative team and model settings](docs/images/feature-studio.jpg)](docs/images/feature-studio.jpg)<br>Inspect agent roles and knowledge cards, and manage text, vision, and image connections. |
 
@@ -35,13 +35,21 @@ A Chinese adaptation of the opening installment of qntm’s SCP Wiki serial. The
 
 [![Opening preview of We Need To Talk About Fifty-Five, click to read the complete comic](docs/assets/web-novel-preview.jpg)](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
 
+### Paged layout preview
+
+[![Recomposed first page of We Need To Talk About Fifty-Five](docs/images/fifty-five-paged-preview.jpg)](docs/images/fifty-five-paged-preview.jpg)
+
+This preview uses existing chapter art with manually marked focal points and lettering exclusion areas. It demonstrates the compositor with the same artwork. End-to-end model generation was outside this check. [Original chapter and credits](https://seigi-91.github.io/comiccraft-ai/web-novel.html)
+
 ## What makes this useful
 
 - Six role-specific agents coordinate planning, storyboards, dialogue, artwork, review and layout.
 - Edit the outline, panel descriptions and dialogue rather than restarting the whole chapter.
 - Move/resize bubbles, edit their text, drag tail tips, and switch speech/thought/narration.
 - Select a damaged region for repair, compare the result and explicitly adopt it. Compositing retains original source-panel pixels outside the mask.
-- Keep character profiles and outfits, attach references, inspect per-panel request snapshots and restore chapter versions.
+- Plan full-width story beats and uneven detail/context rows. Recompose an existing chapter as pages or a vertical strip using the same artwork.
+- Lock character, scene, and prop references for scene-level inheritance with per-panel overrides. Preview which later panels reuse a selected drawing before opting into a wider redraw.
+- Keep character profiles and outfits, inspect per-panel request snapshots, and restore chapter versions.
 - Configure text/vision and image providers independently. Use your own API services, the official Codex connector, or a combination.
 
 These features support control and review; they do not guarantee visual consistency or make the project unique among comic tools.
@@ -103,7 +111,7 @@ Install a Chinese-capable font, such as Noto Sans CJK, and set `COMIC_FONT_PATH`
 | Model connections | The local official Codex App Server calls cloud models using your own ChatGPT login. Compatible APIs can be configured for text and vision, image generation, and masked editing |
 | Creative knowledge | Role skills and local lexical retrieval add relevant guidance to prompts. Retrieval ranks English terms and Chinese character bigrams within each role and records card IDs and hashes |
 | Incremental revision | Each finished panel is checkpointed. Request fingerprints track prompts, reference content, and provider configuration. Review reuse depends on unchanged visual evidence |
-| Image processing and lettering | Pillow composes the artwork, editable speech balloons, and effects. Masked repair composites candidate pixels within the selected region and preserves original pixels outside it |
+| Image processing and lettering | Pillow fills panel frames with focal-aware crops when they fit the marked regions and saved balloons. It fits the full artwork when a crop would cut protected content and keeps balloon editing in source-image coordinates. The compositor also handles effects. Masked repair composites candidate pixels within the selected region and preserves original pixels outside it |
 
 [Architecture](docs/ARCHITECTURE.md) · [Official connector](docs/CODEX_CONNECTION.md) · [Knowledge cards](knowledge/README.md) · [Budgets and recovery](docs/PRODUCTION_SAFETY.md)
 
@@ -145,8 +153,8 @@ Role skills define the handoff and checks for each stage. Local retrieval adds r
 
 1. Open **小说改编 · 导入原著**, import TXT or Markdown, and select the excerpt, fidelity mode, panel count, and required facts. Import and chapter creation make no model calls.
 2. Generate source-grounded character cards and review the outline. The workflow then prepares the storyboard and dialogue and pauses before image generation.
-3. In **视觉参考与分镜草图**, lock character, scene, and prop references and attach up to three per panel. Review the action, inset shots, dialogue, and balloon positions, then confirm rendering.
-4. Revise selected panels or adjust lettering separately. Later chapters from the same imported novel can carry over character settings and the preceding completed chapter’s final shot.
+3. In **视觉参考与分镜草图**, review the proposed page layout, scene state, and dialogue before drawing. Each panel can inherit up to three locked references by name, with manual overrides where needed. A page inset has its own artwork. An in-panel subshot is part of its parent drawing.
+4. Recompose the pages or revise selected panels. Review the downstream references before choosing whether to redraw those panels too. Later chapters from the same imported novel can carry over character settings and the preceding completed chapter’s final shot.
 
 This workflow is available on `main`. The linked v2.5.1 installer downloads the tagged release. In the live *Wizard of Oz* trial, only the two selected panels changed. A subsequent lettering save took about 1.9 seconds and added no model calls. See the [validation record](benchmarks/VISUAL_WORKFLOW_VALIDATION.md).
 

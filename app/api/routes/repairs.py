@@ -88,9 +88,10 @@ async def accept(chapter_id:str,repair_id:str,payload:Accept,db=Depends(get_db))
     if not panel or panel.image_url!=row.source_url:raise HTTPException(409,'原图已变化，此候选不能覆盖新稿')
     if any(p.status!=PanelStatus.PASSED for p in panels):raise HTTPException(409,'请先完成所有分镜审核')
     state=deepcopy((tasks[0].result or {}).get('state',{})) if tasks else {}
-    new_panels=[{'index':p.index,'image_url':row.candidate_url if p==panel else p.image_url,'status':'passed'} for p in panels]
+    prior = {(p['index'], p.get('image_url')): p for p in state.get('panels', [])}
+    new_panels=[{**prior.get((p.index, p.image_url), {}), 'index':p.index,'image_url':row.candidate_url if p==panel else p.image_url,'status':'passed'} for p in panels]
     from app.agents.layout_artist import LayoutArtistAgent
-    try: final=await LayoutArtistAgent().compose_final(new_panels,state.get('dialogues') or chapter.dialogues or {},effects=state.get('effects',{}))
+    try: final=await LayoutArtistAgent().compose_final(new_panels,state.get('dialogues') or chapter.dialogues or {},effects=state.get('effects',{}), storyboard=state.get('storyboard') or chapter.storyboard)
     except ValueError as error:raise HTTPException(422,str(error))
     await snapshot(db,chapter,tasks,'采用局部精修前')
     panel.image_url=row.candidate_url;panel.review_result={'type':'human_accepted_local_repair','repair_id':row.id,'note':'用户比较后采用；未声称模型自动审核通过'}

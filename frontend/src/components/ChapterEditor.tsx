@@ -13,7 +13,7 @@ function template(key: string): Value {
 }
 function Fields({value,onChange,path='',disabled=false}:{value:Value;onChange:(v:Value)=>void;path?:string;disabled?:boolean}) {
   if(Array.isArray(value))return <div className="space-y-3">{value.map((item,i)=><fieldset key={i} className="rounded-xl border border-dark-600 p-4 space-y-3"><legend className="px-2 text-primary-300">{labels[path] || path} {i+1}</legend><Fields value={item} path={path} disabled={disabled} onChange={v=>onChange(value.map((x,n)=>n===i?v:x))}/><div className="flex gap-3"><button type="button" disabled={disabled || i===0} className="secondary-button" onClick={()=>{const a=[...value];[a[i-1],a[i]]=[a[i],a[i-1]];onChange(a)}}>上移</button><button type="button" disabled={disabled} className="secondary-button" onClick={()=>onChange(value.filter((_,n)=>n!==i))}>移除</button></div></fieldset>)}<button type="button" disabled={disabled} className="secondary-button" onClick={()=>onChange([...value,template(path)])}>＋ 添加{labels[path] || '条目'}</button></div>
-  if(value!==null && typeof value==='object')return <div className="space-y-4">{Object.entries(value).filter(([k])=>k!=='index').map(([key,v])=><div key={key}><label className="text-sm text-gray-300 block mb-2">{labels[key] || key}</label><Fields value={v} path={key} disabled={disabled} onChange={next=>onChange({...value,[key]:next})}/></div>)}</div>
+  if(value!==null && typeof value==='object')return <div className="space-y-4">{Object.entries(value).filter(([k])=>k!=='index' && (path || !['pages','scenes'].includes(k))).map(([key,v])=><div key={key}><label className="text-sm text-gray-300 block mb-2">{labels[key] || key}</label><Fields value={v} path={key} disabled={disabled} onChange={next=>onChange({...value,[key]:next})}/></div>)}</div>
   if(path==='panel_index' && typeof value==='number')return <input aria-label="所属分镜" type="number" min={1} disabled={disabled} value={value+1} onChange={e=>onChange(Number(e.target.value)-1)}/>
   if(typeof value==='number')return <input aria-label={labels[path] || path} type="number" disabled={disabled} value={value} onChange={e=>onChange(Number(e.target.value))}/>
   if(typeof value==='boolean')return <input aria-label={labels[path] || path} type="checkbox" disabled={disabled} checked={value} onChange={e=>onChange(e.target.checked)}/>
@@ -38,7 +38,13 @@ export default function ChapterEditor({chapterId,section,content,disabled,onSave
     setBusy(true);setNotice('')
     try{
       const doc=structuredClone(draft) as Record<string,Value>
-      if(section==='storyboard' && Array.isArray(doc.panels))doc.panels=doc.panels.map((p,i)=>({...p as object,index:i}))
+      if(section==='storyboard' && Array.isArray(doc.panels)){
+        const previous=content?.panels
+        const orderChanged=Array.isArray(previous)&&previous.length!==doc.panels.length
+          || doc.panels.some((panel,i)=>(panel as {index?:number})?.index!==i)
+        if (orderChanged) doc.pages=null
+        doc.panels=doc.panels.map((panel,i)=>({...panel as object,index:i}))
+      }
       await axios.put('/api/editing/'+chapterId+'/content',{section,content:doc,expected_version:versions[0]?.id || null})
       setDirty(false);setConfirm(false);await onSaved();setVersions((await axios.get('/api/editing/'+chapterId+'/versions')).data);setNotice('已保存，可点击“继续任务”使用编辑稿创作。')
     }catch(e){setNotice(axios.isAxiosError(e)?String(e.response?.data?.detail || e.message):String(e))}finally{setBusy(false)}

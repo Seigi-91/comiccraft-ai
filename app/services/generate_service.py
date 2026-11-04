@@ -83,6 +83,9 @@ class GenerateService:
                             state['previous_novel_context'] = memory
                             state['inspiration'] += '\n同一小说前章已完成的末镜（连续性资料）：' + json.dumps(memory, ensure_ascii=False)
                     state["next_node"] = "generate_character_cards"
+            if "scene_reference_library" not in state:
+                from app.api.routes.assets import approved_reference_library
+                state["scene_reference_library"] = await approved_reference_library(self.session, project_id)
             if state.get('knowledge_snapshot_task_id')!=task_id:
                 from copy import deepcopy
                 state['knowledge_snapshot']=deepcopy(corpus())

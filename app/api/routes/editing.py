@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import select, delete, update
 from app.db.session import get_db
 from app.models.orm import Chapter, ChapterVersion, Panel, Task, TaskStatus, Phase, PanelStatus
-from app.models.schemas import StorySchema, StoryboardSchema, DialogueSchema
+from app.models.schemas import StorySchema, StoryboardSchema, DialogueSchema, ComicPage
 from app.api.routes.tasks import active_tasks, run_generation
 
 router = APIRouter()
@@ -75,6 +75,20 @@ async def edit(chapter_id: str, payload: Edit, db=Depends(get_db)):
         panels = content["panels"]
         if not 1 <= len(panels) <= 24 or [p["index"] for p in panels] != list(range(len(panels))):
             raise HTTPException(422, "分镜必须为 1–24 格，索引连续")
+        from app.services.comic_plan import auto_pages, effective_references, validate_pages, validate_scenes
+        try:
+            validate_scenes(content)
+            if content.get("pages") is None and (state.get("storyboard") or chapter.storyboard or {}).get("pages"):
+                content.update(pages=auto_pages(panels), layout_type="分页")
+                state.pop("visual_reference_overrides", None)
+            if content.get("pages") is not None:
+                validate_pages(content["pages"], range(len(panels)))
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from error
+        if "scene_reference_library" in state:
+            state["visual_reference_bindings"] = effective_references(
+                content, state["scene_reference_library"], state.get("visual_reference_overrides", {})
+            )
     if payload.section == "dialogues":
         board = state.get("storyboard") or chapter.storyboard
         valid = {p["index"] for p in (board or {}).get("panels", [])}
@@ -156,6 +170,7 @@ async def restore(chapter_id: str, version_id: str, payload: Restore, db=Depends
 class Revise(BaseModel):
     instructions: str = Field(min_length=1, max_length=4000)
     additional_panels: list[int] = Field(default_factory=list, max_length=23)
+    include_dependents: bool = False
     reference_ids: dict[str, list[str]] = Field(default_factory=dict, max_length=24)
 
 
@@ -198,7 +213,7 @@ async def bubble_layout(chapter_id: str, db=Depends(get_db)):
         raise HTTPException(409, "请先完成分镜审核")
     from app.agents.layout_artist import LayoutArtistAgent
     try:
-        rendered = await LayoutArtistAgent().compose_final(panels, state.get("dialogues") or chapter.dialogues or {}, effects=state.get("effects", {}))
+        rendered = await LayoutArtistAgent().compose_final(panels, state.get("dialogues") or chapter.dialogues or {}, effects=state.get("effects", {}), storyboard=state.get("storyboard") or chapter.storyboard)
     except ValueError as e:
         raise HTTPException(422, str(e))
     version = await latest_version(db, chapter_id)
@@ -226,7 +241,34 @@ async def recompose(chapter_id: str, db=Depends(get_db)):
     return await compose_chapter(chapter_id, db)
 
 
-async def compose_chapter(chapter_id, db, replacement=None, effects=None):
+class PageLayoutEdit(BaseModel):
+    expected_version: str | None = None
+    pages: list[ComicPage] | None = Field(default=None, max_length=24)
+    automatic: bool = False
+
+
+@router.put("/{chapter_id}/page-layout")
+async def save_page_layout(chapter_id: str, payload: PageLayoutEdit, db=Depends(get_db)):
+    chapter, tasks = await context(db, chapter_id)
+    unlocked(tasks)
+    version = await latest_version(db, chapter_id)
+    if payload.expected_version != (version.id if version else None):
+        raise HTTPException(409, "作品版本已变化，请刷新页面布局")
+    board = deepcopy(((tasks[0].result or {}).get("state", {}).get("storyboard") if tasks else None) or chapter.storyboard)
+    if not board or not board.get("panels"):
+        raise HTTPException(422, "请先生成分镜")
+    from app.services.comic_plan import auto_pages, validate_pages
+    pages = auto_pages(board["panels"]) if payload.automatic else payload.model_dump()["pages"]
+    if pages is not None:
+        try:
+            validate_pages(pages, [panel["index"] for panel in board["panels"]])
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from error
+    board.update(pages=pages, layout_type="分页" if pages else "条漫")
+    return await compose_chapter(chapter_id, db, storyboard=board)
+
+
+async def compose_chapter(chapter_id, db, replacement=None, effects=None, storyboard=None):
     chapter, tasks = await context(db, chapter_id)
     unlocked(tasks)
     state = deepcopy((tasks[0].result or {}).get("state", {})) if tasks else {}
@@ -234,12 +276,18 @@ async def compose_chapter(chapter_id, db, replacement=None, effects=None):
     if not rows or any(p.status != PanelStatus.PASSED for p in rows):
         raise HTTPException(409, "需要全部通过审核的分镜才能重新排版")
     from app.agents.layout_artist import LayoutArtistAgent
-    panels = [{"index": p.index, "image_url": p.image_url, "status": p.status.value} for p in rows]
+    previous = {(p["index"], p.get("image_url")): p for p in state.get("panels", [])}
+    panels = [{**previous.get((p.index, p.image_url), {}), "index": p.index,
+               "image_url": p.image_url, "status": p.status.value} for p in rows]
     try:
-        final = await LayoutArtistAgent().compose_final(panels, replacement if replacement is not None else state.get("dialogues") or chapter.dialogues or {}, effects=effects if effects is not None else state.get("effects", {}))
+        final = await LayoutArtistAgent().compose_final(panels, replacement if replacement is not None else state.get("dialogues") or chapter.dialogues or {}, effects=effects if effects is not None else state.get("effects", {}), storyboard=storyboard or state.get("storyboard") or chapter.storyboard)
     except ValueError as error:
         raise HTTPException(422, str(error))
-    await snapshot(db, chapter, tasks, "特效修改前" if effects is not None else "漫画气泡排版前")
+    label = "页面布局" if storyboard is not None else "特效" if effects is not None else "漫画气泡排版"
+    await snapshot(db, chapter, tasks, "特效修改前" if effects is not None else label + "前")
+    if storyboard is not None:
+        state["storyboard"] = storyboard
+        chapter.storyboard = storyboard
     if effects is not None:
         state["effects"] = effects
     if replacement is not None:
@@ -254,7 +302,7 @@ async def compose_chapter(chapter_id, db, replacement=None, effects=None):
     task = Task(id=str(uuid4()), project_id=chapter.project_id, chapter_id=chapter_id, type="bubble_layout", status=TaskStatus.COMPLETED, result={"state": state, "final_comic": final})
     db.add(task)
     await db.flush()
-    await snapshot(db, chapter, [task], "特效合成" if effects is not None else "漫画气泡排版")
+    await snapshot(db, chapter, [task], "特效合成" if effects is not None else label)
     await db.commit()
     return final
 
@@ -274,6 +322,7 @@ async def revise(chapter_id: str, panel_index: int, payload: Revise, background_
     if payload.reference_ids:
         from app.api.routes.assets import resolve_visual_bindings
         selected = await resolve_visual_bindings(db, chapter.project_id, payload.reference_ids, targets)
+        state["visual_reference_overrides"] = {**state.get("visual_reference_overrides", {}), **selected}
         state["visual_reference_bindings"] = {**state.get("visual_reference_bindings", {}), **selected}
     await snapshot(db, chapter, tasks, "按格修订前")
     saved_panels = {}
@@ -281,13 +330,19 @@ async def revise(chapter_id: str, panel_index: int, payload: Revise, background_
         for saved in ((previous_task.result or {}).get('state', {}).get('panels') or []):
             key = (saved['index'], saved.get('image_url'))
             saved_panels[key] = {**saved_panels.get(key, {}), **saved}
+    requested_targets = targets.copy()
+    if payload.include_dependents:
+        for panel in panels:
+            saved = saved_panels.get((panel.index, panel.image_url), {})
+            if targets.intersection(saved.get("continuity_source_indices", [])):
+                targets.add(panel.index)
     previous_reviews = state.get('review_history') or []
     state.update(storyboard=board, dialogues=state.get("dialogues") or chapter.dialogues,
                  outline=state.get("outline") or chapter.outline,
                  panels=[{**saved_panels.get((p.index, p.image_url), {}), "index": p.index, "image_url": p.image_url, "status": p.status.value} for p in panels],
                  revision_targets=sorted(targets),
                  next_node="generate_panels", phase="panel_generation", retry_count=0, human_intervene=False,
-                 review_history=[*previous_reviews, {"panel_reviews": [{"panel_index": p.index, "passed": p.index not in targets, "issues": [] if p.index not in targets else [{"type": "人工修订", "severity": "medium", "description": payload.instructions, "suggestion": payload.instructions}]} for p in panels]}])
+                 review_history=[*previous_reviews, {"panel_reviews": [{"panel_index": p.index, "passed": p.index not in targets, "issues": [] if p.index not in targets else [{"type": "人工修订", "severity": "medium", "description": payload.instructions if p.index in requested_targets else "上游参考图已变化，请保持本格原有剧情与构图", "suggestion": payload.instructions if p.index in requested_targets else "只更新连续性"}]} for p in panels]}])
     from app.db.repositories import CharacterProfileRepository
     from app.services.character_details import creative_character
     profiles = await CharacterProfileRepository(db).list(chapter.project_id)
@@ -302,4 +357,4 @@ async def revise(chapter_id: str, panel_index: int, payload: Revise, background_
     db.add(task)
     await db.commit()
     background_tasks.add_task(run_generation, chapter.project_id, chapter_id, task.id)
-    return {"status": "accepted", "task_id": task.id}
+    return {"status": "accepted", "task_id": task.id, "panels": sorted(targets)}

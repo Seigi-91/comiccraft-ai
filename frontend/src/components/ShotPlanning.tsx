@@ -3,8 +3,10 @@ import axios from 'axios'
 
 type Anchor = {id:string; name:string; kind:string; image_url:string; sha256:string}
 type Region = {x:number; y:number; width:number; height:number}
-type Shot = {index:number; shot_type:string; perspective:string; action:string; character_positions?:{character:string;position:string}[]; composition:{arrangement?:string;focal_point?:{x:number;y:number};subshots?:{region?:Region; content?:string}[]}}
-type Plan = {task_id:string; revision:string|null; waiting:boolean; previous_novel_context?:{title?:string;ending_action?:string;location?:string}; storyboard:{panels:Shot[];layout_type:string}|null; dialogues?:{bubbles:{panel_index:number;text:string;character?:string;position:{x:number;y:number}}[]}; bindings:Record<string,string[]>}
+type PageRegion = Region & {panel_index:number; inset_of?:number|null}
+type Scene = {id:string; name:string; stable_context:string; characters:string[]; props:string[]}
+type Shot = {index:number; shot_type:string; perspective:string; action:string; scene_id?:string|null; scene_state?:string|null; character_positions?:{character:string;position:string}[]; composition:{arrangement?:string;focal_point?:{x:number;y:number};subshots?:{region?:Region; content?:string}[]}}
+type Plan = {task_id:string; revision:string|null; expected_version?:string|null; waiting:boolean; previous_novel_context?:{title?:string;ending_action?:string;location?:string}; storyboard:{panels:Shot[];layout_type:string; pages?:{height?:number;regions:PageRegion[]}[]|null; scenes?:Scene[]}|null; dialogues?:{bubbles:{panel_index:number;text:string;character?:string;position:{x:number;y:number}}[]}; bindings:Record<string,string[]>; overrides?:string[]; inherited?:Record<string,string[]>; dependencies?:Record<string,number[]>}
 
 export default function ShotPlanning({projectId,chapterId,images,characterCards,canRevise,onChanged}:{projectId:string;chapterId:string;images:{index:number;image_url:string}[];characterCards:{name:string;appearance?:string;adaptation_choices?:string[]}[];canRevise:boolean;onChanged:()=>Promise<void>}) {
   const [plan,setPlan]=useState<Plan>()
@@ -16,6 +18,7 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
   const [index,setIndex]=useState(0)
   const [targets,setTargets]=useState<number[]>([])
   const [note,setNote]=useState('')
+  const [includeDependents,setIncludeDependents]=useState(false)
   const [busy,setBusy]=useState(false)
   const [message,setMessage]=useState('')
   const root='/api/assets/projects/'+projectId
@@ -24,6 +27,31 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
   const selected=plan?.bindings[index] || []
   const subshots = Array.isArray(shot?.composition.subshots) ? shot.composition.subshots : []
   const bubbles = plan?.dialogues?.bubbles || []
+  const board = plan?.storyboard
+  const pageIndex = board?.pages?.findIndex(page => page.regions.some(region => region.panel_index === index)) ?? -1
+  const page = board?.pages?.[pageIndex]
+  const region = page?.regions.find(item => item.panel_index === index)
+  const scene = board?.scenes?.find(item => item.id === shot?.scene_id)
+  const affected = new Set(targets)
+  for (const panel of board?.panels ?? []) {
+    if (plan?.dependencies?.[panel.index]?.some(source => affected.has(source))) affected.add(panel.index)
+  }
+  const dependents = [...affected].filter(panel => !targets.includes(panel))
+  function updateRegion(changes: Partial<PageRegion>) {
+    if (!plan || !board?.pages) return
+    const pages = board.pages.map((item, i) => i === pageIndex
+      ? {...item, regions: item.regions.map(region => region.panel_index === index ? {...region,...changes} : region)}
+      : item)
+    setPlan({...plan, storyboard:{...board,pages}})
+  }
+  function updateShot(changes: Partial<Shot>) {
+    if (!plan || !board) return
+    setPlan({...plan, storyboard:{...board, panels:board.panels.map(item => item.index === index ? {...item,...changes} : item)}})
+  }
+  function updateScene(changes: Partial<Scene>) {
+    if (!plan || !board?.scenes || !scene) return
+    setPlan({...plan, storyboard:{...board, scenes:board.scenes.map(item => item.id === scene.id ? {...item,...changes} : item)}})
+  }
   function updateBubble(index: number, changes: Partial<(typeof bubbles)[number]>) {
     if (!plan) return
     setPlan({...plan, dialogues: {bubbles: bubbles.map((bubble, i) => i === index ? {...bubble, ...changes} : bubble)}})
@@ -45,7 +73,7 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
   function bind(id:string,checked:boolean) {
     if(!plan)return
     const ids=checked?[...selected,id]:selected.filter(current=>current!==id)
-    if(ids.length<=3)setPlan({...plan,bindings:{...plan.bindings,[index]:ids}})
+    if(ids.length<=3)setPlan({...plan,bindings:{...plan.bindings,[index]:ids},overrides:[...new Set([...(plan.overrides||[]),String(index)])]})
   }
   function updateSubshots(subshots:NonNullable<Shot['composition']['subshots']>) {
     if(!plan?.storyboard || !shot)return
@@ -53,13 +81,25 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
   }
   async function savePlan(continueDrawing:boolean) {
     if(!plan?.storyboard)return
-    const response=await axios.put(planUrl,{task_id:plan.task_id,expected_revision:plan.revision,storyboard:plan.storyboard,dialogues:plan.dialogues,bindings:plan.bindings})
+    const response=await axios.put(planUrl,{task_id:plan.task_id,expected_revision:plan.revision,storyboard:plan.storyboard,dialogues:plan.dialogues,bindings:Object.fromEntries((plan.overrides||[]).map(key=>[key,plan.bindings[key]||[]]))})
     setPlan({...plan,revision:response.data.revision})
     if(continueDrawing) {
       await axios.post('/api/tasks/'+plan.task_id+'/resume')
       await onChanged();await refresh()
     }
+    if (!continueDrawing) await refresh()
     setMessage(continueDrawing?'已提交绘图。':'分镜和参考版本已保存。')
+  }
+  async function savePageLayout(automatic = false, strip = false) {
+    if (!plan || !board) return
+    await axios.put('/api/editing/'+chapterId+'/page-layout',{
+      expected_version:plan.expected_version??null,
+      pages:strip?null:board.pages,
+      automatic,
+    })
+    await onChanged()
+    await refresh()
+    setMessage('成稿已按新版式合成，原画可复用。')
   }
   return <details className="studio-card" open={plan?.waiting || undefined}>
     <summary className="cursor-pointer font-semibold">视觉参考与分镜草图</summary>
@@ -78,6 +118,32 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
       {image&&<img className="max-h-40 rounded" src={image} alt="待确认参考图"/>}
       {plan?.storyboard&&shot&&<>
         <label>查看分镜<select aria-label="草图分镜" value={index} onChange={e=>setIndex(Number(e.target.value))}>{plan.storyboard.panels.map(p=><option key={p.index} value={p.index}>第 {p.index+1} 格 · {p.shot_type}</option>)}</select></label>
+        {page&&region&&<div className="grid gap-3 sm:grid-cols-2">
+          <div className="relative max-w-xs border border-dark-600 bg-dark-900" style={{aspectRatio:`1000 / ${page.height??1200}`}} aria-label={`第 ${pageIndex+1} 页排版预览`}>
+            {page.regions.map(slot=><button type="button" key={slot.panel_index} onClick={()=>setIndex(slot.panel_index)} aria-pressed={index===slot.panel_index} className={`absolute border overflow-hidden text-sm ${index===slot.panel_index?'border-primary-300 bg-indigo-800':'border-gray-500 bg-dark-700'}`} style={{left:`${slot.x}%`,top:`${slot.y}%`,width:`${slot.width}%`,height:`${slot.height}%`}}>{slot.panel_index+1}{slot.inset_of!=null?' · 插格':''}</button>)}
+          </div>
+          <div className="space-y-2">
+            <p>第 {pageIndex+1} / {board?.pages?.length} 页 · 自动版式</p>
+            <div className="flex flex-wrap gap-2">{board?.pages?.map((item,i)=><button type="button" key={i} className="secondary-button" aria-pressed={i===pageIndex} onClick={()=>setIndex(item.regions[0].panel_index)}>第 {i+1} 页</button>)}</div>
+            {(plan.waiting||canRevise)&&<details><summary>调整本格页内位置</summary><fieldset disabled={busy} className="grid grid-cols-2 gap-2 mt-2">
+              {(['x','y','width','height'] as const).map(key=><label key={key}>{({x:'左边距',y:'上边距',width:'宽度',height:'高度'})[key]}（%）<input type="number" min={key==='width'?20:key==='height'?16:0} max={100} value={region[key]} onChange={e=>updateRegion({[key]:Number(e.target.value)})}/></label>)}
+              <label className="col-span-2">嵌入主格<select value={region.inset_of??''} onChange={e=>updateRegion({inset_of:e.target.value===''?null:Number(e.target.value)})}><option value="">独立格</option>{page.regions.filter(item=>item.panel_index<index&&item.inset_of==null).map(item=><option key={item.panel_index} value={item.panel_index}>第 {item.panel_index+1} 格</option>)}</select></label>
+            </fieldset></details>}
+          </div>
+        </div>}
+        {canRevise&&!plan.waiting&&<div className="flex flex-wrap gap-2">
+          {board?.pages&&<button className="primary-button" disabled={busy} onClick={()=>run(()=>savePageLayout())}>保存页布局并合成</button>}
+          <button className="secondary-button" disabled={busy} onClick={()=>run(()=>savePageLayout(true))}>自动排页</button>
+          {board?.pages&&<button className="secondary-button" disabled={busy} onClick={()=>run(()=>savePageLayout(false,true))}>切换为条漫</button>}
+        </div>}
+        {board?.scenes?.length ? <details className="border border-dark-600 p-2 rounded">
+          <summary>场景记忆 · {scene?.name||'未绑定'}</summary>
+          <div className="space-y-2 mt-2">
+            <label>本格场景<select disabled={!plan.waiting||busy} value={shot.scene_id??''} onChange={e=>updateShot({scene_id:e.target.value||null})}><option value="">无共享场景</option>{board.scenes.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+            {scene&&<><label>共享环境<textarea readOnly={!plan.waiting||busy} maxLength={800} value={scene.stable_context} onChange={e=>updateScene({stable_context:e.target.value})}/></label><p className="text-sm">同场景：{board.panels.filter(item=>item.scene_id===scene.id).map(item=>item.index+1).join('、')} 格</p></>}
+            <label>本格剧情状态<textarea readOnly={!plan.waiting||busy} maxLength={500} value={shot.scene_state??''} onChange={e=>updateShot({scene_state:e.target.value})}/></label>
+          </div>
+        </details> : null}
         <div className="grid gap-4 md:grid-cols-2">
           <div className="relative aspect-square bg-dark-900 border border-dark-600 rounded overflow-hidden" aria-label="分镜构图草图">
             <p className="absolute bottom-1 left-2 right-2 text-xs text-gray-300">{shot.shot_type} · {shot.perspective}</p>
@@ -89,10 +155,11 @@ export default function ShotPlanning({projectId,chapterId,images,characterCards,
         </div>
         {plan.waiting&&<details><summary>调整对白与预留位置</summary><div className="space-y-2 mt-2">{bubbles.map((bubble,i)=>bubble.panel_index===index&&<fieldset key={i} className="grid grid-cols-2 gap-2 border border-dark-600 rounded p-2"><legend>{bubble.character||'旁白'}</legend><label className="col-span-2">对白<input maxLength={60} value={bubble.text} onChange={e=>updateBubble(i,{text:e.target.value})}/></label><label>横坐标（%）<input type="number" min={0} max={100} value={bubble.position.x} onChange={e=>updateBubble(i,{position:{...bubble.position,x:Number(e.target.value)}})}/></label><label>纵坐标（%）<input type="number" min={0} max={100} value={bubble.position.y} onChange={e=>updateBubble(i,{position:{...bubble.position,y:Number(e.target.value)}})}/></label></fieldset>)}</div></details>}
         {plan.waiting&&<details><summary>调整格内子镜头</summary><div className="space-y-2 mt-2">{subshots.map((sub,i)=><fieldset key={i} className="grid gap-2 grid-cols-2 border border-dark-600 rounded p-2"><legend>子镜头 {i+1}</legend><label className="col-span-2">内容<input value={sub.content||''} onChange={e=>updateSubshots(subshots.map((item,j)=>j===i?{...item,content:e.target.value}:item))}/></label>{(['x','y','width','height'] as const).map(key=><label key={key}>{({x:'左边距',y:'上边距',width:'宽度',height:'高度'})[key]}（%）<input type="number" min={0} max={100} value={sub.region?.[key]??0} onChange={e=>updateSubshots(subshots.map((item,j)=>j===i?{...item,region:{x:0,y:0,width:25,height:25,...item.region,[key]:Number(e.target.value)}}:item))}/></label>)}<button className="secondary-button" onClick={()=>updateSubshots(subshots.filter((_,j)=>j!==i))}>移除子镜头</button></fieldset>)}<button className="secondary-button" disabled={subshots.length>=4} onClick={()=>updateSubshots([...subshots,{content:'局部特写',region:{x:65,y:8,width:28,height:26}}])}>添加嵌入小格</button></div></details>}
-        <p className="text-sm">本格参考（{selected.length}/3）</p>
+        <p className="text-sm">本格参考（{selected.length}/3） · {plan.overrides?.includes(String(index))?'逐格覆盖':'继承场景'}</p>
+        {plan.waiting&&plan.overrides?.includes(String(index))&&<button className="secondary-button" disabled={busy} onClick={()=>setPlan({...plan,bindings:{...plan.bindings,[index]:plan.inherited?.[index]||[]},overrides:plan.overrides?.filter(key=>key!==String(index))})}>恢复场景继承</button>}
         <div className="grid gap-2 grid-cols-2 md:grid-cols-3">{anchors.map(anchor=><label key={anchor.id} className="border border-dark-600 rounded p-2 text-sm"><img src={anchor.image_url} alt="" className="h-20 w-full object-contain"/><input type="checkbox" style={{width:'auto'}} checked={selected.includes(anchor.id)} disabled={busy||(!selected.includes(anchor.id)&&selected.length>=3)} onChange={e=>bind(anchor.id,e.target.checked)}/> {anchor.name} <small>{anchor.sha256.slice(0,7)}</small></label>)}</div>
         {plan.waiting&&<div className="flex flex-wrap gap-2"><button className="secondary-button" disabled={busy} onClick={()=>run(()=>savePlan(false))}>保存草图</button><button className="primary-button" disabled={busy} onClick={()=>run(()=>savePlan(true))}>确认草图并绘图</button></div>}
-        {canRevise&&<div className="space-y-2"><label className="block"><input type="checkbox" style={{width:'auto'}} checked={targets.includes(index)} onChange={e=>setTargets(previous=>e.target.checked?[...previous,index]:previous.filter(i=>i!==index))}/> 将第 {index+1} 格加入修订范围</label><p>已选格：{targets.map(i=>i+1).join('、')||'尚未选择'}</p><label>修订要求<textarea aria-label="按格修订要求" value={note} onChange={e=>setNote(e.target.value)}/></label><button className="primary-button" disabled={busy||!targets.length||!note.trim()} onClick={()=>run(async()=>{const [first,...rest]=[...targets].sort((a,b)=>a-b);await axios.post('/api/editing/'+chapterId+'/panels/'+first+'/revise',{instructions:note,additional_panels:rest,reference_ids:Object.fromEntries(targets.map(i=>[i,plan.bindings[i]||[]]))});await onChanged();await refresh();setTargets([]);setMessage('已提交所选分镜修订。')})}>只重绘所选格</button></div>}
+        {canRevise&&<div className="space-y-2"><label className="block"><input type="checkbox" style={{width:'auto'}} checked={targets.includes(index)} onChange={e=>setTargets(previous=>e.target.checked?[...previous,index]:previous.filter(i=>i!==index))}/> 将第 {index+1} 格加入修订范围</label><p>已选格：{targets.map(i=>i+1).join('、')||'尚未选择'}</p>{dependents.length>0&&<label><input type="checkbox" style={{width:'auto'}} checked={includeDependents} onChange={e=>setIncludeDependents(e.target.checked)}/> 同步重绘引用这些画面的第 {dependents.map(i=>i+1).join('、')} 格</label>}<label>修订要求<textarea aria-label="按格修订要求" value={note} onChange={e=>setNote(e.target.value)}/></label><button className="primary-button" disabled={busy||!targets.length||!note.trim()} onClick={()=>run(async()=>{const [first,...rest]=[...targets].sort((a,b)=>a-b);await axios.post('/api/editing/'+chapterId+'/panels/'+first+'/revise',{instructions:note,additional_panels:rest,include_dependents:includeDependents,reference_ids:Object.fromEntries(targets.filter(i=>plan.overrides?.includes(String(i))).map(i=>[i,plan.bindings[i]||[]]))});await onChanged();await refresh();setTargets([]);setMessage('已提交所选分镜修订。')})}>{includeDependents&&dependents.length?'重绘所选及引用格':'只重绘所选格'}</button></div>}
       </>}
       <p role="status" className="text-sm text-primary-300">{busy?'处理中…':message}</p>
     </div>
