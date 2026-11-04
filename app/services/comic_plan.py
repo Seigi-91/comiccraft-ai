@@ -12,8 +12,12 @@ def auto_pages(panels):
     for panel in panels:
         role = panel["composition"].get("page_role")
         shot = panel["shot_type"].casefold()
-        wide = role == "anchor" or any(term in shot for term in ("全景", "远景", "wide", "establish"))
-        detail = role in ("detail", "reaction") or any(term in shot for term in ("特写", "close-up", "insert"))
+        if role in ("anchor", "detail", "reaction", "context"):
+            wide = role == "anchor"
+            detail = role in ("detail", "reaction")
+        else:
+            wide = any(term in shot for term in ("全景", "远景", "wide", "establish"))
+            detail = any(term in shot for term in ("特写", "close-up", "insert"))
         entry = (panel["index"], detail)
         if wide:
             if pending is not None:
@@ -35,7 +39,8 @@ def auto_pages(panels):
         if len(group) == 1 and len(group[0]) == 2:
             group = [[entry] for entry in group[0]]
         available = 100 - 2 * margin - (len(group) - 1) * gutter
-        weights = [1.25 if len(row) == 1 else 1 for row in group]
+        # Keep a narrow detail from becoming a tall slot when paired with context.
+        weights = [1.25 if len(row) == 1 else 0.85 if row[0][1] != row[1][1] else 1 for row in group]
         regions = []
         y = margin
         for row, weight in zip(group, weights):
@@ -85,10 +90,30 @@ def validate_pages(pages, indices):
                 raise ValueError("格区重叠，请调整坐标或显式设为插格")
 
 
+def has_ambiguous_reading_order(regions):
+    """Check conflicts with row-first reading in automatically drafted layouts."""
+    outer = [region for region in regions if region.get("inset_of") is None]
+    for earlier, later in combinations(outer, 2):
+        if later["y"] + later["height"] <= earlier["y"]:
+            return True
+        if abs(earlier["y"] - later["y"]) <= 2 and later["x"] + later["width"] <= earlier["x"]:
+            return True
+    for upper, rail, lower in combinations(outer, 3):
+        if (upper["y"] + upper["height"] <= lower["y"]
+                and max(upper["x"] + upper["width"], lower["x"] + lower["width"]) <= rail["x"]
+                and rail["y"] <= upper["y"] + 2
+                and rail["y"] + rail["height"] >= lower["y"] + lower["height"] - 2):
+            # Row-first indices enter the tall right panel before completing the left stack.
+            return True
+    return False
+
+
 def needs_page_rebalance(pages, panels):
-    """Repair model drafts that gave a marked anchor and detail the same weight."""
+    """Repair automatic drafts with unclear navigation or weak visual hierarchy."""
     roles = {panel["index"]: panel["composition"].get("page_role") for panel in panels}
     for page in pages:
+        if has_ambiguous_reading_order(page["regions"]):
+            return True
         weights = {}
         for region in page["regions"]:
             role = roles.get(region["panel_index"])

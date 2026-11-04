@@ -73,3 +73,10 @@
 | [Klomberg 等, Processing Incongruity for Mental Events in Comics (2025 卷期)](https://pmc.ncbi.nlm.nih.gov/articles/PMC11716651/) | 摘要与总讨论显示，读者能理解主叙事和辅助情境间的切换，切换需要额外更新。在考察角色指代的实验中，画面形态呼应可帮助理解或处理。 | `board-time-e2` |
 
 `reaction` 借用漫画叙事功能与局部聚焦的区分。`action_progression` 和 `parallel` 参考 Yale 的电影剪辑说明，再转成静态画格决策。六类项目字段、构图比例、短回忆标记及拆格阈值是项目规则。相关研究没有评测 ComicCraft 生成的漫画。
+
+
+## 原页对照与读序
+
+- [Cohn 与 Campbell 2015](https://doi.org/10.1002/acp.3086) 的作者稿 Results 与 Discussion 讨论空格编号受跨行长格、错位和重叠影响。board-intent-e5 记录证据，默认逐行阅读的回退算法属于本项目规则。
+- [《新宝岛》官方样页及作者回顾](https://tezukaosamu.net/en/manga/207.html) 用于 board-action-e2。行车段可见视角改变时运动方向仍然连续，救狗段展示相遇、抱起和同乘。作者回顾说明删去相遇段会弱化后续角色的来由。
+- 国会图书馆的[《小尼莫》](https://www.loc.gov/pictures/item/2009616051/)和[《Krazy Kat》](https://www.loc.gov/item/2019636119/)作为原页观察，分别说明等格建立节奏后变幅、复用机位与地标表现状态变化。原页仅链接。案例和原创生成对照见[分镜验证](../benchmarks/STORYBOARD_LAYOUT_STUDY.md)。

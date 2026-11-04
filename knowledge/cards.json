@@ -240,6 +240,30 @@
       "retrieval_method": "public_web_reader_designated_sections",
       "availability_note": "语料研究不提供项目布局、使用频率或质量保证。"
     },
+    "cohn-campbell-reading": {
+      "title": "Cohn and Campbell — Navigating Comics II (2015)",
+      "url": "https://doi.org/10.1002/acp.3086",
+      "use": "长格阻断和错位对读序的影响",
+      "publisher": "Applied Cognitive Psychology",
+      "checked_at": "2026-11-04",
+      "kind": "primary_research",
+      "access_status": "verified_text",
+      "scope": "作者稿 Results 及 Discussion: Blockage and Staggering。空白格编号实验。",
+      "retrieval_method": "author_manuscript_pdf",
+      "availability_note": "结果不直接推广到带图文漫画或所有阅读方向。"
+    },
+    "tezuka-new-treasure": {
+      "title": "Tezuka Osamu Official — New Treasure Island",
+      "url": "https://tezukaosamu.net/en/manga/207.html",
+      "use": "救狗接续镜头及作者对删节的说明",
+      "publisher": "Tezuka Productions",
+      "checked_at": "2026-11-04",
+      "kind": "primary_document",
+      "access_status": "verified_text",
+      "scope": "官网 Comment by Author 及行车和救狗图例。页面讨论重刊，样图不标为初版。",
+      "retrieval_method": "official_work_page_and_samples",
+      "availability_note": "只链接官网。"
+    },
     "klomberg-mental-events": {
       "title": "Bien Klomberg et al. — Processing Incongruity for Mental Events in Comics (2025 issue)",
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11716651/",
@@ -505,7 +529,8 @@
         "adobe-board",
         "yale-camera",
         "cohn-comic-structure",
-        "foulsham-cohn-zoom"
+        "foulsham-cohn-zoom",
+        "cohn-campbell-reading"
       ],
       "core": true,
       "authorship": "project-original",
@@ -542,13 +567,22 @@
           "claim": "两项实验中，聚焦读者注视信息的裁切比低注视裁切更易理解。完整画面保留的背景仍能提供语境。",
           "relationship": "supports_principle",
           "scope_limit": "实验比较序列中的替换画格，未检验同时展示主格和子镜头的效果。"
+        },
+        {
+          "id": "board-intent-e5",
+          "source_id": "cohn-campbell-reading",
+          "locator": "Results; Discussion: Blockage and Staggering",
+          "claim": "跨行长格与错位会改变读者给空白格编号时选择的路径。",
+          "relationship": "supports_principle",
+          "scope_limit": "空格实验提供路径歧义证据。默认逐行读序和回退阈值是项目实现。"
         }
       ],
       "basis": "source_and_project",
       "project_rules": [
         "每个镜头画一个可辨瞬间。一个主格可以统领同一节拍的相邻瞬间。每个小格有清楚边界，尺寸服从叙事主次，先规划阅读路径和对白留白。",
         "detail 放大可在主格定位的同一物件或局部。reaction 画同一刺激引起的可见微反应，保留刺激与反应的读序。反应引出新决定时，把决定作为下一格。",
-        "先试单镜头。若删掉某个子镜头后信息与节奏都无损，则省略它。"
+        "先试单镜头。若删掉某个子镜头后信息与节奏都无损，则省略它。",
+        "等格适合比较连续状态。线索与上下文可以不等宽。默认逐行阅读时，避免右侧通高长格与左侧两格争夺读序。"
       ],
       "applicability": [
         "需要从故事说明转成可画的镜头，或判断主格该不该加嵌入小格。"
@@ -558,7 +592,7 @@
         "六类字段是项目创作分类，来源不规定类型数量和画框比例。"
       ],
       "examples": {
-        "positive": "主格画诊室交接药瓶，detail 小格放大瓶口破封，reaction 窄格在其后画接药人手指停住。人物作出停药决定留到下一格。",
+        "positive": "主格画诊室交接药瓶，detail 小格放大瓶口破封。下一独立窄格画接药人手指停住，停药决定再单独交代。",
         "negative": "把递药、回家、次晨调查和结案放进四个等大小格，留给读者猜时间和因果。",
         "explanation": "主格让人认出人与物的关系，小格补出证据和当下反应。独立决定有自己的叙事空间。"
       },
@@ -676,9 +710,10 @@
         "持物",
         "动作推进"
       ],
-      "content": "将复杂动作拆成准备、接触、结果，每个镜头画一个可辨瞬间。action_progression 只在一个动作的相邻阶段之间推进，把接触或结果放进后读的窄格。detail 放大的是同一瞬间的证据。写明哪只手持物、物件朝向、运动方向和接触点，后镜沿用或明确转移。新的目标、行动或结果开启新因果节拍时拆成独立格。",
+      "content": "将复杂动作拆成准备、接触、结果，每个镜头画一个可辨瞬间。action_progression 只在一个动作的相邻阶段之间推进，把接触或结果放进后读的格内小镜头。detail 放大同一瞬间的证据。写明哪只手持物、物件朝向、运动方向和接触点。需要比较状态时可以固定机位与地标。新的因果节拍拆成独立格。",
       "sources": [
-        "yale-editing"
+        "yale-editing",
+        "tezuka-new-treasure"
       ],
       "core": false,
       "authorship": "project-original",
@@ -691,6 +726,14 @@
           "claim": "跨镜头动作衔接可维持观众对持续动作的理解。",
           "relationship": "supports_principle",
           "scope_limit": "仅支持此条原则；下列项目应用规则不作为原文结论。"
+        },
+        {
+          "id": "board-action-e2",
+          "source_id": "tezuka-new-treasure",
+          "locator": "Comment by Author and The scene of Pete saving a stray dog",
+          "claim": "作者说明删掉相遇段落后，小狗在后续出现缺少来由。官网图例展示发现、抱起和同乘。",
+          "relationship": "supports_principle",
+          "scope_limit": "单部作品及作者自述提供案例，不能外推为普遍因果效应。"
         }
       ],
       "basis": "source_and_project",
@@ -704,7 +747,7 @@
         "动作省略可以成立，只要读者仍能推断；不要求逐帧描绘。"
       ],
       "examples": {
-        "positive": "主格画右手扣上门把，窄格画同一只手将门把拧到底，左臂一直托住猫。",
+        "positive": "主格画右手扣上门把，格内小镜头画同一只手将门把拧到底，左臂一直托住猫。",
         "negative": "主格刚用左手拿信，子镜头突然换右手，同时已走到院外撑伞。",
         "explanation": "画面顺序必须对应同一动作的进展，时空与持物变化需要看得见的过渡。"
       },
@@ -742,7 +785,7 @@
         "短回忆",
         "并行行动"
       ],
-      "content": "格间省略需要留足让读者推断的线索。动作变化大的两格之间可插入反应或环境格。主线有新时空或因果推进时用独立格。只有短暂从属当前节拍，并且读者能明确分辨离开与返回时，才在主格嵌入短回忆或短并行镜头。\nmemory 先用人物、物件或触感触发回忆，以重复物件加画框、色调或画内时间标记区分过去，随后用主格锚点接回现在。parallel 并置另一处相关行动，用时间标记、共同事件或相呼应的构图说明两线关系。原作只支持对照时，保留对照关系，不标成同时。",
+      "content": "格间省略需要留足让读者推断的线索。动作变化大的两格之间可插入反应或环境格。主线有新时空或因果推进时用独立格。只有短暂从属当前节拍，并且读者能明确分辨离开与返回时，才在主格嵌入短回忆或短并行镜头。\nmemory 先用人物、物件或触感触发回忆，以重复物件加画框或色调区分过去，随后用主格锚点接回现在。parallel 并置另一处相关行动，用共同事件或相呼应的构图说明两线关系。原作只支持对照时，保留对照关系，不标成同时。",
       "sources": [
         "yale-editing",
         "klomberg-mental-events"
@@ -771,7 +814,7 @@
       "basis": "source_and_project",
       "project_rules": [
         "回忆写明触发者、过去线索和返回锚点。并行写明第二行动的位置、时间或对照关系，以及它如何补足主节拍。",
-        "独立场景、连续多步行动或改变因果链的段落使用独立格。画内标记由排版阶段放置，预留可读空间。"
+        "独立场景、连续多步行动或改变因果链的段落使用独立格。日期或时间提示由排版阶段添加，预留可读空间。"
       ],
       "applicability": [
         "需要控制格间停顿、短回忆或短暂并置另一行动。"

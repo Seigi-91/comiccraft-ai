@@ -1,7 +1,7 @@
 {
   "scope": "maintainer-authored retrieval checks only; not generated-comic quality",
   "dataset_sha256": "af73885da0fb377164a9931a2bebc3d47d58e75d5c1ded4cc30ee612f75bb067",
-  "corpus_sha256": "6ecb1be14a8c9df2f288826f61c26e28359aec8a1c18ce0cd1aaefcebf18e220",
+  "corpus_sha256": "6810477998573199daf414c10971aef86a117f3b5cb1da7d02d53ab79b66d4b6",
   "baseline_commit": "242c9ba05ec19b17be4b172352003b3e6473886e",
   "variants": {
     "v1_frozen": {

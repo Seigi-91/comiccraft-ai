@@ -45,6 +45,8 @@
 
 **格内多镜头示例** · 《最后一次离别》用同期细节和短回忆两个小镜头，晚年换场保留独立外格。[阅读漫画](https://seigi-91.github.io/comiccraft-ai/subshot-story.html) · [验证记录](benchmarks/SUBSHOT_VALIDATION.md)
 
+**真实漫画原页与分镜对照** · 用同一批原创灯塔镜头比较等大四格和叙事分格，记录读序检查及版式修正。[查看对照](benchmarks/STORYBOARD_LAYOUT_STUDY.md)
+
 ## 已实现
 
 | 能力 | 内容 |

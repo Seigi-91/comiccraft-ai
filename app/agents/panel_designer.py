@@ -77,7 +77,7 @@ class PanelDesignerAgent(TextAgent):
                 "continuity": {
                     "previous_shot": previous_shot.get("shot") if previous_shot else None,
                     "previous_image": previous_shot["image_url"] if previous_shot else None,
-                    "instruction": "角色表锁定身份；前一格用于场景和动作衔接，不复制构图。保持道具、服装、天气和行动方向。",
+                    "instruction": "角色表锁定身份；前一格用于场景和动作衔接。明确要求固定机位或动作对照时沿用机位、画幅和地标，只更新本格剧情变化；其余镜头按当前构图绘制。保持道具、服装、天气和行动方向的连续性。",
                 },
             }
             prompt = (

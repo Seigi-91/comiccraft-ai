@@ -170,3 +170,36 @@ def test_auto_page_gives_clue_less_space_and_can_preserve_protected_art():
     keep_whole = {"crop_safe_area": {"x": 0, "y": 0, "width": 100, "height": 100}}
     _, _, _, visible = frame_page_art(art, (800, 480), keep_whole, [])
     assert visible == (160, 0, 640, 480)
+
+def test_storyboard_automatic_layout_repairs_visual_order_and_keeps_scene():
+    from app.agents.storyboard_artist import StoryboardArtistAgent
+    from app.services.comic_plan import auto_pages, needs_page_rebalance, validate_pages
+
+    board = {
+        "layout_type": "分页",
+        "scenes": [{"id": "lamp", "name": "灯塔"}],
+        "panels": [
+            {"index": i, "shot_type": "全景", "action": "检查灯", "perspective": "平视",
+             "scene_id": "lamp", "composition": {"page_role": "detail" if i == 1 else "context"}}
+            for i in range(3)
+        ],
+    }
+    upper = {"panel_index": 0, "x": 3, "y": 3, "width": 46, "height": 46}
+    tall = {"panel_index": 1, "x": 51, "y": 3, "width": 46, "height": 94}
+    lower = {"panel_index": 2, "x": 3, "y": 51, "width": 46, "height": 46}
+    blocked = [{"regions": [upper, tall, lower]}]
+    validate_pages(blocked, range(3))
+    assert needs_page_rebalance(blocked, board["panels"])
+
+    reversed_row = [{"regions": [{**upper, "x": 51}, {**upper, "panel_index": 1}, lower]}]
+    validate_pages(reversed_row, range(3))
+    assert needs_page_rebalance(reversed_row, board["panels"])
+
+    fallback = auto_pages(board["panels"])
+    assert not needs_page_rebalance(fallback, board["panels"])
+    first, detail, _ = fallback[0]["regions"]
+    assert first["y"] == detail["y"] and detail["width"] < first["width"]
+
+    parsed = StoryboardArtistAgent._parse_board({**board, "pages": "invalid"}, {})
+    assert parsed["scenes"][0]["id"] == "lamp"
+    assert parsed["pages"] == fallback

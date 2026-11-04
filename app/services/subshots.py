@@ -72,7 +72,7 @@ def subshot_directive(composition):
         "cue": cue,
         "direction": guide,
         "insets_in_reading_order": shots,
-        "frame": "单一外框，主画面占主导。只在指定区域绘制有清楚边界的小镜头，保留对白空间。禁止等分拼图、画内文字和重复主体。",
+        "frame": "单一外框，主画面占主导。只在指定区域绘制有清楚边界的小镜头，保留对白空间。保持大小层级，画面文字留给排字。相同角色只可在标明为另一视点、时刻或地点的镜头中再出现，避免画成同场分身。",
     }
 
 

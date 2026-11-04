@@ -44,9 +44,12 @@ class StoryboardArtistAgent(TextAgent):
     def _parse_board(raw, outline):
         try:
             result = StoryboardSchema.model_validate(raw).model_dump()
-        except ValidationError:
-            # Optional geometry or scene metadata can be repaired without another model call.
-            result = StoryboardSchema.model_validate({**raw, "pages": None, "scenes": []}).model_dump()
+        except ValidationError as error:
+            invalid = {entry["loc"][0] for entry in error.errors() if entry["loc"]}
+            defaults = {"pages": None, "scenes": []}
+            if not invalid or not invalid <= defaults.keys():
+                raise
+            result = StoryboardSchema.model_validate({**raw, **{key: defaults[key] for key in invalid}}).model_dump()
         if not result["panels"] or len(result["panels"]) > 24:
             raise ValueError("分镜数量必须为 1–24")
         if [p["index"] for p in result["panels"]] != list(range(len(result["panels"]))):

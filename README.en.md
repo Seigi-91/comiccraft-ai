@@ -43,6 +43,8 @@ This preview uses existing chapter art with manually marked focal points and let
 
 **Multi-shot panel example** · A hand detail and a brief memory sit inside separate main panels. The later location change gets its own panel. [Read the adaptation](https://seigi-91.github.io/comiccraft-ai/subshot-story.html) · [Validation record](benchmarks/SUBSHOT_VALIDATION.md)
 
+**Storyboard layout study** · Original comic-page references and a same-art comparison of a uniform grid and a narrative layout. [See the visual study](benchmarks/STORYBOARD_LAYOUT_STUDY.md)
+
 ## What makes this useful
 
 - Six role-specific agents coordinate planning, storyboards, dialogue, artwork, review and layout.

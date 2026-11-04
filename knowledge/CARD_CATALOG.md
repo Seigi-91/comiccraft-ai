@@ -498,3 +498,8 @@
 | `review-benchmark` | 区分重绘、复审与排字，分别记录调用与换图，效率比较固定初稿和修改要求 | 比较同一要求下的整章复审与按证据复审 |
 
 `board-intent-e3` 引用 [Cohn, 2014](https://pmc.ncbi.nlm.nih.gov/articles/PMC4076615/) 的 *External compositional structure* 与 *Attentional framing structure*。来源支持嵌入格及局部聚焦。具体比例、文字留白及手机验收是项目规则。
+
+
+### 阅读顺序与动作接续补充
+
+board-intent-e5 记录跨行长格与空白格读序实验。等格可用于重复动作和状态对照。board-action-e2 记录《新宝岛》官网样页与作者回顾，用于检查省略后读者还能否推断因果。三部漫画原页及项目对照图见[分镜验证](../benchmarks/STORYBOARD_LAYOUT_STUDY.md)。
